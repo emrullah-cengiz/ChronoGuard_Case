@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 
 public class MovementController : MonoBehaviour
@@ -28,7 +29,7 @@ public class MovementController : MonoBehaviour
 
         Vector3 movementVector = new(_input.x, 0, _input.y);
 
-        _agent.velocity = _speed * movementVector.normalized;
+        _agent.velocity = _speed * movementVector;
     }
 
     private void Rotate()

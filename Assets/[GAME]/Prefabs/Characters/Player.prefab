@@ -284,6 +284,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7900811054733210611, guid: e95a467e12fe94f45af871fbee678287,
+        type: 3}
+      propertyPath: m_Acceleration
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7900811054733210611, guid: e95a467e12fe94f45af871fbee678287,
+        type: 3}
+      propertyPath: m_AngularSpeed
+      value: 600
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -304,6 +314,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 725227951016945346}
+    - targetCorrespondingSourceObject: {fileID: 342375206321998990, guid: e95a467e12fe94f45af871fbee678287,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4987193216197262649}
   m_SourcePrefab: {fileID: 100100000, guid: e95a467e12fe94f45af871fbee678287, type: 3}
 --- !u!195 &2300794881634587431 stripped
 NavMeshAgent:
@@ -385,4 +399,19 @@ MonoBehaviour:
   _movementInputActionRef: {fileID: 2990186206529762269, guid: 130a55a065e0f1942a457a9552b2149d,
     type: 3}
   _agent: {fileID: 2300794881634587431}
-  _speed: 3
+  _speed: 4
+--- !u!114 &4987193216197262649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8541953441604217946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 777792fa1b0b70944a50b1e155d96a9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speedSmoothingPower: 10
+  _agent: {fileID: 2300794881634587431}
+  _animator: {fileID: 2042048461131738225}
