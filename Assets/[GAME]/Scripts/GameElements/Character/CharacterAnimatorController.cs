@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
  
-
-public class AnimatorController : MonoBehaviour
+public class CharacterAnimatorController : MonoBehaviour
 {
     private readonly int MOVE_SPEED_PARAM = Animator.StringToHash("MoveSpeed");
 

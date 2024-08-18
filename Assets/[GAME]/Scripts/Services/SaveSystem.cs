@@ -8,19 +8,19 @@ public class SaveSystem
 {
     private readonly string _saveFilePath;
     private readonly int _saveTimerInterval;
-    
+
     // ReSharper disable once MemberCanBePrivate.Global
     public SaveData Data { get; private set; }
 
-    private bool _isSaveTimerActive; 
-    
+    private bool _isSaveTimerActive;
+
     public SaveSystem()
     {
         var _settings = ServiceLocator.Resolve<SaveSettings>();
-        
+
         _saveTimerInterval = _settings.SaveIntervalInSeconds;
         _saveFilePath = Path.Combine(Application.persistentDataPath, GlobalVariables.SAVE_DATA_FILE_NAME);
-        
+
         SubscribeEvents();
 
         Initialize();
@@ -37,7 +37,7 @@ public class SaveSystem
     {
         Events.OnApplicationPause += Save;
         Events.OnApplicationQuit += Save;
-        
+
         Events.GameStates.OnLevelStarted += OnLevelStarted;
         Events.GameStates.OnLevelEnd += OnLevelEnd;
     }
@@ -59,17 +59,16 @@ public class SaveSystem
 
     private void Save()
     {
-        Data.CurrentLevel++;
-        
         var json = JsonUtility.ToJson(Data, true);
         File.WriteAllText(_saveFilePath, json);
     }
-    
+
     private void OnLevelStarted()
     {
         _isSaveTimerActive = true;
         StartAutoSaveLoop().Forget();
     }
+
     private void OnLevelEnd() => _isSaveTimerActive = false;
 
     private async UniTaskVoid StartAutoSaveLoop()
@@ -84,9 +83,16 @@ public class SaveSystem
 
 public class SaveData
 {
-    public int CurrentLevel;
-    public bool IsCurrentStarted;
-    public int TimeRemaining;
-    public int DefeatedEnemiesNumber;
+    public LevelProgressData CurrentLevel = new();
     public int TotalDefeatedEnemiesNumber;
+    public int CurrentHealth;
+}
+
+public class LevelProgressData
+{
+    public int LevelNumber = 1;
+    public bool IsCurrentLevelStarted;
+    public int TimeRemaining;
+    public int SpawnedWavesNumber;
+    public int DefeatedEnemiesNumber;
 }

@@ -22,4 +22,7 @@ public class PlayerSystem : MonoBehaviour
    {
       _playerStateController.Initialize();
    }
+   
+   public Vector3 GetPlayerPosition() => transform.position;
+   public Vector3 GetPlayerLookingDirection() => transform.forward;
 }

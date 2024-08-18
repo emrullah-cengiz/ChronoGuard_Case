@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace GAME.Utilities.StateMachine
 {
@@ -14,13 +16,22 @@ namespace GAME.Utilities.StateMachine
 
     public abstract class StateBase<TStateEnum> : IState
     {
-        public virtual void OnEnter() { }
-        public virtual void OnExit() { }
-        public virtual void OnUpdate() { }
+        public virtual void OnEnter()
+        {
+        }
+
+        public virtual void OnExit()
+        {
+        }
+
+        public virtual void OnUpdate()
+        {
+        }
     }
 
     public class StateMachine<TStateEnum> where TStateEnum : Enum
     {
+        private TStateEnum _startState;
         private IState _currentState;
         private Dictionary<TStateEnum, IState> _states = new();
 
@@ -44,13 +55,14 @@ namespace GAME.Utilities.StateMachine
 
         public void Init()
         {
-            ChangeState(_states.First().Key);
+            ChangeState(_startState);
         }
 
         public void Update()
         {
             _currentState?.OnUpdate();
         }
+
+        public void SetStartState(TStateEnum state) => _startState = state;
     }
-    
 }

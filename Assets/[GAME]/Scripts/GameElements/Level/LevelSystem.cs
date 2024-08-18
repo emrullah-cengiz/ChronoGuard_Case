@@ -1,13 +1,26 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class LevelSystem
+public class LevelSystem    
 {
+    private readonly SaveSystem _saveSystem = ServiceLocator.Resolve<SaveSystem>();
     private readonly EnemySpawner _enemySpawner = ServiceLocator.Resolve<EnemySpawner>();
 
-    public void StartLevel()
+    public async void StartLevel()
     {
-        WaveData _waveData = new(); //load from save data
+        var levelData = await GetLevelData(_saveSystem.Data.CurrentLevel.LevelNumber);
 
-        _enemySpawner.SpawnWave(_waveData);
+        _enemySpawner.Initialize(_saveSystem.Data.CurrentLevel, levelData);
+
+    }
+
+    private async UniTask<LevelData> GetLevelData(int levelNumber)
+    {
+        var operation = Resources.LoadAsync<LevelData>(
+            $"{GlobalVariables.LEVEL_DATA_RESOURCE_PATH}/{GlobalVariables.LEVEL_DATA_PREFIX}{levelNumber}");
+
+        await operation;
+
+        return (LevelData)operation.asset;
     }
 }

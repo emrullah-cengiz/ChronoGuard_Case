@@ -20,8 +20,9 @@ public class GameStateManager : MonoBehaviour
         _stateMachine = new StateMachine<GameState>();
         
         _stateMachine.AddState(GameState.GameStart, new GameStartState());
-        _stateMachine.AddState(GameState.GameStart, new GameStartState());
+        _stateMachine.AddState(GameState.LevelLoading, new LevelLoadingState());
         
+        _stateMachine.SetStartState(GameState.GameStart);
         _stateMachine.Init();
     }
 
@@ -45,7 +46,6 @@ public enum GameState
 {
     GameStart,
     LevelLoading,
-    LevelStart,
     LevelPlaying,
     LevelEnd,
 }

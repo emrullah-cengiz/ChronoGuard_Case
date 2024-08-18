@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Rendering;
 using Object = UnityEngine.Object;
 
 
-public interface IPoolableInitializationData { }
+public interface IPoolableInitializationData
+{
+}
 
 public interface IInitializablePoolable<in TInitializationData> where TInitializationData : IPoolableInitializationData
 {
@@ -15,7 +20,7 @@ public interface IInitializablePoolable<in TInitializationData> where TInitializ
 }
 
 public interface IPool<TObject, in TEnum> where TObject : Component
-                                       where TEnum : Enum
+    where TEnum : Enum
 {
     public TObject Spawn(TEnum type);
     void Despawn(TObject obj, TEnum type);
@@ -29,7 +34,7 @@ public abstract class Pool<TEnum> : Pool<Transform, TEnum> where TEnum : Enum
 }
 
 public abstract class Pool<TObject, TEnum> : IPool<TObject, TEnum> where TObject : Component
-                                                                   where TEnum : Enum
+    where TEnum : Enum
 {
     private readonly PoolSettings _poolSettings;
 
@@ -46,13 +51,28 @@ public abstract class Pool<TObject, TEnum> : IPool<TObject, TEnum> where TObject
     private void Initialize()
     {
         foreach (var kv in _poolSettings.Properties)
-            FillThePool(kv.Key, kv.Value);
+            CreatePool(kv.Key, kv.Value);
+    }
+
+    private void CreatePool(TEnum type, PoolProperties properties)
+    {
+        Stack<TObject> pool = new();
+
+        if (properties.FillOnInit)
+            ExpandPool(pool, properties);
+
+        _pools.Add(type, pool);
     }
 
     public TObject Spawn(TEnum type)
     {
-        if (!_pools[type].TryPop(out var obj))
-            obj = Create(type);
+        var pool = _pools[type];
+        
+        if (!pool.TryPop(out var obj))
+        {
+            ExpandPool(type);
+            obj = pool.Pop();
+        }
 
         obj.gameObject.SetActive(true);
 
@@ -84,24 +104,27 @@ public abstract class Pool<TObject, TEnum> : IPool<TObject, TEnum> where TObject
         _pools[type].Push(obj);
     }
 
-    private void FillThePool(TEnum type, PoolProperties properties)
+    private void ExpandPool(TEnum type)
     {
-        Stack<TObject> pool = new();
-
-        for (var i = 0; i < properties.InitialSize; i++)
-            pool.Push(Create(properties.Prefab));
+        var pool = _pools[type];
+        var properties = _poolSettings.Properties[type];
         
-        _pools.Add(type, pool);
+        ExpandPool(pool, properties);
     }
     
-    
-    private TObject Create(TEnum type)
+    private void ExpandPool(Stack<TObject> pool, PoolProperties properties)
     {
-        Assert.IsTrue(_poolSettings.Properties.TryGetValue(type, out var properties), 
-                $"PoolProperties for {type} not found!");
-
-        return Create(properties!.Prefab);
+        for (var i = 0; i < properties.ExpansionSize; i++)
+            pool.Push(Create(properties.Prefab));
     }
+
+    // private TObject Create(TEnum type)
+    // {
+    //     Assert.IsTrue(_poolSettings.Properties.TryGetValue(type, out var properties),
+    //         $"PoolProperties for {type} not found!");
+    //
+    //     return Create(properties!.Prefab);
+    // }
 
     private TObject Create(TObject prefab)
     {
@@ -116,12 +139,16 @@ public abstract class Pool<TObject, TEnum> : IPool<TObject, TEnum> where TObject
     {
         public Dictionary<TEnum, PoolProperties> Properties = new();
     }
-    
+
     [Serializable]
     public class PoolProperties
     {
         public TObject Prefab;
-        public int InitialSize;
+
+        public bool FillOnInit = true;
+
+        [MinValue(1)]
+        public int ExpansionSize = 1;
         //..
     }
 }

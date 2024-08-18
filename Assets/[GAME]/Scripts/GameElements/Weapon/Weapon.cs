@@ -20,6 +20,6 @@ public class Weapon : MonoBehaviour
         shootData.StartPosition = _barrelPoint.position;
         shootData.Direction = _barrelPoint.forward;
 
-        _bulletPool.Spawn(BulletType.Default, shootData);
+        // _bulletPool.Spawn(BulletType.Default, shootData);
     }
 }

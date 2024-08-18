@@ -29,7 +29,7 @@ public class PlayerStateController : MonoBehaviour
     private void Update()
     {
         if (_isInitialized)
-            _stateMachine.Update();
+            _stateMachine?.Update();
     }
 
     [Serializable]

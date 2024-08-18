@@ -9,19 +9,21 @@ public class MovementController : MonoBehaviour
 {
     [SerializeField] private InputActionReference _movementInputActionRef;
     [SerializeField] private NavMeshAgent _agent;
+    
+    [SerializeField] private PlayerSettings _playerSettings;
 
-    [SerializeField] private float _speed;
     private Vector2 _input;
+
+    private void Awake()
+    {
+        _playerSettings = ServiceLocator.Resolve<PlayerSettings>();
+    }
 
     private void Update()
     {
-        if (_movementInputActionRef.action.phase == InputActionPhase.Started)
-        {
+        if (_movementInputActionRef.action.phase == InputActionPhase.Started) 
             Move();
-            Rotate();
-        }
     }
-
 
     private void Move()
     {
@@ -29,11 +31,6 @@ public class MovementController : MonoBehaviour
 
         Vector3 movementVector = new(_input.x, 0, _input.y);
 
-        _agent.velocity = _speed * movementVector;
-    }
-
-    private void Rotate()
-    {
-
+        _agent.velocity = _playerSettings.BaseSpeed * movementVector;
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class GameInstaller : MonoBehaviour
     [SerializeField] private GameSettings _gameSettings;
 
     [SerializeField] private GameStateManager _gameStateManager;
+    [SerializeField] private PlayerSystem _playerSystem;
 
     private void Awake()
     {
@@ -18,15 +20,19 @@ public class GameInstaller : MonoBehaviour
     private void BindServices()
     {
         //Settings
-        ServiceLocator.Register(_gameSettings.BulletPoolSettings);
-        ServiceLocator.Register(_gameSettings.WeaponSettings);
         ServiceLocator.Register(_gameSettings.SaveSettings);
+        ServiceLocator.Register(_gameSettings.PlayerSettings);
+        ServiceLocator.Register(_gameSettings.WeaponSettings);
+        ServiceLocator.Register(_gameSettings.EnemySettings);
 
         //Pools
-        ServiceLocator.Register(new Bullet.Pool(_gameSettings.BulletPoolSettings));
+        ServiceLocator.Register(new Bullet.Pool(_gameSettings.WeaponSettings.PoolSettings));
+        ServiceLocator.Register(new Enemy.Pool(_gameSettings.EnemySettings.PoolSettings));
 
         //Systems
+        ServiceLocator.Register(new SaveSystem());
         ServiceLocator.Register(_gameStateManager);
+        ServiceLocator.Register(_playerSystem);
         ServiceLocator.Register(new EnemySpawner());
         ServiceLocator.Register(new LevelSystem());
     }
