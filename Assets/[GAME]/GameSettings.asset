@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ab97f000033fa84b85fc34d76114046, type: 3}
+  m_Name: GameSettings
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 4902589457775515812, guid: 80bba8b634fbb7744b1f055a115b8861, type: 3}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: BulletPoolSettings
+      Entry: 7
+      Data: 0|Pool`2+PoolSettings[[Bullet, Assembly-CSharp],[BulletType, Assembly-CSharp]],
+        Assembly-CSharp
+    - Name: Properties
+      Entry: 7
+      Data: 1|System.Collections.Generic.Dictionary`2[[BulletType, Assembly-CSharp],[Pool`2+PoolProperties[[Bullet,
+        Assembly-CSharp],[BulletType, Assembly-CSharp]], Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 2|System.Collections.Generic.EnumEqualityComparer`1[[BulletType, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 7
+      Data: 3|Pool`2+PoolProperties[[Bullet, Assembly-CSharp],[BulletType, Assembly-CSharp]],
+        Assembly-CSharp
+    - Name: Prefab
+      Entry: 10
+      Data: 0
+    - Name: InitialSize
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
