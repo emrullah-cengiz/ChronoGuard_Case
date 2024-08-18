@@ -172,17 +172,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4273135513831050327, guid: 7515355a18680854a866a4bcca9c6146,
         type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4273135513831050327, guid: 7515355a18680854a866a4bcca9c6146,
-        type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4273135513831050327, guid: 7515355a18680854a866a4bcca9c6146,
-        type: 3}
-      propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4273135513831050327, guid: 7515355a18680854a866a4bcca9c6146,
@@ -384,6 +374,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771c3c6b87ed34d4a9ed6949147369bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerStateController: {fileID: 0}
+  _weapon: {fileID: 0}
 --- !u!114 &725227951016945346
 MonoBehaviour:
   m_ObjectHideFlags: 0

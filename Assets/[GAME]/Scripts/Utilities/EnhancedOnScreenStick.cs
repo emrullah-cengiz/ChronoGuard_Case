@@ -5,6 +5,7 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.OnScreen;
 using UnityEngine.Serialization;
 
+//It's taken from https://github.com/AnnulusGames/EnhancedOnScreenStick
 namespace EnhancedOnScreenControls
 {
     public enum StickType
