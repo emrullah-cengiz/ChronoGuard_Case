@@ -6,13 +6,21 @@ using UnityEngine;
 [CreateAssetMenu(fileName = nameof(GameSettings), menuName = nameof(GameSettings))]
 public class GameSettings : SerializedScriptableObject
 {
+    [OdinSerialize] [NonSerialized] 
+    public Bullet.Pool.PoolSettings BulletPoolSettings;
     public WeaponSettings WeaponSettings;
-    [OdinSerialize] [NonSerialized] public Bullet.Pool.PoolSettings BulletPoolSettings;
+    public SaveSettings SaveSettings;
 
 }
 
 [Serializable]
 public class WeaponSettings
 {
+}
+
+[Serializable]
+public class SaveSettings
+{
+    public int SaveIntervalInSeconds = 5;
 }
 

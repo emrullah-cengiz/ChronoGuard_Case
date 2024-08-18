@@ -8,8 +8,6 @@ using UnityEngine.PlayerLoop;
 
 public class GameStateManager : MonoBehaviour
 {
-    [SerializeField] private StateParams _stateParams;
-
     private StateMachine<GameState> _stateMachine;
 
     public void Initialize()
@@ -21,20 +19,26 @@ public class GameStateManager : MonoBehaviour
     {
         _stateMachine = new StateMachine<GameState>();
         
-        _stateMachine.AddState(GameState.GameStart, new GameStartState(_stateParams));
+        _stateMachine.AddState(GameState.GameStart, new GameStartState());
+        _stateMachine.AddState(GameState.GameStart, new GameStartState());
         
         _stateMachine.Init();
     }
 
+    public void ChangeState(GameState state)
+    {
+        _stateMachine.ChangeState(state);
+    }
+
     private void Update()
     {
-        _stateMachine.Update();
+        // _stateMachine.Update();
     }
-    
-    [Serializable]
-    public class StateParams
-    {
-    }
+    //
+    // [Serializable]
+    // public class StateParams
+    // {
+    // }
 }
 
 public enum GameState
@@ -49,11 +53,15 @@ public enum GameState
 
 public abstract class GameStateBase : StateBase<GameState>
 {
-    protected readonly GameStateManager.StateParams StateParams;
+    protected readonly GameStateManager _gameStateManager;
+    protected readonly LevelSystem _levelSystem;
+    
+    // protected readonly GameStateManager.StateParams StateParams;
 
-    public GameStateBase(GameStateManager.StateParams stateParams)
+    protected GameStateBase()
     {
-        StateParams = stateParams;
+        _gameStateManager = ServiceLocator.Resolve<GameStateManager>();
+        _levelSystem = ServiceLocator.Resolve<LevelSystem>();
     }
     
     public override void OnEnter()
