@@ -35,6 +35,7 @@ public class WeaponSettings
 [Serializable]
 public class EnemySettings
 {
+    public float SetDestinationRate = .2f;
     public float InWaveSpawnDelayInSeconds = .3f;
     public float BaseSpeed;
     public Dictionary<EnemySpeedMode, float> SpeedMultipliers;

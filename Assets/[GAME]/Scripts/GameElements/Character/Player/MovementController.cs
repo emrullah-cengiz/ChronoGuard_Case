@@ -14,7 +14,10 @@ public class MovementController : MonoBehaviour
 
     private Vector2 _input;
 
-    private void Awake()
+    private void OnEnable() => Events.GameStates.OnGameStarted += Initialize;
+    private void OnDisable() => Events.GameStates.OnGameStarted -= Initialize;
+
+    private void Initialize()
     {
         _playerSettings = ServiceLocator.Resolve<PlayerSettings>();
     }

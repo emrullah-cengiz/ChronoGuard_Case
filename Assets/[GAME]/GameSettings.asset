@@ -92,6 +92,9 @@ MonoBehaviour:
     - Name: EnemySettings
       Entry: 7
       Data: 5|EnemySettings, Assembly-CSharp
+    - Name: SetDestinationRate
+      Entry: 4
+      Data: 0.2
     - Name: InWaveSpawnDelayInSeconds
       Entry: 4
       Data: 0.3
@@ -259,5 +262,7 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+  PlayerSettings:
+    BaseSpeed: 4.5
   SaveSettings:
     SaveIntervalInSeconds: 5

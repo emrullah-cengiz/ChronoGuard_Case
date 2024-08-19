@@ -12,22 +12,21 @@ public class GameInstaller : MonoBehaviour
 
     private void Awake()
     {
-        BindServices();
+        RegisterServices();
 
         Initialize();
     }
 
-    private void BindServices()
+    private void RegisterServices()
     {
         //Settings
         ServiceLocator.Register(_gameSettings.SaveSettings);
         ServiceLocator.Register(_gameSettings.PlayerSettings);
         ServiceLocator.Register(_gameSettings.WeaponSettings);
         ServiceLocator.Register(_gameSettings.EnemySettings);
-
+        
         //Pools
-        ServiceLocator.Register(new Bullet.Pool(_gameSettings.WeaponSettings.PoolSettings));
-        ServiceLocator.Register(new Enemy.Pool(_gameSettings.EnemySettings.PoolSettings));
+        var pools = RegisterPools();
 
         //Systems
         ServiceLocator.Register(new SaveSystem());
@@ -35,6 +34,31 @@ public class GameInstaller : MonoBehaviour
         ServiceLocator.Register(_playerSystem);
         ServiceLocator.Register(new EnemySpawner());
         ServiceLocator.Register(new LevelSystem());
+        
+        InitializePools(pools);
+    }
+
+    private List<IPool> RegisterPools()
+    {
+        // ReSharper disable once CollectionNeverUpdated.Local
+        var pools = new List<IPool>();
+
+        RegisterAndAddToList(new Bullet.Pool(_gameSettings.WeaponSettings.PoolSettings));
+        RegisterAndAddToList(new Enemy.Pool(_gameSettings.EnemySettings.PoolSettings));
+
+        return pools;
+
+        void RegisterAndAddToList<T>(T pool) where T : class, IPool
+        {
+            ServiceLocator.Register<T>(pool);
+            pools.Add(pool);
+        }
+    }
+
+    private void InitializePools(List<IPool> pools)
+    {
+        foreach (var pool in pools) 
+            pool.Initialize();
     }
 
     private void Initialize()

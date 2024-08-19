@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerSystem : MonoBehaviour
+public class PlayerSystem : Character
 {
    [SerializeField] private PlayerStateController _playerStateController;
    [SerializeField] private Weapon _weapon;
+   
    
    private void OnEnable()
    {
@@ -23,6 +24,4 @@ public class PlayerSystem : MonoBehaviour
       _playerStateController.Initialize();
    }
    
-   public Vector3 GetPlayerPosition() => transform.position;
-   public Vector3 GetPlayerLookingDirection() => transform.forward;
 }

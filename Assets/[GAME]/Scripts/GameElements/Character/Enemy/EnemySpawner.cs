@@ -34,8 +34,8 @@ public class EnemySpawner
 
             elapsedSeconds = waveData.SpawnTimeAfterLevelStart;
 
-            var wavePosition = waveData.SpawnDistanceFromPlayer * _playerSystem.GetPlayerLookingDirection()
-                               + _playerSystem.GetPlayerPosition();
+            var wavePosition = waveData.SpawnDistanceFromPlayer * _playerSystem.Forward
+                               + _playerSystem.Position;
 
 #if UNITY_EDITOR
 
@@ -54,7 +54,7 @@ public class EnemySpawner
         for (var i = 0; i < waveData.EnemyNumber; i++)
         {
             _enemyPool.Spawn(waveData.EnemiesType, 
-                new Enemy.SpawnData(wavePosition + Random.insideUnitSphere * 2, _playerSystem.GetPlayerPosition().SetYZero()));
+                new Enemy.SpawnData(wavePosition + Random.insideUnitSphere * 2, _playerSystem.Position.SetYZero()));
 
             await UniTask.Delay(TimeSpan.FromSeconds(_enemySettings.InWaveSpawnDelayInSeconds));
         }

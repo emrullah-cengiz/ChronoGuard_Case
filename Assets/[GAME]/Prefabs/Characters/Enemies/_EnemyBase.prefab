@@ -93,8 +93,8 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2198275423811650117}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8f8acd542546afe4d9116fa328b22ac7, type: 2}
+  m_Avatar: {fileID: 9000000, guid: 90fb98bc406dfaf44b7a0a30f4af574c, type: 2}
+  m_Controller: {fileID: 9100000, guid: 229314cb6d958ba46a281700fd2e1a8e, type: 2}
   m_CullingMode: 2
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -170,13 +170,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7900811054733210611, guid: e95a467e12fe94f45af871fbee678287,
         type: 3}
-      propertyPath: m_Acceleration
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 7900811054733210611, guid: e95a467e12fe94f45af871fbee678287,
-        type: 3}
-      propertyPath: m_AngularSpeed
-      value: 600
+      propertyPath: m_Radius
+      value: 0.19
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -241,3 +236,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data: {fileID: 0}
+  _agent: {fileID: 2300794881634587431}
+  _animator: {fileID: 4987193216197262649}

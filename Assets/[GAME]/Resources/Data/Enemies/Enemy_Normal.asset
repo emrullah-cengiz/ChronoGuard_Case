@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Enemy_Normal
   m_EditorClassIdentifier: 
   Type: 0
-  BaseHealth: 0
-  BaseDamage: 0
-  BaseSpeed: 0
+  Health: 0
+  Damage: 0
+  AttackRange: 1
+  SpeedMode: 0

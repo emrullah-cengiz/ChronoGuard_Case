@@ -11,7 +11,11 @@ public class Bullet : MonoBehaviour, IInitializablePoolable<ShootData>
     public BulletType Type;
     
     private ShootData _data;
-
+    
+    public void OnCreated()
+    {
+    }
+    
     public void OnSpawned(ShootData data)
     {
         _data = data;
@@ -30,4 +34,5 @@ public class Bullet : MonoBehaviour, IInitializablePoolable<ShootData>
         {
         }
     }
+
 }
