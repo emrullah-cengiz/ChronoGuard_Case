@@ -15,5 +15,5 @@ MonoBehaviour:
   Waves:
   - EnemiesType: 0
     SpawnTimeAfterLevelStart: 1
-    EnemyNumber: 5
+    EnemyNumber: 7
     SpawnDistanceFromPlayer: 10

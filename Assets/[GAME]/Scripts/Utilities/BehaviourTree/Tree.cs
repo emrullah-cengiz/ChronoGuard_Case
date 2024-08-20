@@ -9,7 +9,7 @@ namespace BehaviourTree
         private Node _root = null;
 
         protected void Initialize() => _root = SetupTree();
-        public void Update() => _root?.Evaluate();
+        public virtual void Update() => _root?.Evaluate();
 
         protected abstract Node SetupTree();
     }

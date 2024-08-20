@@ -11,6 +11,8 @@ public class EnemyBehaviourTree : Tree
     private readonly TreeParams _params;
 
     private readonly PlayerSystem _playerSystem;
+
+    private BlackBoard _blackBoard;
     
     public EnemyBehaviourTree(TreeParams @params)
     {
@@ -23,21 +25,31 @@ public class EnemyBehaviourTree : Tree
 
     protected override Node SetupTree()
     {
-        var blackBoard = new BlackBoard();
-
-        blackBoard.CurrentPlayerDistance = _playerSystem.Position - _params.Enemy.Position;
-        blackBoard.CurrentDirection = blackBoard.CurrentPlayerDistance.normalized;
+        _blackBoard = new BlackBoard();
 
         return new Selector(new()
         {
             new Sequence(new()
             {
-                new LookToPlayerTask(_params, blackBoard),
-                new CheckForAttack(_params, blackBoard),
-                new AttackToPlayerTask(_params, blackBoard),
+                new LookToPlayerTask(_params, _blackBoard),
+                new CheckForAttack(_params, _blackBoard),
+                new AttackToPlayerTask(_params, _blackBoard),
             }),
-            new MoveToPlayerTask(_params, blackBoard)
+            new MoveToPlayerTask(_params, _blackBoard)
         });
+    }
+
+    public override void Update()
+    {
+        PrepareBlackboard(ref _blackBoard);
+        
+        base.Update();
+    }
+
+    private void PrepareBlackboard(ref BlackBoard blackBoard)
+    {
+        blackBoard.CurrentPlayerDistance = _playerSystem.Position - _params.Enemy.Position;
+        blackBoard.PlayerDirection = blackBoard.CurrentPlayerDistance.normalized;
     }
 
     public abstract class NodeBase : Node
@@ -45,7 +57,7 @@ public class EnemyBehaviourTree : Tree
         protected readonly TreeParams Params;
         protected readonly PlayerSystem _playerSystem;
 
-        // protected readonly EnemySettings _enemySettings;
+        protected readonly EnemySettings _enemySettings;
         protected readonly BlackBoard _blackBoard;
 
         protected NodeBase(TreeParams @params, BlackBoard blackBoard) : base()
@@ -53,6 +65,7 @@ public class EnemyBehaviourTree : Tree
             Params = @params;
             _blackBoard = blackBoard;
             _playerSystem = ServiceLocator.Resolve<PlayerSystem>();
+            _enemySettings = ServiceLocator.Resolve<EnemySettings>();
         }
     }
 
@@ -67,7 +80,7 @@ public class EnemyBehaviourTree : Tree
     public class BlackBoard
     {
         public bool IsAttackCooldownEnd = true;
-        public Vector3 CurrentDirection;
+        public Vector3 PlayerDirection;
         public Vector3 CurrentPlayerDistance;
     }
 }

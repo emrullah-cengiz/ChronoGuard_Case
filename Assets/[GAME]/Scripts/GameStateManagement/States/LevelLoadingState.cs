@@ -4,7 +4,7 @@ public class LevelLoadingState : GameStateBase
     {
         _levelSystem.StartLevel();
         
-        
+        Events.GameStates.OnLevelStarted?.Invoke();
     }
 
     public override void OnExit()

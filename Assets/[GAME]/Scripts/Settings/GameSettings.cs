@@ -9,14 +9,12 @@ public class GameSettings : SerializedScriptableObject
 {
     public PlayerSettings PlayerSettings;
 
-    [OdinSerialize] [NonSerialized] 
-    public WeaponSettings WeaponSettings;
-    
+    [OdinSerialize] [NonSerialized] public WeaponSettings WeaponSettings;
+
     [OdinSerialize] [NonSerialized] [Space(10)]
     public EnemySettings EnemySettings;
-    
-    [Space(10)]
-    public SaveSettings SaveSettings;
+
+    [Space(10)] public SaveSettings SaveSettings;
 }
 
 [Serializable]
@@ -39,10 +37,10 @@ public class EnemySettings
     public float InWaveSpawnDelayInSeconds = .3f;
     public float BaseSpeed;
     public Dictionary<EnemySpeedMode, float> SpeedMultipliers;
-    
+    public Dictionary<EnemyAttackType, float> HitTimePerAnimation;
+
     [OdinSerialize] [NonSerialized] [Space(10)]
     public Enemy.Pool.PoolSettings PoolSettings;
-
 }
 
 [Serializable]

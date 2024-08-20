@@ -10,5 +10,11 @@ public static class Events
         public static Action OnGameStarted = delegate { };
         public static Action OnLevelStarted = delegate { };
         public static Action OnLevelEnd = delegate { };
-    }   
+    }
+
+    public static class Player
+    {
+        public static Action OnDamageTake = delegate { };
+        public static Action OnWeaponFire = delegate { };
+    }
 }

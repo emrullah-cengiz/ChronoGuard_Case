@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Enemy_Boss
   m_EditorClassIdentifier: 
   Type: 2
-  BaseHealth: 0
-  BaseDamage: 0
-  BaseSpeed: 0
+  MaxHealth: 100
+  Damage: 5
+  AttackRange: 0.5
+  AttackRateInSeconds: 0.5
+  AttackType: 0
+  SpeedMode: 0

@@ -2,12 +2,14 @@ using System;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : Character, IInitializablePoolable<Enemy.SpawnData>
+public class Enemy : Character, IInitializablePoolable<Enemy.SpawnData>, IDamagable
 {
     public EnemyData Data;
 
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private CharacterAnimatorController _animator;
+    [SerializeField] private Health _health;
+
     private EnemyBehaviourTree _behaviourTree;
 
     private bool _initialized;
@@ -22,6 +24,7 @@ public class Enemy : Character, IInitializablePoolable<Enemy.SpawnData>
         });
         
         _initialized = true;
+        _health.Initialize(Data.MaxHealth);
     }
 
     public void OnSpawned(SpawnData spawnData)
@@ -37,6 +40,8 @@ public class Enemy : Character, IInitializablePoolable<Enemy.SpawnData>
     }
 
     public void SetRotation(Quaternion rot) => transform.rotation = rot;
+    
+    public void TakeDamage(int damage) => _health.TakeDamage(damage);
 
     public class Pool : Pool<Enemy, EnemyType>
     {
@@ -56,4 +61,5 @@ public class Enemy : Character, IInitializablePoolable<Enemy.SpawnData>
             LookAtPosition = lookAtPosition;
         }
     }
+
 }

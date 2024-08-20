@@ -5,10 +5,13 @@ using UnityEngine;
 public class EnemyData : ScriptableObject
 {
     public EnemyType Type;
-    public int Health;
+    public int MaxHealth;
     public int Damage;
     public float AttackRange = .5f;
     public float AttackRateInSeconds = .5f;
+    
+    [EnumToggleButtons]
+    public EnemyAttackType AttackType;
     [EnumToggleButtons]
     public EnemySpeedMode SpeedMode;
 }
@@ -25,4 +28,10 @@ public enum EnemySpeedMode
 {
     Walk,
     Run
+}
+
+public enum EnemyAttackType
+{
+    Attack1,
+    Attack2,
 }
