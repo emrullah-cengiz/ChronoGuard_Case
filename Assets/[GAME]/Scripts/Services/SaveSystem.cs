@@ -69,7 +69,7 @@ public class SaveSystem
         StartAutoSaveLoop().Forget();
     }
 
-    private void OnLevelEnd() => _isSaveTimerActive = false;
+    private void OnLevelEnd(bool success) => _isSaveTimerActive = false;
 
     private async UniTaskVoid StartAutoSaveLoop()
     {

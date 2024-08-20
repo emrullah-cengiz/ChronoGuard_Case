@@ -7,6 +7,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = nameof(GameSettings), menuName = nameof(GameSettings))]
 public class GameSettings : SerializedScriptableObject
 {
+    public int LevelCountdownDurationInSeconds = 180;
+    
     public PlayerSettings PlayerSettings;
 
     [OdinSerialize] [NonSerialized] public WeaponSettings WeaponSettings;
@@ -35,7 +37,7 @@ public class EnemySettings
 {
     public float SetDestinationRate = .2f;
     public float InWaveSpawnDelayInSeconds = .3f;
-    public float BaseSpeed;
+    public float DespawnDelayAfterDead = .5f;
     public Dictionary<EnemySpeedMode, float> SpeedMultipliers;
     public Dictionary<EnemyAttackType, float> HitTimePerAnimation;
 

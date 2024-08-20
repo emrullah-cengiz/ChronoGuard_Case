@@ -9,7 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcdfb4260c284a6fa30c1b8746135da1, type: 3}
+  m_Script: {fileID: 11500000, guid: 0bbd7f2723c1d6b4e9fe8f722e3366b8, type: 3}
   m_Name: PlayerProperties
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   MaxHealth: 100
+  Damage: 10
+  AttackRange: 3
+  AttackRateInSeconds: 0.5
+  BulletSpeed: 10

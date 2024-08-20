@@ -1,6 +1,7 @@
 using System;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Health : MonoBehaviour
@@ -10,20 +11,26 @@ public class Health : MonoBehaviour
 
     [SerializeField] private int _currentHealth;
     [SerializeField] private int _maxHealth;
+    
+    [SerializeField] private UnityEvent _onDeath;
 
     public void Initialize(int health)
     {
         _currentHealth = _maxHealth = health;
+        
+        Activate(true);
 
         UpdateView();
     }
 
     public void TakeDamage(int damage)
     {
+        Debug.Log($"{gameObject.name} takes {damage} damage!");
+        
         _currentHealth -= damage;
         _currentHealth = Mathf.Clamp(_currentHealth, 0, _maxHealth);
 
-        Debug.LogError($"{gameObject.name} takes {damage} damage!");
+        _onDeath?.Invoke();
 
         UpdateView();
     }
@@ -37,6 +44,8 @@ public class Health : MonoBehaviour
 
         _fillSprite.color = Color.Lerp(Color.red, Color.green, healthPercentage);
     }
+
+    public void Activate(bool s) => gameObject.SetActive(s); 
 
     private void Update()
     {

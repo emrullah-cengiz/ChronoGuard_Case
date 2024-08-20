@@ -1,7 +1,9 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = nameof(PlayerProperties), menuName = nameof(PlayerProperties), order = 0)]
-public class PlayerProperties : ScriptableObject
+public class PlayerProperties : CharacterData
 {
-    public int MaxHealth = 100;
+    public override CharacterType CharacterType => CharacterType.Player;
+
+    public float BulletSpeed = 10;
 }

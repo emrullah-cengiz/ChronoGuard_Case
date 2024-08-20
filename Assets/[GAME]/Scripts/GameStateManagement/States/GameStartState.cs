@@ -1,9 +1,12 @@
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 public class GameStartState : GameStateBase
 {
     public override async void OnEnter()
     {
+        Debug.Log("GameStartState invoked");
+
         Events.GameStates.OnGameStarted?.Invoke();
 
         //open start panel

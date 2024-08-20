@@ -17,3 +17,15 @@ MonoBehaviour:
     SpawnTimeAfterLevelStart: 1
     EnemyNumber: 7
     SpawnDistanceFromPlayer: 10
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 5
+    EnemyNumber: 7
+    SpawnDistanceFromPlayer: 7
+  - EnemiesType: 1
+    SpawnTimeAfterLevelStart: 12
+    EnemyNumber: 4
+    SpawnDistanceFromPlayer: 7
+  - EnemiesType: 2
+    SpawnTimeAfterLevelStart: 20
+    EnemyNumber: 3
+    SpawnDistanceFromPlayer: 6

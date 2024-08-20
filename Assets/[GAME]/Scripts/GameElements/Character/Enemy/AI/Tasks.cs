@@ -7,13 +7,11 @@ using UnityEngine.EventSystems;
 
 public class MoveToPlayerTask : EnemyBehaviourTree.NodeBase
 {
-    private readonly EnemySettings _enemySettings;
     private readonly float _executeRate;
     private float _startTime;
 
     public MoveToPlayerTask(EnemyBehaviourTree.TreeParams @params, EnemyBehaviourTree.BlackBoard blackBoard) : base(@params, blackBoard)
     {
-        _enemySettings = ServiceLocator.Resolve<EnemySettings>();
         _executeRate = _enemySettings.SetDestinationRate;
     }
 
@@ -47,18 +45,15 @@ public class MoveToPlayerTask : EnemyBehaviourTree.NodeBase
 
 public class CheckForAttack : EnemyBehaviourTree.NodeBase
 {
-    private readonly float _attackRangeSqr;
-    private readonly float _distanceBuffer;
-
+    private const float DISTANCE_BUFFER = 15f;
+    
     public CheckForAttack(EnemyBehaviourTree.TreeParams @params, EnemyBehaviourTree.BlackBoard blackBoard) : base(@params, blackBoard)
     {
-        _attackRangeSqr = Params.Enemy.Data.AttackRange * Params.Enemy.Data.AttackRange;
-        _distanceBuffer = 15f;
     }
 
     public override NodeState Evaluate()
     {
-        if (_blackBoard.IsAttackCooldownEnd && _blackBoard.CurrentPlayerDistance.sqrMagnitude - _distanceBuffer < _attackRangeSqr)
+        if (_blackBoard.IsAttackCooldownEnd && _blackBoard.CurrentPlayerDistance.sqrMagnitude - DISTANCE_BUFFER < _blackBoard.AttackRangeSqr)
             return NodeState.SUCCESS;
 
         return NodeState.FAILURE;
@@ -112,7 +107,7 @@ public class LookToPlayerTask : EnemyBehaviourTree.NodeBase
     {
         var targetRotation = Quaternion.LookRotation(_blackBoard.PlayerDirection);
 
-        Params.Enemy.SetRotation(Quaternion.Lerp(Params.Enemy.Rotation, targetRotation, Time.deltaTime * 5f));
+        Params.Enemy.Rotation = Quaternion.Lerp(Params.Enemy.Rotation, targetRotation, Time.deltaTime * 5f);
 
         return NodeState.SUCCESS;
     }

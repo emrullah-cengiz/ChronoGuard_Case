@@ -12,10 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 472bd5ac986b458dac5bbc39de4121f5, type: 3}
   m_Name: Enemy_Normal
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  MaxHealth: 30
+  Damage: 8
+  AttackRange: 1.1
+  AttackRateInSeconds: 0.8
   Type: 0
-  MaxHealth: 20
-  Damage: 5
-  AttackRange: 1
-  AttackRateInSeconds: 1
   AttackType: 0
   SpeedMode: 0

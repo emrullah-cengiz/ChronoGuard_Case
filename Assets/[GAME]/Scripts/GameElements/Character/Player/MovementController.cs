@@ -14,7 +14,12 @@ public class MovementController : MonoBehaviour
 
     private Vector2 _input;
 
-    private void OnEnable() => Events.GameStates.OnGameStarted += Initialize;
+    private void OnEnable()
+    {
+        Debug.Log("MovementController");
+        Events.GameStates.OnGameStarted += Initialize;
+    }
+
     private void OnDisable() => Events.GameStates.OnGameStarted -= Initialize;
 
     private void Initialize()

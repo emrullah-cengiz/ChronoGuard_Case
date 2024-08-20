@@ -18,10 +18,11 @@ public class GameStateManager : MonoBehaviour
     private void InitializeStateMachine()
     {
         _stateMachine = new StateMachine<GameState>();
-        
+
         _stateMachine.AddState(GameState.GameStart, new GameStartState());
         _stateMachine.AddState(GameState.LevelLoading, new LevelLoadingState());
-        
+        _stateMachine.AddState(GameState.LevelPlaying, new LevelPlayingState());
+
         _stateMachine.SetStartState(GameState.GameStart);
         _stateMachine.Init();
     }
@@ -55,15 +56,19 @@ public abstract class GameStateBase : StateBase<GameState>
 {
     protected readonly GameStateManager _gameStateManager;
     protected readonly LevelSystem _levelSystem;
-    
+    protected readonly Enemy.Pool _enemyPool;
+    protected readonly EnemySettings _enemySettings;
+
     // protected readonly GameStateManager.StateParams StateParams;
 
     protected GameStateBase()
     {
         _gameStateManager = ServiceLocator.Resolve<GameStateManager>();
         _levelSystem = ServiceLocator.Resolve<LevelSystem>();
+        _enemyPool = ServiceLocator.Resolve<Enemy.Pool>();
+        _enemySettings = ServiceLocator.Resolve<EnemySettings>();
     }
-    
+
     public override void OnEnter()
     {
         base.OnEnter();

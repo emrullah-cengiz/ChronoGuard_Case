@@ -534,6 +534,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameSettings: {fileID: 11400000, guid: d9ec791f0cf0db3458a9feba522e594e, type: 2}
+  _playerProperties: {fileID: 11400000, guid: 2810c9e348812c94dab6e85702c964c4, type: 2}
   _gameStateManager: {fileID: 1655053271}
   _playerSystem: {fileID: 3378196171719698999}
 --- !u!1 &509371360
@@ -658,8 +659,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NoiseProfile: {fileID: 11400000, guid: e9ce97b7a206dc64d90931ea044e0c72, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
-  m_AmplitudeGain: 0.33
-  m_FrequencyGain: 0.78
+  m_AmplitudeGain: 0
+  m_FrequencyGain: 0
   mNoiseOffsets: {x: 153.58911, y: 633.4967, z: 642.2367}
 --- !u!1 &614937070
 GameObject:
@@ -693,6 +694,7 @@ Transform:
   - {fileID: 942568433}
   - {fileID: 410087041}
   - {fileID: 832575519}
+  - {fileID: 1274491902}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &832575517
@@ -757,7 +759,7 @@ GameObject:
   - component: {fileID: 890526365}
   - component: {fileID: 890526364}
   - component: {fileID: 890526368}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1014,7 +1016,7 @@ GameObject:
   - component: {fileID: 1274491902}
   - component: {fileID: 1274491903}
   m_Layer: 0
-  m_Name: __GizmoManager
+  m_Name: __GizmosManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1028,12 +1030,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1274491901}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.2383635, y: -1.0101246, z: 1.4351175}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 614937071}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1274491903
 MonoBehaviour:
@@ -1665,4 +1667,3 @@ SceneRoots:
   - {fileID: 1655053270}
   - {fileID: 454745931}
   - {fileID: 614937071}
-  - {fileID: 1274491902}

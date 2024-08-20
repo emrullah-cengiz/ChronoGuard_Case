@@ -39,6 +39,12 @@ public class EnemyBehaviourTree : Tree
         });
     }
 
+    public void ReInitialize()
+    {
+        _blackBoard.IsAttackCooldownEnd = true;
+        _blackBoard.AttackRangeSqr = _params.Enemy.Data.AttackRange * _params.Enemy.Data.AttackRange;
+    }
+
     public override void Update()
     {
         PrepareBlackboard(ref _blackBoard);
@@ -82,5 +88,6 @@ public class EnemyBehaviourTree : Tree
         public bool IsAttackCooldownEnd = true;
         public Vector3 PlayerDirection;
         public Vector3 CurrentPlayerDistance;
+        public float AttackRangeSqr;
     }
 }

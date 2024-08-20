@@ -6,24 +6,33 @@ using UnityEngine;
 public class GameInstaller : MonoBehaviour
 {
     [SerializeField] private GameSettings _gameSettings;
+    [SerializeField] private PlayerProperties _playerProperties;
 
     [SerializeField] private GameStateManager _gameStateManager;
     [SerializeField] private PlayerSystem _playerSystem;
 
+    private bool _initialized;
+
     private void Awake()
     {
         RegisterServices();
+    }
 
-        Initialize();
+    private void Start()
+    {
+        InitializeGame();
     }
 
     private void RegisterServices()
     {
         //Settings
+        ServiceLocator.Register(_gameSettings);
         ServiceLocator.Register(_gameSettings.SaveSettings);
         ServiceLocator.Register(_gameSettings.PlayerSettings);
         ServiceLocator.Register(_gameSettings.WeaponSettings);
         ServiceLocator.Register(_gameSettings.EnemySettings);
+        
+        ServiceLocator.Register(_playerProperties);
         
         //Pools
         var pools = RegisterPools();
@@ -54,14 +63,14 @@ public class GameInstaller : MonoBehaviour
             pools.Add(pool);
         }
     }
-
+    
     private void InitializePools(List<IPool> pools)
     {
         foreach (var pool in pools) 
             pool.Initialize();
     }
-
-    private void Initialize()
+    
+    private void InitializeGame()
     {
         _gameStateManager.Initialize();
     }
