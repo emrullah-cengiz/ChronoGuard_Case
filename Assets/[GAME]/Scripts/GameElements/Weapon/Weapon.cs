@@ -17,8 +17,19 @@ public class Weapon : TransformObject
         _bulletPool = ServiceLocator.Resolve<Bullet.Pool>();
     }
 
-    private void OnEnable() => Events.Weapon.OnBulletHit += OnBulletHitEnemy;
-    private void OnDisable() => Events.Weapon.OnBulletHit -= OnBulletHitEnemy;
+    private void OnEnable()
+    {
+        Events.Weapon.OnBulletHit += OnBulletHitEnemy;
+        Events.GameStates.OnLevelEnd += OnReset;
+    }
+
+    private void OnDisable()
+    {
+        Events.Weapon.OnBulletHit -= OnBulletHitEnemy;
+        Events.GameStates.OnLevelEnd -= OnReset;
+    }
+
+    private void OnReset(bool obj) => _bulletPool.DespawnAll();
 
     private async void OnBulletHitEnemy(Bullet bullet)
     {

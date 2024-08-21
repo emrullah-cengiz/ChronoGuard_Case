@@ -1985,11 +1985,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 342375206321998990, guid: e95a467e12fe94f45af871fbee678287,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4987193216197262649}
+      addedObject: {fileID: 744402681760579740}
     - targetCorrespondingSourceObject: {fileID: 342375206321998990, guid: e95a467e12fe94f45af871fbee678287,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 744402681760579740}
+      addedObject: {fileID: 990231943817127279}
     - targetCorrespondingSourceObject: {fileID: 342375206321998990, guid: e95a467e12fe94f45af871fbee678287,
         type: 3}
       insertIndex: -1
@@ -2039,21 +2039,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 8235747856762790100}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4987193216197262649
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8541953441604217946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 777792fa1b0b70944a50b1e155d96a9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speedSmoothingPower: 10
-  _agent: {fileID: 2300794881634587431}
-  _animator: {fileID: 213556138408112510}
 --- !u!114 &744402681760579740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2067,10 +2052,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data: {fileID: 0}
-  _agent: {fileID: 2300794881634587431}
-  _animator: {fileID: 4987193216197262649}
+  _animator: {fileID: 990231943817127279}
   _health: {fileID: 2616996205731996393}
   _ragdoll: {fileID: 3064313767903849613}
+  _agent: {fileID: 2300794881634587431}
+  _rb: {fileID: 0}
+--- !u!114 &990231943817127279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8541953441604217946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 182fef24d4fb4e13b1f6c3dd0ee9db24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speedSmoothingPower: 10
+  _agent: {fileID: 2300794881634587431}
+  _animator: {fileID: 213556138408112510}
 --- !u!136 &2875988495046347945
 CapsuleCollider:
   m_ObjectHideFlags: 0

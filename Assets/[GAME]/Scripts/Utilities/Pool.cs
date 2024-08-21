@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using Unity.VisualScripting;
@@ -16,6 +17,7 @@ public interface IPoolableInitializationData
 public interface IInitializablePoolable
 {
     public void OnCreated();
+    public void OnDeSpawned();
 }
 
 public interface IInitializablePoolable<in TInitializationData> : IInitializablePoolable where TInitializationData : IPoolableInitializationData
@@ -38,8 +40,9 @@ public abstract class Pool<TObject, TEnum> : IPool<TObject, TEnum> where TObject
     where TEnum : Enum
 {
     private readonly PoolSettings _poolSettings;
+    // private readonly Transform _parent;
 
-    private readonly Dictionary<TEnum, Stack<TObject>> _pools;
+    private readonly Dictionary<TEnum, (Stack<TObject>, Transform)> _pools;
 
     protected Pool(PoolSettings poolSettings)
     {
@@ -55,22 +58,22 @@ public abstract class Pool<TObject, TEnum> : IPool<TObject, TEnum> where TObject
 
     private void CreatePool(TEnum type, PoolProperties properties)
     {
-        Stack<TObject> pool = new();
+        var poolTuple = (new Stack<TObject>(), CreateParent($"Pool_{typeof(TObject).Name}_{type}"));
 
         if (properties.FillOnInit)
-            ExpandPool(pool, properties);
+            ExpandPool(poolTuple, properties);
 
-        _pools.Add(type, pool);
+        _pools.Add(type, poolTuple);
     }
 
     public TObject Spawn(TEnum type)
     {
         var pool = _pools[type];
 
-        if (!pool.TryPop(out var obj))
+        if (!pool.Item1.TryPop(out var obj))
         {
             ExpandPool(type);
-            obj = pool.Pop();
+            obj = pool.Item1.Pop();
         }
 
         obj.gameObject.SetActive(true);
@@ -94,21 +97,39 @@ public abstract class Pool<TObject, TEnum> : IPool<TObject, TEnum> where TObject
     {
         obj.gameObject.SetActive(false);
 
-        _pools[type].Push(obj);
+        _pools[type].Item1.Push(obj);
+
+        if (obj is IInitializablePoolable initializable)
+            initializable.OnDeSpawned();
+    }
+
+    public void DespawnAll()
+    {
+        foreach (var poolKV in _pools)
+        {
+            var components = poolKV.Value.Item2.GetComponentsInChildren<TObject>().ToList();
+
+            for (var i = 0; i < components.Count; i++)
+            {
+                var obj = components[i];
+                if (obj.gameObject.activeSelf)
+                    Despawn(obj, poolKV.Key);
+            }
+        }
     }
 
     private void ExpandPool(TEnum type)
     {
-        var pool = _pools[type];
+        var poolTuple = _pools[type];
         var properties = _poolSettings.Properties[type];
 
-        ExpandPool(pool, properties);
+        ExpandPool(poolTuple, properties);
     }
 
-    private void ExpandPool(Stack<TObject> pool, PoolProperties properties)
+    private void ExpandPool((Stack<TObject> pool, Transform parent) poolTuple, PoolProperties properties)
     {
         for (var i = 0; i < properties.ExpansionSize; i++)
-            pool.Push(Create(properties.Prefab));
+            poolTuple.pool.Push(Create(properties.Prefab, poolTuple.parent));
     }
 
     // private TObject Create(TEnum type)
@@ -119,15 +140,21 @@ public abstract class Pool<TObject, TEnum> : IPool<TObject, TEnum> where TObject
     //     return Create(properties!.Prefab);
     // }
 
-    private TObject Create(TObject prefab)
+    private TObject Create(TObject prefab, Transform parent)
     {
-        var obj = Object.Instantiate(prefab);
+        var obj = Object.Instantiate(prefab, parent);
         obj.gameObject.SetActive(false);
 
         if (obj is IInitializablePoolable initializable)
             initializable.OnCreated();
 
         return obj;
+    }
+
+    private Transform CreateParent(string name)
+    {
+        var go = new GameObject(name);
+        return go.transform;
     }
 
     [Serializable]
@@ -150,7 +177,7 @@ public abstract class Pool<TObject, TEnum> : IPool<TObject, TEnum> where TObject
 
 public abstract class Pool<TEnum> : Pool<Transform, TEnum> where TEnum : Enum
 {
-    protected Pool(PoolSettings poolSettings) : base(poolSettings)
+    protected Pool(PoolSettings poolSettings, bool createParent = true) : base(poolSettings)
     {
     }
 }

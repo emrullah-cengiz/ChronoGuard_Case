@@ -9,14 +9,14 @@ namespace GAME.Utilities.StateMachine
 {
     public interface IState
     {
-        void OnEnter();
+        void OnEnter(object[] @params = null);
         void OnExit();
         void OnUpdate();
     }
 
     public abstract class StateBase<TStateEnum> : IState
     {
-        public virtual void OnEnter()
+        public virtual void OnEnter(params object[] @params)
         {
         }
 
@@ -40,14 +40,14 @@ namespace GAME.Utilities.StateMachine
             _states.TryAdd(stateType, state);
         }
 
-        public void ChangeState(TStateEnum newState)
+        public void ChangeState(TStateEnum newState, params object[] @params)
         {
             _currentState?.OnExit();
 
             if (_states.TryGetValue(newState, out var state))
             {
                 _currentState = state;
-                _currentState.OnEnter();
+                _currentState.OnEnter(@params);
             }
             else
                 Debug.LogWarning($"State {newState} not found!");

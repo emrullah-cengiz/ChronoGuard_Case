@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weapon: {fileID: 8133841877841496114}
+  _animator: {fileID: 4987193216197262649}
 --- !u!135 &2992071543623720879
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -161,6 +162,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2971822737823853743, guid: 796090aa4a48bfc4697028a7d6d4e6ba,
+        type: 3}
+      propertyPath: _onDeath.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2971822737823853743, guid: 796090aa4a48bfc4697028a7d6d4e6ba,
+        type: 3}
+      propertyPath: _onDeath.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2971822737823853743, guid: 796090aa4a48bfc4697028a7d6d4e6ba,
+        type: 3}
+      propertyPath: _onDeath.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5833896743432936932}
+    - target: {fileID: 2971822737823853743, guid: 796090aa4a48bfc4697028a7d6d4e6ba,
+        type: 3}
+      propertyPath: _onDeath.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2971822737823853743, guid: 796090aa4a48bfc4697028a7d6d4e6ba,
+        type: 3}
+      propertyPath: _onDeath.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnDead
+      objectReference: {fileID: 0}
+    - target: {fileID: 2971822737823853743, guid: 796090aa4a48bfc4697028a7d6d4e6ba,
+        type: 3}
+      propertyPath: _onDeath.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerSystem, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2971822737823853743, guid: 796090aa4a48bfc4697028a7d6d4e6ba,
+        type: 3}
+      propertyPath: _onDeath.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 4234936286113491670, guid: 796090aa4a48bfc4697028a7d6d4e6ba,
         type: 3}
@@ -1050,6 +1086,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771c3c6b87ed34d4a9ed6949147369bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _agent: {fileID: 2300794881634587431}
+  _animator: {fileID: 4987193216197262649}
   _attackHandler: {fileID: 1751902967194166036}
   _weapon: {fileID: 8133841877841496114}
   _health: {fileID: 2662113091540720456}
@@ -1070,6 +1108,7 @@ MonoBehaviour:
   _agent: {fileID: 2300794881634587431}
   _playerSettings:
     BaseSpeed: 4.5
+    AimRotationOffset: 6
 --- !u!114 &4987193216197262649
 MonoBehaviour:
   m_ObjectHideFlags: 0

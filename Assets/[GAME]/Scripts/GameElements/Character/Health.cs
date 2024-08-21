@@ -11,13 +11,15 @@ public class Health : MonoBehaviour
 
     [SerializeField] private int _currentHealth;
     [SerializeField] private int _maxHealth;
-    
+
     [SerializeField] private UnityEvent _onDeath;
+
+    [SerializeField] public int CurrentHealth => _currentHealth;
 
     public void Initialize(int health)
     {
         _currentHealth = _maxHealth = health;
-        
+
         Activate(true);
 
         UpdateView();
@@ -26,11 +28,12 @@ public class Health : MonoBehaviour
     public void TakeDamage(int damage)
     {
         Debug.Log($"{gameObject.name} takes {damage} damage!");
-        
+
         _currentHealth -= damage;
         _currentHealth = Mathf.Clamp(_currentHealth, 0, _maxHealth);
 
-        _onDeath?.Invoke();
+        if (_currentHealth == 0)
+            _onDeath?.Invoke();
 
         UpdateView();
     }
@@ -45,7 +48,7 @@ public class Health : MonoBehaviour
         _fillSprite.color = Color.Lerp(Color.red, Color.green, healthPercentage);
     }
 
-    public void Activate(bool s) => gameObject.SetActive(s); 
+    public void Activate(bool s) => gameObject.SetActive(s);
 
     private void Update()
     {

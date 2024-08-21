@@ -22,25 +22,21 @@ public class GameStateManager : MonoBehaviour
         _stateMachine.AddState(GameState.GameStart, new GameStartState());
         _stateMachine.AddState(GameState.LevelLoading, new LevelLoadingState());
         _stateMachine.AddState(GameState.LevelPlaying, new LevelPlayingState());
+        _stateMachine.AddState(GameState.LevelEnd, new LevelEndState());
 
         _stateMachine.SetStartState(GameState.GameStart);
         _stateMachine.Init();
     }
 
-    public void ChangeState(GameState state)
+    public void ChangeState(GameState state, params object[] @params)
     {
-        _stateMachine.ChangeState(state);
+        _stateMachine.ChangeState(state, @params);
     }
 
     private void Update()
     {
         // _stateMachine.Update();
     }
-    //
-    // [Serializable]
-    // public class StateParams
-    // {
-    // }
 }
 
 public enum GameState
@@ -54,28 +50,11 @@ public enum GameState
 
 public abstract class GameStateBase : StateBase<GameState>
 {
-    protected readonly GameStateManager _gameStateManager;
-    protected readonly LevelSystem _levelSystem;
-    protected readonly Enemy.Pool _enemyPool;
-    protected readonly EnemySettings _enemySettings;
+    protected readonly GameStateManager _gameStateManager = ServiceLocator.Resolve<GameStateManager>();
+    protected readonly LevelSystem _levelSystem = ServiceLocator.Resolve<LevelSystem>();
+    protected readonly SaveSystem _saveSystem = ServiceLocator.Resolve<SaveSystem>();
+    protected readonly Enemy.Pool _enemyPool = ServiceLocator.Resolve<Enemy.Pool>();
+    protected readonly EnemySettings _enemySettings = ServiceLocator.Resolve<EnemySettings>();
 
     // protected readonly GameStateManager.StateParams StateParams;
-
-    protected GameStateBase()
-    {
-        _gameStateManager = ServiceLocator.Resolve<GameStateManager>();
-        _levelSystem = ServiceLocator.Resolve<LevelSystem>();
-        _enemyPool = ServiceLocator.Resolve<Enemy.Pool>();
-        _enemySettings = ServiceLocator.Resolve<EnemySettings>();
-    }
-
-    public override void OnEnter()
-    {
-        base.OnEnter();
-    }
-
-    public override void OnExit()
-    {
-        base.OnExit();
-    }
 }

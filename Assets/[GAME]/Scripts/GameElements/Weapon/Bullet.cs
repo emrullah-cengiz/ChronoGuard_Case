@@ -21,12 +21,16 @@ public class Bullet : MonoBehaviour, IInitializablePoolable<ShootData>
     public void OnCreated()
     {
     }
-    
+
     public void OnSpawned(ShootData data)
     {
         _data = data;
 
         transform.position = _data.StartPosition;
+    }
+
+    public void OnDeSpawned()
+    {
     }
 
     private void Update()
@@ -46,7 +50,7 @@ public class Bullet : MonoBehaviour, IInitializablePoolable<ShootData>
         }
     }
 
-    public void OnHit()
+    private void OnHit()
     {
         _hitParticle.Play();
     }

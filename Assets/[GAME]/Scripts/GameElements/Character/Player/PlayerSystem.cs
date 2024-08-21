@@ -2,19 +2,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
 public class PlayerSystem : TransformObject, IDamagable
 {
+    public PlayerProperties Properties { get; private set; }
+
+    [SerializeField] private NavMeshAgent _agent;
+    [SerializeField] private CharacterAnimatorController _animator;
     // [SerializeField] private PlayerStateController _playerStateController;
     [SerializeField] private PlayerAttackHandler _attackHandler;
     [SerializeField] private Weapon _weapon;
     [SerializeField] private Health _health;
     
-    [SerializeField] public float _aimRotationOffset;
+    public int Health => _health.CurrentHealth;
     
-    private PlayerProperties _playerProperties;
-
     private void OnEnable()
     {
         Debug.Log("PlayerSystem");
@@ -34,8 +37,10 @@ public class PlayerSystem : TransformObject, IDamagable
     private void Initialize()
     {
         Debug.Log("Initializing Player..");
-        _playerProperties = ServiceLocator.Resolve<PlayerProperties>();
+        Properties = ServiceLocator.Resolve<PlayerProperties>();
 
+        // _playerStateController.Initialize();
+        
         _attackHandler.Initialize();
     }
 
@@ -44,10 +49,15 @@ public class PlayerSystem : TransformObject, IDamagable
         // _playerStateController.Initialize();
         Debug.Log("ReInitializing Player..");
 
-        _health.Initialize(_playerProperties.MaxHealth);
+        _animator.SetDead(false);
+        
+        _health.Activate(true);
+        
+        _agent.enabled = true;
+        
+        _health.Initialize(Properties.MaxHealth);
         _attackHandler.Reinitialize();
     }
-
 
     private void StopActions(bool success)
     {
@@ -58,7 +68,18 @@ public class PlayerSystem : TransformObject, IDamagable
     {
         _health.TakeDamage(damage);
 
-        Events.Player.OnDamageTake?.Invoke();
+        Events.Player.OnDamageTake?.Invoke(damage, Health);
+    }
+
+    public void OnDead()
+    {
+        _animator.SetDead(true);
+        
+        _health.Activate(false);
+        
+        _agent.enabled = false;
+        
+        Events.Player.OnPlayerDead?.Invoke();
     }
 
     public void LookAt(Vector3 position) => transform.LookAt(position);

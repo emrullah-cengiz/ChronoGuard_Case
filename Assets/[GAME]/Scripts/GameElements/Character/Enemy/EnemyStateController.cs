@@ -61,7 +61,7 @@ public class EnemyStartState : EnemyStateBase
     {
     }
 
-    public override void OnEnter()
+    public override void OnEnter(params object[] @params)
     {
         base.OnEnter();
 

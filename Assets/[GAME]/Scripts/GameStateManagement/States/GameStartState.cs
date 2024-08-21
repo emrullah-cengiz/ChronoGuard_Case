@@ -3,24 +3,20 @@ using UnityEngine;
 
 public class GameStartState : GameStateBase
 {
-    public override async void OnEnter()
-    {
-        Debug.Log("GameStartState invoked");
+    private bool _continueLevel;
 
+    public override void OnEnter(params object[] @params)
+    {
+        Events.UI.OnPanelActionButtonClick += OnPanelActionButtonClick;
+
+        _continueLevel = _saveSystem.Data.CurrentLevelProgress.IsCurrentLevelStarted;
+        
         Events.GameStates.OnGameStarted?.Invoke();
-
-        //open start panel
-        
-        //listen OnStartLevelRequested 
-        
-        //temp
-        await UniTask.WaitForSeconds(1);
-        
-        _gameStateManager.ChangeState(GameState.LevelLoading);
     }
 
-    public override void OnExit()
-    {
-        base.OnExit();
-    }
+    public override void OnExit() => 
+        Events.UI.OnPanelActionButtonClick -= OnPanelActionButtonClick;
+
+    private void OnPanelActionButtonClick(UIPanelType panelType) => 
+        _gameStateManager.ChangeState(GameState.LevelLoading, _continueLevel);
 }

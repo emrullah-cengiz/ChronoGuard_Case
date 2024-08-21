@@ -26,9 +26,9 @@ public class GameInstaller : MonoBehaviour
     private void RegisterServices()
     {
         //Settings
-        ServiceLocator.Register(_gameSettings);
         ServiceLocator.Register(_gameSettings.SaveSettings);
         ServiceLocator.Register(_gameSettings.PlayerSettings);
+        ServiceLocator.Register(_gameSettings.LevelSettings);
         ServiceLocator.Register(_gameSettings.WeaponSettings);
         ServiceLocator.Register(_gameSettings.EnemySettings);
         
@@ -38,9 +38,9 @@ public class GameInstaller : MonoBehaviour
         var pools = RegisterPools();
 
         //Systems
+        ServiceLocator.Register(_playerSystem);
         ServiceLocator.Register(new SaveSystem());
         ServiceLocator.Register(_gameStateManager);
-        ServiceLocator.Register(_playerSystem);
         ServiceLocator.Register(new EnemySpawner());
         ServiceLocator.Register(new LevelSystem());
         

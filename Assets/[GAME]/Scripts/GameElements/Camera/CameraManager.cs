@@ -16,7 +16,7 @@ public class CameraManager : SerializedMonoBehaviour
     private void OnEnable()
     {
         Events.Player.OnDamageTake += OnDamageTake;
-        Events.Player.OnWeaponFire += OnWeaponFire;
+        // Events.Player.OnWeaponFire += OnWeaponFire;
     }
 
     private void Awake()
@@ -29,9 +29,9 @@ public class CameraManager : SerializedMonoBehaviour
         ShakeCam(NoiseType.WeaponFire).Forget();
     }
 
-    private void OnDamageTake()
+    private void OnDamageTake(int damage, int health)
     {
-        ShakeCam(NoiseType.DamageTaken).Forget();
+        ShakeCam(NoiseType.DamageTake).Forget();
     }
 
     private async UniTaskVoid ShakeCam(NoiseType noiseType)
@@ -57,6 +57,6 @@ public class CameraManager : SerializedMonoBehaviour
     public enum NoiseType
     {
         WeaponFire,
-        DamageTaken,
+        DamageTake,
     }
 }

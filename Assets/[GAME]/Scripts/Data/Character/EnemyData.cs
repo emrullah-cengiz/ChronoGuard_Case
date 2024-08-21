@@ -32,6 +32,6 @@ public enum EnemySpeedMode
 
 public enum EnemyAttackType
 {
-    Attack1,
-    Attack2,
+    Attack1 = 1,
+    Attack2 = 2,
 }

@@ -10,18 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c163d099ea3541d19b0eea22dc0f258c, type: 3}
-  m_Name: Level_1 back
+  m_Name: Level_1 1
   m_EditorClassIdentifier: 
   Waves:
   - EnemiesType: 0
     SpawnTimeAfterLevelStart: 1
-    EnemyNumber: 5
+    EnemyNumber: 7
     SpawnDistanceFromPlayer: 10
-  - EnemiesType: 1
-    SpawnTimeAfterLevelStart: 4
-    EnemyNumber: 3
-    SpawnDistanceFromPlayer: 13
-  - EnemiesType: 2
-    SpawnTimeAfterLevelStart: 8
-    EnemyNumber: 2
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 5
+    EnemyNumber: 7
     SpawnDistanceFromPlayer: 7
+  - EnemiesType: 1
+    SpawnTimeAfterLevelStart: 12
+    EnemyNumber: 4
+    SpawnDistanceFromPlayer: 7
+  - EnemiesType: 2
+    SpawnTimeAfterLevelStart: 20
+    EnemyNumber: 3
+    SpawnDistanceFromPlayer: 6

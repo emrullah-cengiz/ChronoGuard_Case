@@ -6,15 +6,11 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = nameof(GameSettings), menuName = nameof(GameSettings))]
 public class GameSettings : SerializedScriptableObject
-{
-    public int LevelCountdownDurationInSeconds = 180;
-    
-    public PlayerSettings PlayerSettings;
-
-    [OdinSerialize] [NonSerialized] public WeaponSettings WeaponSettings;
-
-    [OdinSerialize] [NonSerialized] [Space(10)]
-    public EnemySettings EnemySettings;
+{    
+    [OdinSerialize] [NonSerialized] [Space(10)] public PlayerSettings PlayerSettings;
+    [OdinSerialize] [NonSerialized] [Space(10)] public LevelSettings LevelSettings;
+    [OdinSerialize] [NonSerialized] [Space(10)] public WeaponSettings WeaponSettings;
+    [OdinSerialize] [NonSerialized] [Space(10)] public EnemySettings EnemySettings;
 
     [Space(10)] public SaveSettings SaveSettings;
 }
@@ -23,6 +19,7 @@ public class GameSettings : SerializedScriptableObject
 public class PlayerSettings
 {
     public float BaseSpeed = 4.5f;
+    public float AimRotationOffset = 6f;
 }
 
 [Serializable]
@@ -49,4 +46,11 @@ public class EnemySettings
 public class SaveSettings
 {
     public int SaveIntervalInSeconds = 5;
+}
+
+[Serializable]
+public class LevelSettings
+{
+    public int LevelCountdownDurationInSeconds = 180;
+    public int MaxLevel = 3;
 }

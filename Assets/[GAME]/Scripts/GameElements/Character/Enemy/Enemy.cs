@@ -6,7 +6,7 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
 {
     public EnemyData Data;
 
-    [SerializeField] private CharacterAnimatorController _animator;
+    [SerializeField] private EnemyAnimatorController _animator;
     [SerializeField] private Health _health;
     [SerializeField] private RagdollController _ragdoll;
 
@@ -39,11 +39,17 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
         transform.position = spawnData.Position;
         transform.LookAt(spawnData.LookAtPosition);
             
+        _animator.SetAttackSpeedByAttackRate(Data.AttackType, Data.AttackRateInSeconds);
         _health.Initialize(Data.MaxHealth);
         _behaviourTree.ReInitialize();
         _ragdoll.SetRagdollState(false);
 
         IsAlive = true;
+    }
+    
+    public void OnDeSpawned()
+    {
+        _behaviourTree.Stop();
     }
 
     private void Update()

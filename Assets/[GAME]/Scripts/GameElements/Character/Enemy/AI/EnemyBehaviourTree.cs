@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using BehaviourTree;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -9,11 +10,10 @@ using Tree = BehaviourTree.Tree;
 public class EnemyBehaviourTree : Tree
 {
     private readonly TreeParams _params;
-
     private readonly PlayerSystem _playerSystem;
 
     private BlackBoard _blackBoard;
-    
+
     public EnemyBehaviourTree(TreeParams @params)
     {
         _params = @params;
@@ -31,11 +31,11 @@ public class EnemyBehaviourTree : Tree
         {
             new Sequence(new()
             {
-                new LookToPlayerTask(_params, _blackBoard),
-                new CheckForAttack(_params, _blackBoard),
-                new AttackToPlayerTask(_params, _blackBoard),
+                new LookToPlayerTask(_params, _blackBoard, _taskCancellationTokenSource),
+                new CheckForAttack(_params, _blackBoard, _taskCancellationTokenSource),
+                new AttackToPlayerTask(_params, _blackBoard, _taskCancellationTokenSource),
             }),
-            new MoveToPlayerTask(_params, _blackBoard)
+            new MoveToPlayerTask(_params, _blackBoard, _taskCancellationTokenSource)
         });
     }
 
@@ -43,8 +43,9 @@ public class EnemyBehaviourTree : Tree
     {
         _blackBoard.IsAttackCooldownEnd = true;
         _blackBoard.AttackRangeSqr = _params.Enemy.Data.AttackRange * _params.Enemy.Data.AttackRange;
+        _taskCancellationTokenSource = new CancellationTokenSource();
     }
-
+    
     public override void Update()
     {
         PrepareBlackboard(ref _blackBoard);
@@ -66,12 +67,13 @@ public class EnemyBehaviourTree : Tree
         protected readonly EnemySettings _enemySettings;
         protected readonly BlackBoard _blackBoard;
 
-        protected NodeBase(TreeParams @params, BlackBoard blackBoard) : base()
+        protected NodeBase(TreeParams @params, BlackBoard blackBoard, CancellationTokenSource cts) : base(cts)
         {
             Params = @params;
             _blackBoard = blackBoard;
             _playerSystem = ServiceLocator.Resolve<PlayerSystem>();
             _enemySettings = ServiceLocator.Resolve<EnemySettings>();
+            
         }
     }
 
@@ -79,7 +81,7 @@ public class EnemyBehaviourTree : Tree
     {
         public Enemy Enemy;
         public NavMeshAgent Agent;
-        public CharacterAnimatorController Animator;
+        public EnemyAnimatorController Animator;
         
     }
 

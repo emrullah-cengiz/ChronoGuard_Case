@@ -14,8 +14,8 @@ public static class Events
 
     public static class Player
     {
-        public static Action OnDamageTake = delegate { };
-        public static Action OnWeaponFire = delegate { };
+        public static Action<int, int> OnDamageTake = delegate { };
+        public static Action OnPlayerDead = delegate { };
     }
     
     public static class Weapon
@@ -26,10 +26,17 @@ public static class Events
     public static class Enemies
     {
         public static Action<Enemy> OnEnemyDead = delegate { };
+        public static Action OnWaveSpawned = delegate { };
     }
     
     public static class Level
     {
-        public static Action<int> OnLevelTimerTick = delegate { };
+        public static Action<int> OnLevelCountdownTick = delegate { };
+        public static Action OnLevelCountdownEnd = delegate { };
+    }
+    
+    public static class UI
+    {
+        public static Action<UIPanelType> OnPanelActionButtonClick = delegate { };
     }
 }

@@ -1,10 +1,18 @@
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 
 namespace BehaviourTree
 {
     public abstract class Node
     {
+        protected CancellationTokenSource _cancellationTokenSource;
+
+        protected Node(CancellationTokenSource cts = null)
+        {
+            _cancellationTokenSource = cts;
+        }
+        
         public abstract NodeState Evaluate();
     }
 

@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Threading;
 using BehaviourTree;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -10,7 +12,8 @@ public class MoveToPlayerTask : EnemyBehaviourTree.NodeBase
     private readonly float _executeRate;
     private float _startTime;
 
-    public MoveToPlayerTask(EnemyBehaviourTree.TreeParams @params, EnemyBehaviourTree.BlackBoard blackBoard) : base(@params, blackBoard)
+    public MoveToPlayerTask(EnemyBehaviourTree.TreeParams @params, EnemyBehaviourTree.BlackBoard blackBoard, CancellationTokenSource cts) : base(@params,
+        blackBoard, cts)
     {
         _executeRate = _enemySettings.SetDestinationRate;
     }
@@ -25,18 +28,6 @@ public class MoveToPlayerTask : EnemyBehaviourTree.NodeBase
 
         var dest = _playerSystem.Position - (_blackBoard.PlayerDirection * (Params.Enemy.Data.AttackRange));
 
-        // Debug.Log((dest - _playerSystem.Position).magnitude);
-
-        // if ((dest - Params.Enemy.Position).magnitude < .5f)
-        //     return NodeState.SUCCESS;
-
-        GizmosManager.ClearGizmos();
-        GizmosManager.AddDrawAction(() =>
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(dest + Vector3.up, .05f);
-        });
-        
         Params.Agent.SetDestination(dest);
 
         return NodeState.SUCCESS;
@@ -45,9 +36,10 @@ public class MoveToPlayerTask : EnemyBehaviourTree.NodeBase
 
 public class CheckForAttack : EnemyBehaviourTree.NodeBase
 {
-    private const float DISTANCE_BUFFER = 15f;
-    
-    public CheckForAttack(EnemyBehaviourTree.TreeParams @params, EnemyBehaviourTree.BlackBoard blackBoard) : base(@params, blackBoard)
+    private const float DISTANCE_BUFFER = .15f;
+
+    public CheckForAttack(EnemyBehaviourTree.TreeParams @params, EnemyBehaviourTree.BlackBoard blackBoard, CancellationTokenSource cts) : base(@params,
+        blackBoard, cts)
     {
     }
 
@@ -62,17 +54,16 @@ public class CheckForAttack : EnemyBehaviourTree.NodeBase
 
 public class AttackToPlayerTask : EnemyBehaviourTree.NodeBase
 {
-    public AttackToPlayerTask(EnemyBehaviourTree.TreeParams @params, EnemyBehaviourTree.BlackBoard blackBoard) : base(@params, blackBoard)
+    public AttackToPlayerTask(EnemyBehaviourTree.TreeParams @params, EnemyBehaviourTree.BlackBoard blackBoard, CancellationTokenSource cts) : base(@params,
+        blackBoard, cts)
     {
     }
 
     public override NodeState Evaluate()
     {
-        StartAttackCoolDown().Forget();
-
-        Params.Animator.TriggerAttack();
-
         TryHitPlayer().Forget();
+
+        StartAttackCoolDown().Forget();
 
         return NodeState.SUCCESS;
     }
@@ -81,25 +72,31 @@ public class AttackToPlayerTask : EnemyBehaviourTree.NodeBase
     {
         _blackBoard.IsAttackCooldownEnd = false;
 
-        await UniTask.Delay((int)(Params.Enemy.Data.AttackRateInSeconds * 1000));
+        await UniTask.WaitForSeconds(Params.Enemy.Data.AttackRateInSeconds, cancellationToken: _cancellationTokenSource.Token);
 
         _blackBoard.IsAttackCooldownEnd = true;
     }
 
     private async UniTaskVoid TryHitPlayer()
     {
-        await UniTask.Delay((int)(_enemySettings.HitTimePerAnimation[Params.Enemy.Data.AttackType] * 1000));
-
+        Params.Animator.TriggerAttack(Params.Enemy.Data.AttackType);
+        
+        await UniTask.WaitForSeconds(_enemySettings.HitTimePerAnimation[Params.Enemy.Data.AttackType], cancellationToken: _cancellationTokenSource.Token);
+        
         var res = new RaycastHit[1];
-        if (Physics.RaycastNonAlloc(Params.Enemy.Position, Params.Enemy.Forward, res, Params.Enemy.Data.AttackRange,
-                LayerMask.GetMask(GlobalVariables.Layers.PLAYER)) > 0)
+        if (Physics.RaycastNonAlloc(Params.Enemy.Position, Params.Enemy.Forward, res, Params.Enemy.Data.AttackRange
+                // ,LayerMask.GetMask(GlobalVariables.Layers.PLAYER)
+            ) > 0 && res.Any(x => x.collider.CompareTag("Player")))
+        {
             _playerSystem.TakeDamage(Params.Enemy.Data.Damage);
+        }
     }
 }
 
 public class LookToPlayerTask : EnemyBehaviourTree.NodeBase
 {
-    public LookToPlayerTask(EnemyBehaviourTree.TreeParams @params, EnemyBehaviourTree.BlackBoard blackBoard) : base(@params, blackBoard)
+    public LookToPlayerTask(EnemyBehaviourTree.TreeParams @params, EnemyBehaviourTree.BlackBoard blackBoard, CancellationTokenSource cts) : base(@params,
+        blackBoard, cts)
     {
     }
 

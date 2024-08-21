@@ -25,20 +25,44 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
+    - Name: PlayerSettings
+      Entry: 7
+      Data: 0|PlayerSettings, Assembly-CSharp
+    - Name: BaseSpeed
+      Entry: 4
+      Data: 4.5
+    - Name: AimRotationOffset
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: LevelSettings
+      Entry: 7
+      Data: 1|LevelSettings, Assembly-CSharp
+    - Name: LevelCountdownDurationInSeconds
+      Entry: 3
+      Data: 50
+    - Name: MaxLevel
+      Entry: 3
+      Data: 3
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: WeaponSettings
       Entry: 7
-      Data: 0|WeaponSettings, Assembly-CSharp
+      Data: 2|WeaponSettings, Assembly-CSharp
     - Name: PoolSettings
       Entry: 7
-      Data: 1|Pool`2+PoolSettings[[Bullet, Assembly-CSharp],[BulletType, Assembly-CSharp]],
+      Data: 3|Pool`2+PoolSettings[[Bullet, Assembly-CSharp],[BulletType, Assembly-CSharp]],
         Assembly-CSharp
     - Name: Properties
       Entry: 7
-      Data: 2|System.Collections.Generic.Dictionary`2[[BulletType, Assembly-CSharp],[Pool`2+PoolProperties[[Bullet,
+      Data: 4|System.Collections.Generic.Dictionary`2[[BulletType, Assembly-CSharp],[Pool`2+PoolProperties[[Bullet,
         Assembly-CSharp],[BulletType, Assembly-CSharp]], Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 3|System.Collections.Generic.EnumEqualityComparer`1[[BulletType, Assembly-CSharp]],
+      Data: 5|System.Collections.Generic.EnumEqualityComparer`1[[BulletType, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
@@ -60,7 +84,7 @@ MonoBehaviour:
       Data: 0
     - Name: $v
       Entry: 7
-      Data: 4|Pool`2+PoolProperties[[Bullet, Assembly-CSharp],[BulletType, Assembly-CSharp]],
+      Data: 6|Pool`2+PoolProperties[[Bullet, Assembly-CSharp],[BulletType, Assembly-CSharp]],
         Assembly-CSharp
     - Name: Prefab
       Entry: 10
@@ -91,23 +115,23 @@ MonoBehaviour:
       Data: 
     - Name: EnemySettings
       Entry: 7
-      Data: 5|EnemySettings, Assembly-CSharp
+      Data: 7|EnemySettings, Assembly-CSharp
     - Name: SetDestinationRate
       Entry: 4
       Data: 0.2
     - Name: InWaveSpawnDelayInSeconds
       Entry: 4
       Data: 0.3
-    - Name: BaseSpeed
+    - Name: DespawnDelayAfterDead
       Entry: 4
-      Data: 3.5
+      Data: 1
     - Name: SpeedMultipliers
       Entry: 7
-      Data: 6|System.Collections.Generic.Dictionary`2[[EnemySpeedMode, Assembly-CSharp],[System.Single,
+      Data: 8|System.Collections.Generic.Dictionary`2[[EnemySpeedMode, Assembly-CSharp],[System.Single,
         mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 7|System.Collections.Generic.EnumEqualityComparer`1[[EnemySpeedMode,
+      Data: 9|System.Collections.Generic.EnumEqualityComparer`1[[EnemySpeedMode,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -153,11 +177,11 @@ MonoBehaviour:
       Data: 
     - Name: HitTimePerAnimation
       Entry: 7
-      Data: 8|System.Collections.Generic.Dictionary`2[[EnemyAttackType, Assembly-CSharp],[System.Single,
+      Data: 10|System.Collections.Generic.Dictionary`2[[EnemyAttackType, Assembly-CSharp],[System.Single,
         mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 9|System.Collections.Generic.EnumEqualityComparer`1[[EnemyAttackType,
+      Data: 11|System.Collections.Generic.EnumEqualityComparer`1[[EnemyAttackType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -176,7 +200,7 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 3
-      Data: 0
+      Data: 2
     - Name: $v
       Entry: 4
       Data: 0.3
@@ -203,15 +227,15 @@ MonoBehaviour:
       Data: 
     - Name: PoolSettings
       Entry: 7
-      Data: 10|Pool`2+PoolSettings[[Enemy, Assembly-CSharp],[EnemyType, Assembly-CSharp]],
+      Data: 12|Pool`2+PoolSettings[[Enemy, Assembly-CSharp],[EnemyType, Assembly-CSharp]],
         Assembly-CSharp
     - Name: Properties
       Entry: 7
-      Data: 11|System.Collections.Generic.Dictionary`2[[EnemyType, Assembly-CSharp],[Pool`2+PoolProperties[[Enemy,
+      Data: 13|System.Collections.Generic.Dictionary`2[[EnemyType, Assembly-CSharp],[Pool`2+PoolProperties[[Enemy,
         Assembly-CSharp],[EnemyType, Assembly-CSharp]], Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 12|System.Collections.Generic.EnumEqualityComparer`1[[EnemyType, Assembly-CSharp]],
+      Data: 14|System.Collections.Generic.EnumEqualityComparer`1[[EnemyType, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
@@ -233,57 +257,57 @@ MonoBehaviour:
       Data: 0
     - Name: $v
       Entry: 7
-      Data: 13|Pool`2+PoolProperties[[Enemy, Assembly-CSharp],[EnemyType, Assembly-CSharp]],
-        Assembly-CSharp
-    - Name: Prefab
-      Entry: 10
-      Data: 1
-    - Name: FillOnInit
-      Entry: 5
-      Data: true
-    - Name: ExpansionSize
-      Entry: 3
-      Data: 10
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 1
-    - Name: $v
-      Entry: 7
-      Data: 14|Pool`2+PoolProperties[[Enemy, Assembly-CSharp],[EnemyType, Assembly-CSharp]],
-        Assembly-CSharp
-    - Name: Prefab
-      Entry: 10
-      Data: 2
-    - Name: FillOnInit
-      Entry: 5
-      Data: true
-    - Name: ExpansionSize
-      Entry: 3
-      Data: 10
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 2
-    - Name: $v
-      Entry: 7
       Data: 15|Pool`2+PoolProperties[[Enemy, Assembly-CSharp],[EnemyType, Assembly-CSharp]],
+        Assembly-CSharp
+    - Name: Prefab
+      Entry: 10
+      Data: 1
+    - Name: FillOnInit
+      Entry: 5
+      Data: true
+    - Name: ExpansionSize
+      Entry: 3
+      Data: 10
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 7
+      Data: 16|Pool`2+PoolProperties[[Enemy, Assembly-CSharp],[EnemyType, Assembly-CSharp]],
+        Assembly-CSharp
+    - Name: Prefab
+      Entry: 10
+      Data: 2
+    - Name: FillOnInit
+      Entry: 5
+      Data: true
+    - Name: ExpansionSize
+      Entry: 3
+      Data: 10
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 7
+      Data: 17|Pool`2+PoolProperties[[Enemy, Assembly-CSharp],[EnemyType, Assembly-CSharp]],
         Assembly-CSharp
     - Name: Prefab
       Entry: 10
@@ -312,7 +336,5 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  PlayerSettings:
-    BaseSpeed: 4.5
   SaveSettings:
     SaveIntervalInSeconds: 5
