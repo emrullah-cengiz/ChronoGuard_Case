@@ -42,7 +42,7 @@ MonoBehaviour:
       Data: 1|LevelSettings, Assembly-CSharp
     - Name: LevelCountdownDurationInSeconds
       Entry: 3
-      Data: 50
+      Data: 800
     - Name: MaxLevel
       Entry: 3
       Data: 3

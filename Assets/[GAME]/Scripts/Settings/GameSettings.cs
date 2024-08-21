@@ -7,10 +7,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = nameof(GameSettings), menuName = nameof(GameSettings))]
 public class GameSettings : SerializedScriptableObject
 {    
-    [OdinSerialize] [NonSerialized] [Space(10)] public PlayerSettings PlayerSettings;
-    [OdinSerialize] [NonSerialized] [Space(10)] public LevelSettings LevelSettings;
-    [OdinSerialize] [NonSerialized] [Space(10)] public WeaponSettings WeaponSettings;
-    [OdinSerialize] [NonSerialized] [Space(10)] public EnemySettings EnemySettings;
+    [HideLabel][OdinSerialize] [NonSerialized] [Space(10)] public PlayerSettings PlayerSettings;
+    [HideLabel][OdinSerialize] [NonSerialized] [Space(10)] public LevelSettings LevelSettings;
+    [HideLabel][OdinSerialize] [NonSerialized] [Space(10)] public WeaponSettings WeaponSettings;
+    [HideLabel][OdinSerialize] [NonSerialized] [Space(10)] public EnemySettings EnemySettings;
 
     [Space(10)] public SaveSettings SaveSettings;
 }
@@ -18,7 +18,6 @@ public class GameSettings : SerializedScriptableObject
 [Serializable]
 public class PlayerSettings
 {
-    public float BaseSpeed = 4.5f;
     public float AimRotationOffset = 6f;
 }
 
@@ -32,12 +31,15 @@ public class WeaponSettings
 [Serializable]
 public class EnemySettings
 {
-    public float SetDestinationRate = .2f;
     public float InWaveSpawnDelayInSeconds = .3f;
     public float DespawnDelayAfterDead = .5f;
     public Dictionary<EnemySpeedMode, float> SpeedMultipliers;
     public Dictionary<EnemyAttackType, float> HitTimePerAnimation;
+    
+    [Title("Optimization")]
+    public float SetDestinationRate = .2f;
 
+    [Title("Pool")]
     [OdinSerialize] [NonSerialized] [Space(10)]
     public Enemy.Pool.PoolSettings PoolSettings;
 }

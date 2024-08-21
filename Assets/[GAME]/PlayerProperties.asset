@@ -26,3 +26,4 @@ MonoBehaviour:
   AttackRange: 5
   AttackRateInSeconds: 0.5
   BulletSpeed: 10
+  BaseSpeed: 1

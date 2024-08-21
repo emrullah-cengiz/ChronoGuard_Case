@@ -8,8 +8,10 @@ using UnityEngine.InputSystem;
 
 public class PlayerAttackHandler : MonoBehaviour
 {
+    [SerializeField] private SphereCollider _collider;
     [SerializeField] private Weapon _weapon;
     [SerializeField] private CharacterAnimatorController _animator;
+
     private PlayerSystem _playerSystem;
     private PlayerProperties _playerProperties;
     private PlayerSettings _playerSettings;
@@ -26,6 +28,8 @@ public class PlayerAttackHandler : MonoBehaviour
         _playerProperties = ServiceLocator.Resolve<PlayerProperties>();
         _playerSystem = ServiceLocator.Resolve<PlayerSystem>();
         _playerSettings = ServiceLocator.Resolve<PlayerSettings>();
+
+        _collider.radius = _playerProperties.AttackRange;
 
         _nearEnemies = new();
         _currentTarget = null;

@@ -11,6 +11,9 @@ public class EnemyAnimatorController : CharacterAnimatorController
 
     private const string ATTACK_SPEED_PARAM_FORMAT = "Attack{0}_Speed";
 
+    //temp
+    // update
+    
     public void SetAttackSpeedByAttackRate(EnemyAttackType attackType, float rate)
     {
         var clipDuration = GetAttackClipDuration(attackType);

@@ -15,13 +15,13 @@ public class CharacterAnimatorController : MonoBehaviour
     [SerializeField] protected NavMeshAgent _agent;
     [SerializeField] protected Animator _animator;
 
-    private void Update()
+    protected virtual void Update()
     {
         _targetMovementSpeed = _agent.velocity.magnitude / _agent.speed;
 
         _currentMovementSpeed = Mathf.Lerp(_currentMovementSpeed, _targetMovementSpeed, _speedSmoothingPower * Time.deltaTime);
 
-        _animator.SetFloat(MOVE_SPEED_PARAM, _currentMovementSpeed);
+       _animator.SetFloat(MOVE_SPEED_PARAM, _currentMovementSpeed);
     }
 
 

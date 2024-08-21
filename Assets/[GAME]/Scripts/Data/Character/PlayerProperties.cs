@@ -6,4 +6,5 @@ public class PlayerProperties : CharacterData
     public override CharacterType CharacterType => CharacterType.Player;
 
     public float BulletSpeed = 10;
+    public float BaseSpeed = 4.5f;
 }

@@ -17,6 +17,7 @@ public class PlayerSystem : TransformObject, IDamagable
     [SerializeField] private Health _health;
     
     public int Health => _health.CurrentHealth;
+    public Vector3 Velocity => _agent.velocity;
     
     private void OnEnable()
     {
