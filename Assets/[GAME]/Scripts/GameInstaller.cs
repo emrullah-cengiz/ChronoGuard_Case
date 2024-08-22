@@ -9,6 +9,7 @@ public class GameInstaller : MonoBehaviour
     [SerializeField] private PlayerProperties _playerProperties;
 
     [SerializeField] private GameStateManager _gameStateManager;
+    [SerializeField] private LevelSystem _levelSystem;
     [SerializeField] private PlayerSystem _playerSystem;
 
     private bool _initialized;
@@ -41,9 +42,9 @@ public class GameInstaller : MonoBehaviour
         //Systems
         ServiceLocator.Register(_playerSystem);
         ServiceLocator.Register(new SaveSystem());
-        ServiceLocator.Register(_gameStateManager);
         ServiceLocator.Register(new EnemySpawner());
-        ServiceLocator.Register(new LevelSystem());
+        ServiceLocator.Register(_levelSystem);
+        ServiceLocator.Register(_gameStateManager);
         
         InitializePools(pools);
     }

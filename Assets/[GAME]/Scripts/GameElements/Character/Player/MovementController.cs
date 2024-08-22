@@ -12,8 +12,10 @@ public class MovementController : MonoBehaviour
 
     [SerializeField] private PlayerProperties _playerProperties;
 
+    private bool _isActive;
     private Vector2 _input;
     private float _angularSpeed;
+    private InputActionPhase _inputPhase;
 
     private void Awake()
     {
@@ -23,41 +25,44 @@ public class MovementController : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log("MovementController");
-        Events.GameStates.OnGameStarted += Initialize;
         Events.Player.OnLockedTarget += ActivateAgentRotation;
+        _movementInputActionRef.action.performed += SetInput;
+        _movementInputActionRef.action.canceled += ClearInput;
     }
 
     private void OnDisable()
     {
-        Events.GameStates.OnGameStarted -= Initialize;
         Events.Player.OnLockedTarget -= ActivateAgentRotation;
+        _movementInputActionRef.action.performed -= SetInput;
+        _movementInputActionRef.action.canceled -= ClearInput;
     }
 
-    private void ActivateAgentRotation(bool s)
-    {
-        _agent.angularSpeed = s ? 0 : _angularSpeed;
-    }
-
-    private void Initialize()
-    {
-        _playerProperties = ServiceLocator.Resolve<PlayerProperties>();
-    }
+    public void Activate(bool s) => _isActive = s;
 
     private void Update()
     {
-        if (_movementInputActionRef.action.phase == InputActionPhase.Started)
-            // _input = Vector3.left;
+        if(!_isActive) return;
+        
+        if (_inputPhase is InputActionPhase.Performed or InputActionPhase.Canceled)
             Move();
     }
 
     private void Move()
     {
-        _input = _movementInputActionRef.action.ReadValue<Vector2>();
-
         Vector3 movementVector = new(_input.x, 0, _input.y);
-
-        //_playerProperties.BaseSpeed *
         _agent.velocity = _agent.speed * movementVector;
+    }
+    
+    private void ActivateAgentRotation(bool s) => _agent.angularSpeed = s ? 0 : _angularSpeed;
+
+    private void SetInput(InputAction.CallbackContext context)
+    {
+        _input = context.ReadValue<Vector2>();
+        _inputPhase = context.phase;
+    }
+    private void ClearInput(InputAction.CallbackContext context)
+    {
+        _input = Vector3.zero;
+        _inputPhase = context.phase;
     }
 }

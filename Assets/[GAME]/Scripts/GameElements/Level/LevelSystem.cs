@@ -1,20 +1,29 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class LevelSystem    
+public class LevelSystem : SerializedMonoBehaviour
 {
-    private readonly SaveSystem _saveSystem = ServiceLocator.Resolve<SaveSystem>();
-    private readonly EnemySpawner _enemySpawner = ServiceLocator.Resolve<EnemySpawner>();
-    private readonly LevelSettings _levelSettings = ServiceLocator.Resolve<LevelSettings>();
-    private readonly int _countdownDuration;
+    [SerializeField] private Transform[] _spawnPoints;
+
+    private SaveSystem _saveSystem;
+    private EnemySpawner _enemySpawner;
+    private LevelSettings _levelSettings;
+    private int _countdownDuration;
 
     private CancellationTokenSource _cts;
 
-    public LevelSystem()
+    private void Awake()
     {
+        _saveSystem = ServiceLocator.Resolve<SaveSystem>();
+        _enemySpawner = ServiceLocator.Resolve<EnemySpawner>();
+        _levelSettings = ServiceLocator.Resolve<LevelSettings>();
+
         _countdownDuration = _levelSettings.LevelCountdownDurationInSeconds;
+        _enemySpawner.Initialize(_spawnPoints);
     }
 
     public async void StartLevel(bool continueLevel)
@@ -23,12 +32,12 @@ public class LevelSystem
 
         var levelData = await GetLevelData(_saveSystem.Data.CurrentLevelProgress.LevelNumber);
 
-        _enemySpawner.Initialize(progressData: _saveSystem.Data.CurrentLevelProgress, levelData, continueLevel);
+        _enemySpawner.Reinitialize(progressData: _saveSystem.Data.CurrentLevelProgress, levelData, continueLevel);
 
         StartCountdown().Forget();
     }
 
-    public void Reset()
+    public void ClearLevel()
     {
         _cts.Cancel();
         _enemySpawner.Reset();
@@ -39,20 +48,29 @@ public class LevelSystem
         return await Extensions.LoadResource<LevelData>(
             $"{GlobalVariables.LEVEL_DATA_RESOURCE_PATH}/{GlobalVariables.LEVEL_DATA_PREFIX}{levelNumber}");
     }
-    
+
     private async UniTaskVoid StartCountdown()
     {
         for (var i = _countdownDuration - 1; i >= 0; i--)
         {
             await UniTask.WaitForSeconds(1, cancellationToken: _cts.Token);
-            
-            if(_cts.IsCancellationRequested)
+
+            if (_cts.IsCancellationRequested)
                 return;
-            
+
             Events.Level.OnLevelCountdownTick?.Invoke(i + 1);
         }
-        
+
         Events.Level.OnLevelCountdownEnd?.Invoke();
     }
 
+    private void OnDrawGizmos()
+    {
+        if (_spawnPoints.Length == 0)
+            return;
+
+        Gizmos.color = Color.yellow;
+        foreach (var spawnPoint in _spawnPoints)
+            Gizmos.DrawWireSphere(spawnPoint.position, 0.5f);
+    }
 }

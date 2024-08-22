@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c163d099ea3541d19b0eea22dc0f258c, type: 3}
+  m_Name: Level_1__
+  m_EditorClassIdentifier: 
+  Waves:
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 1
+    EnemyNumber: 7
+    SpawnDistanceFromPlayer: 7
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 10
+    EnemyNumber: 7
+    SpawnDistanceFromPlayer: 7
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 19
+    EnemyNumber: 10
+    SpawnDistanceFromPlayer: 6
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 28
+    EnemyNumber: 12
+    SpawnDistanceFromPlayer: 6
+  - EnemiesType: 1
+    SpawnTimeAfterLevelStart: 37
+    EnemyNumber: 8
+    SpawnDistanceFromPlayer: 6
+  - EnemiesType: 1
+    SpawnTimeAfterLevelStart: 46
+    EnemyNumber: 10
+    SpawnDistanceFromPlayer: 5
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 55
+    EnemyNumber: 15
+    SpawnDistanceFromPlayer: 5
+  - EnemiesType: 1
+    SpawnTimeAfterLevelStart: 64
+    EnemyNumber: 12
+    SpawnDistanceFromPlayer: 5
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 73
+    EnemyNumber: 18
+    SpawnDistanceFromPlayer: 5
+  - EnemiesType: 1
+    SpawnTimeAfterLevelStart: 82
+    EnemyNumber: 15
+    SpawnDistanceFromPlayer: 4
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 91
+    EnemyNumber: 20
+    SpawnDistanceFromPlayer: 4
+  - EnemiesType: 1
+    SpawnTimeAfterLevelStart: 100
+    EnemyNumber: 18
+    SpawnDistanceFromPlayer: 4
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 109
+    EnemyNumber: 22
+    SpawnDistanceFromPlayer: 4
+  - EnemiesType: 1
+    SpawnTimeAfterLevelStart: 118
+    EnemyNumber: 20
+    SpawnDistanceFromPlayer: 3
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 127
+    EnemyNumber: 25
+    SpawnDistanceFromPlayer: 3
+  - EnemiesType: 1
+    SpawnTimeAfterLevelStart: 136
+    EnemyNumber: 22
+    SpawnDistanceFromPlayer: 3

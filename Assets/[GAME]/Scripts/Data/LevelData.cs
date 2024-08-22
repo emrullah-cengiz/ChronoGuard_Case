@@ -14,5 +14,5 @@ public class WaveData
    public EnemyType EnemiesType;
    public int SpawnTimeAfterLevelStart;
    public int EnemyNumber;
-   public float SpawnDistanceFromPlayer;
+   // public float SpawnDistanceFromPlayer;
 }

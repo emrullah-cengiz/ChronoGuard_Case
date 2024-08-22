@@ -30,7 +30,7 @@ public class Bullet : MonoBehaviour, IInitializablePoolable<ShootData>
     {
         _trails = GetComponentsInChildren<TrailRenderer>();
         _particles = GetComponentsInChildren<ParticleSystem>();
-        
+
         _bulletPool = ServiceLocator.Resolve<Bullet.Pool>();
         _particlePool = ServiceLocator.Resolve<Pool<ParticleType>>();
     }
@@ -80,20 +80,20 @@ public class Bullet : MonoBehaviour, IInitializablePoolable<ShootData>
 
     private void OnHit()
     {
-        _hitParticle.gameObject.SetActive(true);
-        _hitParticle.Play();
+        // _hitParticle.gameObject.SetActive(true);
+        // _hitParticle.Play();
     }
 
     private void PlayEffects()
     {
         foreach (var particle in _particles)
-            if (particle != _hitParticle)
-                particle.Play();
+            // if (particle != _hitParticle)
+            particle.Play();
     }
 
     private void ClearEffects()
     {
-        _hitParticle.gameObject.SetActive(false);
+        // _hitParticle.gameObject.SetActive(false);
         foreach (var trail in _trails)
             trail.Clear();
         // foreach (var particle in _particles)

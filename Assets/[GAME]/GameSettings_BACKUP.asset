@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ab97f000033fa84b85fc34d76114046, type: 3}
-  m_Name: GameSettings
+  m_Name: GameSettings_BACKUP
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -37,7 +37,7 @@ MonoBehaviour:
       Data: 2.02
     - Name: AimingProgressShootingThreshold
       Entry: 4
-      Data: 0.92
+      Data: 0.8
     - Name: 
       Entry: 8
       Data: 
@@ -120,6 +120,12 @@ MonoBehaviour:
     - Name: EnemySettings
       Entry: 7
       Data: 7|EnemySettings, Assembly-CSharp
+    - Name: InWaveSpawnDelayInSeconds
+      Entry: 4
+      Data: 0.3
+    - Name: DespawnDelayAfterDead
+      Entry: 4
+      Data: 2
     - Name: HitImpulseForce
       Entry: 4
       Data: 100
@@ -226,24 +232,9 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: InWaveSpawnDelayInSeconds
+    - Name: AgentSetDestinationRate
       Entry: 4
-      Data: 0.03
-    - Name: DespawnDelayAfterDead
-      Entry: 4
-      Data: 2
-    - Name: SpawnWaveRadius
-      Entry: 4
-      Data: 1.5
-    - Name: AgentSetDestinationMinRate
-      Entry: 4
-      Data: 0.2
-    - Name: AgentSetDestinationMaxRate
-      Entry: 4
-      Data: 1
-    - Name: AgentMaxDistanceForMaxUpdateRate
-      Entry: 4
-      Data: 4
+      Data: 0
     - Name: PoolSettings
       Entry: 7
       Data: 12|Pool`2+PoolSettings[[Enemy, Assembly-CSharp],[EnemyType, Assembly-CSharp]],

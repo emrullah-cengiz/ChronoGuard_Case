@@ -6,7 +6,7 @@ public class LevelEndState : GameStateBase
         
         var success = (bool)@params[0];
         
-        _levelSystem.Reset();
+        _levelSystem.ClearLevel();
         
         Events.GameStates.OnLevelEnd?.Invoke(success);
     }

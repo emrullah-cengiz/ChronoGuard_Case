@@ -9,33 +9,51 @@ using UnityEngine.EventSystems;
 
 public class MoveToPlayerTask : EnemyBehaviourTree.NodeBase
 {
-    private readonly float _executeRate;
+    private readonly float _minUpdateRate;
+    private readonly float _maxUpdateRate;
+    private readonly float _maxDistanceForMaxUpdateRateSqr;
+    private float _executeRate;
     private float _startTime;
+    private Vector3 _lastPlayerPosition;
+    private float _lastDistanceSqr;
 
-    public MoveToPlayerTask(EnemyBehaviourTree.TreeParams @params, EnemyBehaviourTree.BlackBoard blackBoard, CancellationTokenSource cts) : base(@params,
-        blackBoard, cts)
+    public MoveToPlayerTask(EnemyBehaviourTree.TreeParams @params, EnemyBehaviourTree.BlackBoard blackBoard, CancellationTokenSource cts) 
+        : base(@params, blackBoard, cts)
     {
-        _executeRate = _enemySettings.AgentSetDestinationRate;
+        _minUpdateRate = _enemySettings.AgentSetDestinationMinRate;
+        _maxUpdateRate = _enemySettings.AgentSetDestinationMaxRate;
+        _maxDistanceForMaxUpdateRateSqr = _enemySettings.AgentMaxDistanceForMaxUpdateRate * _enemySettings.AgentMaxDistanceForMaxUpdateRate;
+        _executeRate = _minUpdateRate;
     }
 
-    //calculate by executeRate 
     public override NodeState Evaluate()
     {
-        if (!Params.Agent.enabled)
-            return NodeState.SUCCESS;
-
-        if (Time.time - _startTime < _executeRate)
+        if (!Params.Agent.enabled || Time.time - _startTime < _executeRate)
             return NodeState.SUCCESS;
 
         _startTime = Time.time;
 
-        var dest = _playerSystem.Position - (_blackBoard.PlayerDirection * (Params.Enemy.Data.AttackRange));
+        var currentPlayerPosition = _playerSystem.Position;
+        var distanceSqr = (Params.Agent.transform.position - currentPlayerPosition).sqrMagnitude;
 
+        if (currentPlayerPosition != _lastPlayerPosition || Mathf.Abs(distanceSqr - _lastDistanceSqr) > 0.1f)
+        {
+            _lastPlayerPosition = currentPlayerPosition;
+            _lastDistanceSqr = distanceSqr;
+
+            _executeRate = _minUpdateRate + (_maxUpdateRate - _minUpdateRate) * (distanceSqr / _maxDistanceForMaxUpdateRateSqr);
+            _executeRate = Mathf.Clamp(_executeRate, _minUpdateRate, _maxUpdateRate);
+        }
+        else
+            return NodeState.SUCCESS;
+
+        var dest = _playerSystem.Position - (_blackBoard.PlayerDirection * Params.Enemy.Data.AttackRange);
         Params.Agent.SetDestination(dest);
 
         return NodeState.SUCCESS;
     }
 }
+
 
 public class CheckForAttack : EnemyBehaviourTree.NodeBase
 {
@@ -105,7 +123,7 @@ public class LookToPlayerTask : EnemyBehaviourTree.NodeBase
 
     public override NodeState Evaluate()
     {
-        var targetRotation = Quaternion.LookRotation(_blackBoard.PlayerDirection);
+        var targetRotation = Quaternion.LookRotation(Params.Agent.steeringTarget);
 
         Params.Enemy.Rotation = Quaternion.Lerp(Params.Enemy.Rotation, targetRotation, Time.deltaTime * 5f);
 

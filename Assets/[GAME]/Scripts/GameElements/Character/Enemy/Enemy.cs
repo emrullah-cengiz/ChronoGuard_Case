@@ -25,6 +25,9 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
     private void Awake()
     {
         _enemySettings = ServiceLocator.Resolve<EnemySettings>();
+        
+        _agent.updateUpAxis = false;
+        _agent.updateRotation = false;
     }
 
     public void OnCreated()
@@ -52,7 +55,6 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
         transform.position = spawnData.Position;
         transform.LookAt(spawnData.LookAtPosition);
 
-        
         _health.Initialize(Data.MaxHealth);
         _behaviourTree.ReInitialize();
         _ragdoll.SetRagdollState(false);

@@ -12,6 +12,7 @@ public class PlayerSystem : TransformObject, IDamagable
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private CharacterAnimatorController _animator;
     // [SerializeField] private PlayerStateController _playerStateController;
+    [SerializeField] private MovementController _movementController;
     [SerializeField] private PlayerAttackHandler _attackHandler;
     [SerializeField] private Weapon _weapon;
     [SerializeField] private Health _health;
@@ -21,18 +22,16 @@ public class PlayerSystem : TransformObject, IDamagable
     
     private void OnEnable()
     {
-        Debug.Log("PlayerSystem");
-
         Events.GameStates.OnGameStarted += Initialize;
         Events.GameStates.OnLevelStarted += Reinitialize;
-        Events.GameStates.OnLevelEnd += StopActions;
+        Events.GameStates.OnLevelEnd += Deactivate;
     }
 
     private void OnDisable()
     {
         Events.GameStates.OnGameStarted -= Initialize;
         Events.GameStates.OnLevelStarted -= Reinitialize;
-        Events.GameStates.OnLevelEnd -= StopActions;
+        Events.GameStates.OnLevelEnd -= Deactivate;
     }
 
     private void Initialize()
@@ -42,15 +41,17 @@ public class PlayerSystem : TransformObject, IDamagable
 
         // _playerStateController.Initialize();
         
+        _animator.Initialize(Properties.Speed);
         _attackHandler.Initialize();
     }
 
     private void Reinitialize()
     {
         // _playerStateController.Initialize();
-        Debug.Log("ReInitializing Player..");
+        Debug.Log("Reinitializing Player..");
 
-        _animator.Initialize(Properties.Speed);
+        _movementController.Activate(true);
+        
         _animator.SetDead(false);
         
         _health.Activate(true);
@@ -61,8 +62,9 @@ public class PlayerSystem : TransformObject, IDamagable
         _attackHandler.Reinitialize();
     }
 
-    private void StopActions(bool success)
+    private void Deactivate(bool success)
     {
+        _movementController.Activate(false);
         _attackHandler.StopActions();
     }
 
@@ -84,5 +86,4 @@ public class PlayerSystem : TransformObject, IDamagable
         Events.Player.OnPlayerDead?.Invoke();
     }
 
-    public void LookAt(Vector3 position) => transform.LookAt(position);
 }

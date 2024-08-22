@@ -28,10 +28,10 @@ public class GameSettings : SerializedScriptableObject
 
 [Serializable]
 public class PlayerSettings
-{
-    public float StayingAimOffset = 6f;
-    public float MovingAimOffset = 6f;
+{ 
+    public float AimOffset = -8.36f;
     public float LookNewTargetSpeed = 6f;
+    public float AimingProgressShootingThreshold = .8f;
 }
 
 [Serializable]
@@ -44,14 +44,20 @@ public class WeaponSettings
 [Serializable]
 public class EnemySettings
 {
-    public float InWaveSpawnDelayInSeconds = .3f;
-    public float DespawnDelayAfterDead = .5f;
     public float HitImpulseForce = 10f;
     public float BaseSpeed = 3.3f;
     public Dictionary<EnemySpeedMode, float> SpeedMultipliers;
     public Dictionary<EnemyAttackType, float> HitTimePerAnimation;
 
-    [Title("Optimization")] public float AgentSetDestinationRate = .2f;
+    [Title("Spawner")]
+    public float InWaveSpawnDelayInSeconds = .3f;
+    public float DespawnDelayAfterDead = .5f;
+    public float SpawnWaveRadius = 2;
+
+    [Title("Optimization")] 
+    public float AgentSetDestinationMinRate = .2f;
+    public float AgentSetDestinationMaxRate = .5f;
+    public float AgentMaxDistanceForMaxUpdateRate = .5f;
 
     [Title("Pool")] [OdinSerialize] [NonSerialized] [Space(10)]
     public Enemy.Pool.PoolSettings PoolSettings;

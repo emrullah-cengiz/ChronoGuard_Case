@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -15,11 +16,17 @@ public class EnemySpawner
     private readonly Enemy.Pool _enemyPool = ServiceLocator.Resolve<Enemy.Pool>();
 
     private CancellationTokenSource _cts = new();
+    private Transform[] _spawnPoints;
 
-    public void Initialize(LevelProgressData progressData, LevelData levelData, bool continueLevel)
+    public void Initialize(Transform[] spawnPoints)
+    {
+        _spawnPoints = spawnPoints;
+    }
+
+    public void Reinitialize(LevelProgressData progressData, LevelData levelData, bool continueLevel)
     {
         _cts = new();
-        
+
         _progressData = progressData;
         _levelData = levelData;
         _continueLevel = continueLevel;
@@ -42,36 +49,15 @@ public class EnemySpawner
         foreach (var waveData in _levelData.Waves)
         {
             await UniTask.WaitForSeconds(waveData.SpawnTimeAfterLevelStart - elapsedSeconds, cancellationToken: _cts.Token);
-            
-            if(_cts.IsCancellationRequested)
+
+            if (_cts.IsCancellationRequested)
                 return;
 
             elapsedSeconds = waveData.SpawnTimeAfterLevelStart;
 
-            Vector3 pointOnCircle;
-
-            if (Random.value * 10 > 5)
-                pointOnCircle = _playerSystem.Velocity * waveData.SpawnDistanceFromPlayer;
-            else
-            {
-                pointOnCircle = Random.insideUnitCircle * waveData.SpawnDistanceFromPlayer;
-                pointOnCircle = new Vector3(pointOnCircle.x, 0, pointOnCircle.y);
-            }
-            
-            var wavePosition = pointOnCircle + _playerSystem.Position;
-
-            EnemiesSpawnLoop(waveData, wavePosition).Forget();
+            EnemiesSpawnLoop(waveData, _spawnPoints[Random.Range(0, _spawnPoints.Length)].position).Forget();
 
             Events.Enemies.OnWaveSpawned?.Invoke();
-            
-// #if UNITY_EDITOR
-//
-//             GizmosManager.AddDrawAction(() =>
-//             {
-//                 Gizmos.color = Color.yellow;
-//                 Gizmos.DrawWireSphere(wavePosition, 2);
-//             });
-// #endif
         }
     }
 
@@ -80,11 +66,11 @@ public class EnemySpawner
         for (var i = 0; i < waveData.EnemyNumber; i++)
         {
             _enemyPool.Spawn(waveData.EnemiesType,
-                new Enemy.SpawnData(wavePosition + Random.insideUnitSphere * 2, _playerSystem.Position));
+                new Enemy.SpawnData(wavePosition + Random.insideUnitSphere * _enemySettings.SpawnWaveRadius, _playerSystem.Position));
 
             await UniTask.WaitForSeconds(_enemySettings.InWaveSpawnDelayInSeconds, cancellationToken: _cts.Token);
-            
-            if(_cts.IsCancellationRequested)
+
+            if (_cts.IsCancellationRequested)
                 return;
         }
     }

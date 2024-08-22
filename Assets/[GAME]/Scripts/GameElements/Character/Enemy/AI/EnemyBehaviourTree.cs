@@ -48,15 +48,15 @@ public class EnemyBehaviourTree : Tree
     
     public override void Update()
     {
-        PrepareBlackboard(ref _blackBoard);
+        PrepareBlackboard();
         
         base.Update();
     }
 
-    private void PrepareBlackboard(ref BlackBoard blackBoard)
+    private void PrepareBlackboard()
     {
-        blackBoard.CurrentPlayerDistance = _playerSystem.Position - _params.Enemy.Position;
-        blackBoard.PlayerDirection = blackBoard.CurrentPlayerDistance.normalized;
+        _blackBoard.CurrentPlayerDistance = _playerSystem.Position - _params.Enemy.Position;
+        _blackBoard.PlayerDirection = _blackBoard.CurrentPlayerDistance.normalized;
     }
 
     public abstract class NodeBase : Node
