@@ -15,12 +15,15 @@ public class MoveToPlayerTask : EnemyBehaviourTree.NodeBase
     public MoveToPlayerTask(EnemyBehaviourTree.TreeParams @params, EnemyBehaviourTree.BlackBoard blackBoard, CancellationTokenSource cts) : base(@params,
         blackBoard, cts)
     {
-        _executeRate = _enemySettings.SetDestinationRate;
+        _executeRate = _enemySettings.AgentSetDestinationRate;
     }
 
     //calculate by executeRate 
     public override NodeState Evaluate()
     {
+        if (!Params.Agent.enabled)
+            return NodeState.SUCCESS;
+
         if (Time.time - _startTime < _executeRate)
             return NodeState.SUCCESS;
 
@@ -80,9 +83,9 @@ public class AttackToPlayerTask : EnemyBehaviourTree.NodeBase
     private async UniTaskVoid TryHitPlayer()
     {
         Params.Animator.TriggerAttack(Params.Enemy.Data.AttackType);
-        
+
         await UniTask.WaitForSeconds(_enemySettings.HitTimePerAnimation[Params.Enemy.Data.AttackType], cancellationToken: _cancellationTokenSource.Token);
-        
+
         var res = new RaycastHit[1];
         if (Physics.RaycastNonAlloc(Params.Enemy.Position, Params.Enemy.Forward, res, Params.Enemy.Data.AttackRange
                 // ,LayerMask.GetMask(GlobalVariables.Layers.PLAYER)

@@ -24,6 +24,6 @@ MonoBehaviour:
   MaxHealth: 10000
   Damage: 0
   AttackRange: 5
-  AttackRateInSeconds: 0.5
-  BulletSpeed: 10
-  BaseSpeed: 1
+  AttackRateInSeconds: 0.1
+  BulletSpeed: 14
+  Speed: 3.55

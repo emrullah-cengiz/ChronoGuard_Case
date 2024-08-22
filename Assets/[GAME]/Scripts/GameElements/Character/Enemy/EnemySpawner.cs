@@ -48,8 +48,17 @@ public class EnemySpawner
 
             elapsedSeconds = waveData.SpawnTimeAfterLevelStart;
 
-            var randomPointOnCircle = Random.insideUnitCircle * waveData.SpawnDistanceFromPlayer;
-            var wavePosition = new Vector3(randomPointOnCircle.x, 0, randomPointOnCircle.y) + _playerSystem.Position;
+            Vector3 pointOnCircle;
+
+            if (Random.value * 10 > 5)
+                pointOnCircle = _playerSystem.Velocity * waveData.SpawnDistanceFromPlayer;
+            else
+            {
+                pointOnCircle = Random.insideUnitCircle * waveData.SpawnDistanceFromPlayer;
+                pointOnCircle = new Vector3(pointOnCircle.x, 0, pointOnCircle.y);
+            }
+            
+            var wavePosition = pointOnCircle + _playerSystem.Position;
 
             EnemiesSpawnLoop(waveData, wavePosition).Forget();
 

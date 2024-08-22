@@ -8,47 +8,30 @@ public class Weapon : TransformObject
     [SerializeField] private Transform _barrelPoint;
     [SerializeField] private ParticleSystem _muzzle;
 
-    // [SerializeField] public ShootData shootData;
+    [SerializeField] public Transform Barrel => _barrelPoint;
 
     private Bullet.Pool _bulletPool;
 
-    private void Awake()
-    {
-        _bulletPool = ServiceLocator.Resolve<Bullet.Pool>();
-    }
+    private void Awake() => _bulletPool = ServiceLocator.Resolve<Bullet.Pool>();
 
-    private void OnEnable()
-    {
-        Events.Weapon.OnBulletHit += OnBulletHitEnemy;
-        Events.GameStates.OnLevelEnd += OnReset;
-    }
-
-    private void OnDisable()
-    {
-        Events.Weapon.OnBulletHit -= OnBulletHitEnemy;
-        Events.GameStates.OnLevelEnd -= OnReset;
-    }
+    private void OnEnable() => Events.GameStates.OnLevelEnd += OnReset;
+    private void OnDisable() => Events.GameStates.OnLevelEnd -= OnReset;
 
     private void OnReset(bool obj) => _bulletPool.DespawnAll();
 
-    private async void OnBulletHitEnemy(Bullet bullet)
-    {
-        await UniTask.Delay(100);
-        _bulletPool.Despawn(bullet, bullet.Type);
-    }
-
-    public void Shoot(Vector3 direction, int damage, float speed)
+    public void Shoot(int damage, float speed)
     {
         var shootData = new ShootData()
         {
-            Direction = direction,
+            Direction = _barrelPoint.forward,
             StartPosition = _barrelPoint.position,
-            Damage =  damage,
+            Damage = damage,
             Speed = speed
-        }; 
+        };
 
-        _bulletPool.Spawn(BulletType.Default, shootData);
-        
+        var bullet = _bulletPool.Spawn(BulletType.Default, shootData, despawnDelay: .5f, out var cancellationTokenSource);
+        bullet.SetCancellationTokenSource(cancellationTokenSource);
+
         _muzzle.Play();
     }
 }

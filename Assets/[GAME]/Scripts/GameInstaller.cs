@@ -31,6 +31,7 @@ public class GameInstaller : MonoBehaviour
         ServiceLocator.Register(_gameSettings.LevelSettings);
         ServiceLocator.Register(_gameSettings.WeaponSettings);
         ServiceLocator.Register(_gameSettings.EnemySettings);
+        ServiceLocator.Register(_gameSettings.VFXSettings);
         
         ServiceLocator.Register(_playerProperties);
         
@@ -54,6 +55,7 @@ public class GameInstaller : MonoBehaviour
 
         RegisterAndAddToList(new Bullet.Pool(_gameSettings.WeaponSettings.PoolSettings));
         RegisterAndAddToList(new Enemy.Pool(_gameSettings.EnemySettings.PoolSettings));
+        RegisterAndAddToList(new Pool<ParticleType>(_gameSettings.VFXSettings.PoolSettings));
 
         return pools;
 

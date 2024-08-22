@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
 public class PlayerAttackHandler : MonoBehaviour
@@ -11,13 +12,16 @@ public class PlayerAttackHandler : MonoBehaviour
     [SerializeField] private SphereCollider _collider;
     [SerializeField] private Weapon _weapon;
     [SerializeField] private CharacterAnimatorController _animator;
+    [SerializeField] private NavMeshAgent _agent;
 
     private PlayerSystem _playerSystem;
     private PlayerProperties _playerProperties;
     private PlayerSettings _playerSettings;
 
     private HashSet<Enemy> _nearEnemies;
+
     private Enemy _currentTarget;
+    private Quaternion _targetRotation;
 
     private CancellationTokenSource _cancellationTokenSource;
 
@@ -42,7 +46,7 @@ public class PlayerAttackHandler : MonoBehaviour
         _currentTarget = null;
         _isActive = true;
 
-        SelectTarget().Forget();
+        // SelectTarget().Forget();
         ShootTarget().Forget();
     }
 
@@ -54,19 +58,35 @@ public class PlayerAttackHandler : MonoBehaviour
 
     private void Update()
     {
+        SelectTarget();
+
         LookTarget();
+    }
+
+    private void SelectTarget()
+    {
+        var target = GetNearestEnemy();
+        
+        if (target != _currentTarget)
+            Events.Player.OnLockedTarget?.Invoke(target is not null);
+
+        _currentTarget = target;
     }
 
     private void LookTarget()
     {
-        if (_currentTarget == null)
+        if (!_currentTarget)
             return;
 
         var dir = (_currentTarget.Position - _playerSystem.Position).normalized;
-        var targetRotation = Quaternion.LookRotation(dir);
+        _targetRotation = Quaternion.LookRotation(dir);
 
-        _playerSystem.Rotation = targetRotation;
-        _playerSystem.transform.Rotate(Vector3.up * _playerSettings.AimRotationOffset, Space.World);
+        var offset = Quaternion.Euler(Vector3.up * _playerSettings.StayingAimOffset);
+        _targetRotation *= offset * Quaternion.Inverse(_playerSystem.Rotation) * _playerSystem.Rotation;
+
+        _playerSystem.Rotation = Quaternion.Lerp(_playerSystem.Rotation, _targetRotation, Time.deltaTime * _playerSettings.LookNewTargetSpeed *
+                                                                                          (160 - Quaternion.Angle(_targetRotation, _playerSystem.Rotation)) *
+                                                                                          .1f);
     }
 
     private async UniTaskVoid ShootTarget()
@@ -76,30 +96,17 @@ public class PlayerAttackHandler : MonoBehaviour
             if (_currentTarget != null)
             {
                 _animator.SetAim(_currentTarget != null);
-                
-                _weapon.Shoot(_weapon.Forward, _playerProperties.Damage, _playerProperties.BulletSpeed);
+
+                _weapon.Shoot(_playerProperties.Damage, _playerProperties.BulletSpeed);
 
                 await UniTask.WaitForSeconds(_playerProperties.AttackRateInSeconds, cancellationToken: _cancellationTokenSource.Token);
             }
             else
             {
                 _animator.SetAim(_currentTarget != null);
-                
+
                 await UniTask.Yield();
             }
-        }
-    }
-
-    private async UniTaskVoid SelectTarget()
-    {
-        while (_isActive)
-        {
-            await UniTask.WaitUntil(() => _currentTarget == null || !_currentTarget.IsAlive, cancellationToken: _cancellationTokenSource.Token);
-
-            _currentTarget = GetNearestEnemy();
-
-            if (_currentTarget == null)
-                await UniTask.Yield();
         }
     }
 

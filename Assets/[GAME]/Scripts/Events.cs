@@ -16,11 +16,7 @@ public static class Events
     {
         public static Action<int, int> OnDamageTake = delegate { };
         public static Action OnPlayerDead = delegate { };
-    }
-    
-    public static class Weapon
-    {
-        public static Action<Bullet> OnBulletHit = delegate { };
+        public static Action<bool> OnLockedTarget = delegate { };
     }
     
     public static class Enemies

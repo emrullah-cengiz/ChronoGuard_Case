@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using Unity.VisualScripting;
@@ -17,7 +19,7 @@ public interface IPoolableInitializationData
 public interface IInitializablePoolable
 {
     public void OnCreated();
-    public void OnDeSpawned();
+    public void OnDespawned();
 }
 
 public interface IInitializablePoolable<in TInitializationData> : IInitializablePoolable where TInitializationData : IPoolableInitializationData
@@ -40,8 +42,6 @@ public abstract class Pool<TObject, TEnum> : IPool<TObject, TEnum> where TObject
     where TEnum : Enum
 {
     private readonly PoolSettings _poolSettings;
-    // private readonly Transform _parent;
-
     private readonly Dictionary<TEnum, (Stack<TObject>, Transform)> _pools;
 
     protected Pool(PoolSettings poolSettings)
@@ -81,6 +81,38 @@ public abstract class Pool<TObject, TEnum> : IPool<TObject, TEnum> where TObject
         return obj;
     }
 
+    public TObject Spawn(TEnum type, float despawnDelay)
+    {
+        var obj = Spawn(type);
+
+        DespawnDelayed(obj, type, despawnDelay).Forget();
+
+        return obj;
+    }
+
+    public TObject Spawn(TEnum type, float despawnDelay, out CancellationTokenSource cancellationTokenSource)
+    {
+        var obj = Spawn(type);
+
+        cancellationTokenSource = new CancellationTokenSource();
+
+        DespawnDelayed(obj, type, despawnDelay, cancellationTokenSource).Forget();
+
+        return obj;
+    }
+
+    public TObject Spawn<TInitializationData>(TEnum type, TInitializationData data, float despawnDelay, out CancellationTokenSource cancellationTokenSource)
+        where TInitializationData : IPoolableInitializationData
+    {
+        var obj = Spawn(type, data);
+        
+        cancellationTokenSource = new CancellationTokenSource();
+        
+        DespawnDelayed(obj, type, despawnDelay, cancellationTokenSource).Forget();
+
+        return obj;
+    }
+
     public TObject Spawn<TInitializationData>(TEnum type, TInitializationData data) where TInitializationData : IPoolableInitializationData
     {
         var obj = Spawn(type);
@@ -100,7 +132,17 @@ public abstract class Pool<TObject, TEnum> : IPool<TObject, TEnum> where TObject
         _pools[type].Item1.Push(obj);
 
         if (obj is IInitializablePoolable initializable)
-            initializable.OnDeSpawned();
+            initializable.OnDespawned();
+    }
+
+    private async UniTaskVoid DespawnDelayed(TObject obj, TEnum type, float despawnDelay, CancellationTokenSource cancellationTokenSource = null)
+    {
+        if (cancellationTokenSource != null)
+            await UniTask.WaitForSeconds(despawnDelay, cancellationToken: cancellationTokenSource.Token);
+        else
+            await UniTask.WaitForSeconds(despawnDelay);
+
+        Despawn(obj, type);
     }
 
     public void DespawnAll()
@@ -131,14 +173,6 @@ public abstract class Pool<TObject, TEnum> : IPool<TObject, TEnum> where TObject
         for (var i = 0; i < properties.ExpansionSize; i++)
             poolTuple.pool.Push(Create(properties.Prefab, poolTuple.parent));
     }
-
-    // private TObject Create(TEnum type)
-    // {
-    //     Assert.IsTrue(_poolSettings.Properties.TryGetValue(type, out var properties),
-    //         $"PoolProperties for {type} not found!");
-    //
-    //     return Create(properties!.Prefab);
-    // }
 
     private TObject Create(TObject prefab, Transform parent)
     {
@@ -175,9 +209,9 @@ public abstract class Pool<TObject, TEnum> : IPool<TObject, TEnum> where TObject
     }
 }
 
-public abstract class Pool<TEnum> : Pool<Transform, TEnum> where TEnum : Enum
+public class Pool<TEnum> : Pool<Transform, TEnum> where TEnum : Enum
 {
-    protected Pool(PoolSettings poolSettings, bool createParent = true) : base(poolSettings)
+    public Pool(PoolSettings poolSettings) : base(poolSettings)
     {
     }
 }

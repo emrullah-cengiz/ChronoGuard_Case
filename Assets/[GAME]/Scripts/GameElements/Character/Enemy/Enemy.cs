@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,11 +14,18 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
 
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private Rigidbody _rb;
-    
+
+    private EnemySettings _enemySettings;
+
     private EnemyBehaviourTree _behaviourTree;
 
     private bool _initialized;
     public bool IsAlive { get; private set; }
+
+    private void Awake()
+    {
+        _enemySettings = ServiceLocator.Resolve<EnemySettings>();
+    }
 
     public void OnCreated()
     {
@@ -35,19 +44,23 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
     public void OnSpawned(SpawnData spawnData)
     {
         _agent.enabled = true;
+        _agent.speed = _enemySettings.BaseSpeed * _enemySettings.SpeedMultipliers[Data.SpeedMode];
+        
+        _animator.Initialize(_enemySettings.SpeedMultipliers.Max(x=>x.Value) * _enemySettings.BaseSpeed);
+        _animator.SetAttackSpeedByAttackRate(Data.AttackType, Data.AttackRateInSeconds);
 
         transform.position = spawnData.Position;
         transform.LookAt(spawnData.LookAtPosition);
-            
-        _animator.SetAttackSpeedByAttackRate(Data.AttackType, Data.AttackRateInSeconds);
+
+        
         _health.Initialize(Data.MaxHealth);
         _behaviourTree.ReInitialize();
         _ragdoll.SetRagdollState(false);
 
         IsAlive = true;
     }
-    
-    public void OnDeSpawned()
+
+    public void OnDespawned()
     {
         _behaviourTree.Stop();
     }
@@ -62,7 +75,7 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
     {
         _health.TakeDamage(damage);
 
-        // HitImpulse(hitDirection);
+        HitImpulse(hitDirection).Forget();
 
         //reaction
     }
@@ -71,22 +84,27 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
     public void OnDead()
     {
         IsAlive = false;
-        
+
         _ragdoll.SetRagdollState(true);
-        
+
         _health.Activate(false);
-        
+
         _agent.enabled = false;
-        
+
         Events.Enemies.OnEnemyDead?.Invoke(this);
     }
 
-    // private void HitImpulse(Vector3 hitDirection)
-    // {
-    //     _rb.AddExplosionForce(,
-    //         _hips.transform.position - hitDirection * .3f, .2f, 1, mode: ForceMode.Impulse);
-    //
-    // }
+    private async UniTaskVoid HitImpulse(Vector3 hitDirection)
+    {
+        _agent.enabled = false;
+        _rb.AddExplosionForce(_enemySettings.HitImpulseForce, transform.position - hitDirection * .3f,
+            .3f, 1, mode: ForceMode.Impulse);
+        
+        await UniTask.WaitForSeconds(.1f);
+        
+        _agent.enabled = true;
+    }
+
 
     public class Pool : Pool<Enemy, EnemyType>
     {

@@ -22,7 +22,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   MaxHealth: 30
-  Damage: 8
+  Damage: 5
   AttackRange: 1
   AttackRateInSeconds: 1
   Type: 0

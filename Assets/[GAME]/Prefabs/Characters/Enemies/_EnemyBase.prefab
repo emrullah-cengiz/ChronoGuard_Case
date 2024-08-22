@@ -2056,7 +2056,7 @@ MonoBehaviour:
   _health: {fileID: 2616996205731996393}
   _ragdoll: {fileID: 3064313767903849613}
   _agent: {fileID: 2300794881634587431}
-  _rb: {fileID: 0}
+  _rb: {fileID: 7020557300041671040}
 --- !u!114 &990231943817127279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2091,7 +2091,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.19
+  m_Radius: 0.26
   m_Height: 2.4303632
   m_Direction: 1
   m_Center: {x: 0, y: 0.7151816, z: 0}

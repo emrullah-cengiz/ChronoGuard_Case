@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerSystem : TransformObject, IDamagable
 {
-    public PlayerProperties Properties { get; private set; }
+    private PlayerProperties Properties;
 
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private CharacterAnimatorController _animator;
@@ -15,8 +15,8 @@ public class PlayerSystem : TransformObject, IDamagable
     [SerializeField] private PlayerAttackHandler _attackHandler;
     [SerializeField] private Weapon _weapon;
     [SerializeField] private Health _health;
-    
-    public int Health => _health.CurrentHealth;
+
+    private int Health => _health.CurrentHealth;
     public Vector3 Velocity => _agent.velocity;
     
     private void OnEnable()
@@ -50,6 +50,7 @@ public class PlayerSystem : TransformObject, IDamagable
         // _playerStateController.Initialize();
         Debug.Log("ReInitializing Player..");
 
+        _animator.Initialize(Properties.Speed);
         _animator.SetDead(false);
         
         _health.Activate(true);

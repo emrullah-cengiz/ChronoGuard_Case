@@ -12,6 +12,7 @@ public static class GlobalVariables
     public static class Layers
     {
         public const string PLAYER = "Player";
+        public const string ENEMY = "Enemy";
     }
     
     public static class Tags
