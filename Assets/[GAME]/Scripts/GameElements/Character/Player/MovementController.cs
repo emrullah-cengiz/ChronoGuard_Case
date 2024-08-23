@@ -10,7 +10,7 @@ public class MovementController : MonoBehaviour
     [SerializeField] private InputActionReference _movementInputActionRef;
     [SerializeField] private NavMeshAgent _agent;
 
-    [SerializeField] private PlayerProperties _playerProperties;
+    private PlayerSystem _playerSystem;
 
     private bool _isActive;
     private Vector2 _input;
@@ -20,12 +20,13 @@ public class MovementController : MonoBehaviour
     private void Awake()
     {
         _angularSpeed = _agent.angularSpeed;
-        _agent.speed = _playerProperties.Speed;
+        _playerSystem = ServiceLocator.Resolve<PlayerSystem>();
     }
 
     private void OnEnable()
     {
         Events.Player.OnLockedTarget += ActivateAgentRotation;
+        Events.GameStates.OnLevelStarted += SetNewSpeed;
         _movementInputActionRef.action.performed += SetInput;
         _movementInputActionRef.action.canceled += ClearInput;
     }
@@ -33,6 +34,7 @@ public class MovementController : MonoBehaviour
     private void OnDisable()
     {
         Events.Player.OnLockedTarget -= ActivateAgentRotation;
+        Events.GameStates.OnLevelStarted -= SetNewSpeed;
         _movementInputActionRef.action.performed -= SetInput;
         _movementInputActionRef.action.canceled -= ClearInput;
     }
@@ -65,4 +67,6 @@ public class MovementController : MonoBehaviour
         _input = Vector3.zero;
         _inputPhase = context.phase;
     }
+    
+    private void SetNewSpeed() => _agent.speed = _playerSystem.Properties.Speed;
 }

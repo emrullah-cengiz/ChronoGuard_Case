@@ -60,10 +60,4 @@ public class EnemyStartState : EnemyStateBase
     public EnemyStartState(EnemyStateController.StateParams stateParams) : base(stateParams)
     {
     }
-
-    public override void OnEnter(params object[] @params)
-    {
-        base.OnEnter();
-
-    }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameInstaller : MonoBehaviour
 {
     [SerializeField] private GameSettings _gameSettings;
-    [SerializeField] private PlayerProperties _playerProperties;
+    // [SerializeField] private PlayerProperties _playerProperties;
 
     [SerializeField] private GameStateManager _gameStateManager;
     [SerializeField] private LevelSystem _levelSystem;
@@ -34,7 +34,7 @@ public class GameInstaller : MonoBehaviour
         ServiceLocator.Register(_gameSettings.EnemySettings);
         ServiceLocator.Register(_gameSettings.VFXSettings);
         
-        ServiceLocator.Register(_playerProperties);
+        // ServiceLocator.Register(_playerProperties);
         
         //Pools
         var pools = RegisterPools();
@@ -81,11 +81,11 @@ public class GameInstaller : MonoBehaviour
     private void OnApplicationPause(bool pauseStatus)
     {
         if (pauseStatus)
-            Events.OnApplicationPause?.Invoke();
+            Events.OnApplicationPause();
     }
 
     private void OnApplicationQuit()
     {
-        Events.OnApplicationQuit?.Invoke();
+        Events.OnApplicationQuit();
     }
 }

@@ -54,9 +54,12 @@ MonoBehaviour:
     - Name: LevelCountdownDurationInSeconds
       Entry: 3
       Data: 180
-    - Name: MaxLevel
+    - Name: PopupDelayAfterDie
       Entry: 3
       Data: 1
+    - Name: MaxLevel
+      Entry: 3
+      Data: 3
     - Name: 
       Entry: 8
       Data: 
@@ -133,6 +136,9 @@ MonoBehaviour:
     - Name: RotationSpeed
       Entry: 4
       Data: 50
+    - Name: HitToPlayerAngleThreshold
+      Entry: 4
+      Data: 10
     - Name: SpeedMultipliers
       Entry: 7
       Data: 8|System.Collections.Generic.Dictionary`2[[EnemySpeedMode, Assembly-CSharp],[System.Single,
@@ -161,7 +167,7 @@ MonoBehaviour:
       Data: 0
     - Name: $v
       Entry: 4
-      Data: 0.7
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
@@ -173,7 +179,7 @@ MonoBehaviour:
       Data: 1
     - Name: $v
       Entry: 4
-      Data: 1
+      Data: 1.3
     - Name: 
       Entry: 8
       Data: 
@@ -235,10 +241,10 @@ MonoBehaviour:
       Data: 
     - Name: HitImpulseForce
       Entry: 4
-      Data: 60
+      Data: 5
     - Name: HitImpulseDuration
       Entry: 4
-      Data: 0.2
+      Data: 0.18
     - Name: InWaveSpawnDelayInSeconds
       Entry: 4
       Data: 0.1

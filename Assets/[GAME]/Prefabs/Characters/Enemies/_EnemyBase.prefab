@@ -1938,8 +1938,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7900811054733210611, guid: e95a467e12fe94f45af871fbee678287,
         type: 3}
-      propertyPath: m_AngularSpeed
-      value: 900
+      propertyPath: m_Acceleration
+      value: 4.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7900811054733210611, guid: e95a467e12fe94f45af871fbee678287,
+        type: 3}
+      propertyPath: m_StoppingDistance
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 7900811054733210611, guid: e95a467e12fe94f45af871fbee678287,
         type: 3}
@@ -2038,6 +2043,7 @@ MonoBehaviour:
   _ragdoll: {fileID: 3064313767903849613}
   _agent: {fileID: 2300794881634587431}
   _rb: {fileID: 7020557300041671040}
+  _collider: {fileID: 2875988495046347945}
 --- !u!114 &990231943817127279
 MonoBehaviour:
   m_ObjectHideFlags: 0

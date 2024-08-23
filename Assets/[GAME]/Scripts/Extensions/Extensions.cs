@@ -5,7 +5,7 @@ public static class Extensions
 {
     public static string GetTimeFormatInSeconds(this int seconds)
     {
-        return $"{seconds / 60:00}:{seconds % 60:0}";
+        return $"{seconds / 60:00}:{seconds % 60:00}";
     }
     
     public static async UniTask<T> LoadResource<T>(string resourcePath) where T : UnityEngine.Object

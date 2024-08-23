@@ -12,20 +12,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c163d099ea3541d19b0eea22dc0f258c, type: 3}
   m_Name: Level_3
   m_EditorClassIdentifier: 
+  PlayerProperties: {fileID: 11400000, guid: fd59928a623107d4c8dd8c2d7b06d41b, type: 2}
   Waves:
   - EnemiesType: 0
     SpawnTimeAfterLevelStart: 1
-    EnemyNumber: 7
-    SpawnDistanceFromPlayer: 10
+    EnemyNumber: 5
   - EnemiesType: 0
-    SpawnTimeAfterLevelStart: 5
-    EnemyNumber: 7
-    SpawnDistanceFromPlayer: 7
+    SpawnTimeAfterLevelStart: 8
+    EnemyNumber: 5
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 15
+    EnemyNumber: 6
   - EnemiesType: 1
-    SpawnTimeAfterLevelStart: 12
+    SpawnTimeAfterLevelStart: 24
     EnemyNumber: 4
-    SpawnDistanceFromPlayer: 7
-  - EnemiesType: 2
-    SpawnTimeAfterLevelStart: 20
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 36
+    EnemyNumber: 8
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 38
+    EnemyNumber: 6
+  - EnemiesType: 1
+    SpawnTimeAfterLevelStart: 48
+    EnemyNumber: 7
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 60
     EnemyNumber: 3
-    SpawnDistanceFromPlayer: 6
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 62
+    EnemyNumber: 3
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 63
+    EnemyNumber: 3
+  - EnemiesType: 1
+    SpawnTimeAfterLevelStart: 75
+    EnemyNumber: 2
+  - EnemiesType: 1
+    SpawnTimeAfterLevelStart: 76
+    EnemyNumber: 3
+  - EnemiesType: 1
+    SpawnTimeAfterLevelStart: 76
+    EnemyNumber: 3
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 90
+    EnemyNumber: 5

@@ -16,14 +16,9 @@ public class UIPanel : SerializedMonoBehaviour
     
     [SerializeField] private Button _actionButton;
     
-    private PlayerProperties playerProperties;
+    private PlayerSystem _playerSystem;
 
     private SaveData _data;
-
-    private void Awake()
-    {
-        playerProperties = ServiceLocator.Resolve<PlayerProperties>();
-    }
 
     private void OnEnable() => _actionButton.onClick.AddListener(ActionButtonClicked);
     private void OnDisable() => _actionButton.onClick.RemoveListener(ActionButtonClicked);
@@ -32,6 +27,8 @@ public class UIPanel : SerializedMonoBehaviour
     
     public void Initialize(SaveData data)
     {
+        _playerSystem = ServiceLocator.Resolve<PlayerSystem>();
+
         _data = data;
 
         _isInfoForPreviousLevel = _panelType switch
@@ -56,10 +53,10 @@ public class UIPanel : SerializedMonoBehaviour
         _levelText.text = $"Level {progressData.LevelNumber}";
         _defeatedNumberText.text = progressData.DefeatedEnemiesNumber.ToString();
         _totalNumberText.text = _data.TotalDefeatedEnemiesNumber.ToString();
-        _healthText.text = $"{progressData.CurrentHealth} / {playerProperties.MaxHealth}";
+        _healthText.text = $"{progressData.CurrentHealth} / {_playerSystem.Properties.MaxHealth}";
         // _timeLeftText.text = _data.PreviousLevelProgress.TimeRemaining.GetTimeFormatInSeconds();
     }
  
     private void ActionButtonClicked() => 
-        Events.UI.OnPanelActionButtonClick?.Invoke(_panelType);
+        Events.UI.OnPanelActionButtonClick(_panelType);
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -16,7 +17,7 @@ namespace GAME.Utilities.StateMachine
 
     public abstract class StateBase<TStateEnum> : IState
     {
-        public virtual void OnEnter(params object[] @params)
+        public virtual void OnEnter(object[] @params)
         {
         }
 

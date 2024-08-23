@@ -1,8 +1,10 @@
 using System;
 using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
+using Object = UnityEngine.Object;
 
 public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, IDamagable
 {
@@ -14,10 +16,13 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
 
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private Rigidbody _rb;
+    [SerializeField] private Collider _collider;
 
     private EnemySettings _enemySettings;
 
     private EnemyBehaviourTree _behaviourTree;
+
+    private CancellationTokenSource _hitCancellationTokenSource;
 
     private bool _initialized;
     public bool IsAlive { get; private set; }
@@ -41,11 +46,14 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
 
         _initialized = true;
         _health.Initialize(Data.MaxHealth);
+        
+        _hitCancellationTokenSource = new();
     }
 
     //Reinitialize
     public void OnSpawned(SpawnData spawnData)
     {
+        _collider.enabled = true;
         _agent.enabled = true;
         _agent.speed = _enemySettings.BaseSpeed * _enemySettings.SpeedMultipliers[Data.SpeedMode];
         
@@ -77,15 +85,16 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
     {
         _health.TakeDamage(damage);
 
+        _hitCancellationTokenSource.Cancel();
+        _hitCancellationTokenSource = new CancellationTokenSource();
         HitImpulse(hitDirection).Forget();
-
-        //reaction
     }
 
     //Calling from _health's UnityEvent
     public void OnDead()
     {
         IsAlive = false;
+        _collider.enabled = false;
 
         _ragdoll.SetRagdollState(true);
 
@@ -93,7 +102,7 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
 
         _agent.enabled = false;
 
-        Events.Enemies.OnEnemyDead?.Invoke(this);
+        Events.Enemies.OnEnemyDead(this);
     }
 
     private async UniTaskVoid HitImpulse(Vector3 hitDirection)
@@ -102,7 +111,7 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
         _rb.AddExplosionForce(_enemySettings.HitImpulseForce, transform.position - hitDirection * .3f,
             .3f, 1, mode: ForceMode.Impulse);
         
-        await UniTask.WaitForSeconds(_enemySettings.HitImpulseDuration);
+        await UniTask.WaitForSeconds(_enemySettings.HitImpulseDuration, cancellationToken: _hitCancellationTokenSource.Token);
         
         _agent.enabled = true;
     }

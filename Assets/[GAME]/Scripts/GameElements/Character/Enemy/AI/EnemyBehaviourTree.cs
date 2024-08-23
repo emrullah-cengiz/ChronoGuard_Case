@@ -17,7 +17,7 @@ public class EnemyBehaviourTree : Tree
     public EnemyBehaviourTree(TreeParams @params)
     {
         _params = @params;
-        
+
         _playerSystem = ServiceLocator.Resolve<PlayerSystem>();
 
         Initialize();
@@ -27,15 +27,15 @@ public class EnemyBehaviourTree : Tree
     {
         _blackBoard = new BlackBoard();
 
-        return new Selector(new()
+        return new Parallel(new()
         {
+            new LookToPlayerTask(_params, _blackBoard, _taskCancellationTokenSource),
+            new MoveToPlayerTask(_params, _blackBoard, _taskCancellationTokenSource),
             new Sequence(new()
             {
-                new LookToPlayerTask(_params, _blackBoard, _taskCancellationTokenSource),
                 new CheckForAttack(_params, _blackBoard, _taskCancellationTokenSource),
                 new AttackToPlayerTask(_params, _blackBoard, _taskCancellationTokenSource),
             }),
-            new MoveToPlayerTask(_params, _blackBoard, _taskCancellationTokenSource)
         });
     }
 
@@ -45,11 +45,11 @@ public class EnemyBehaviourTree : Tree
         _blackBoard.AttackRangeSqr = _params.Enemy.Data.AttackRange * _params.Enemy.Data.AttackRange;
         _taskCancellationTokenSource = new CancellationTokenSource();
     }
-    
+
     public override void Update()
     {
         PrepareBlackboard();
-        
+
         base.Update();
     }
 
@@ -57,6 +57,7 @@ public class EnemyBehaviourTree : Tree
     {
         _blackBoard.CurrentPlayerDistance = _playerSystem.Position - _params.Enemy.Position;
         _blackBoard.PlayerDirection = _blackBoard.CurrentPlayerDistance.normalized;
+        _blackBoard.IsPlayerAlive = _playerSystem.IsAlive;
     }
 
     public abstract class NodeBase : Node
@@ -73,7 +74,6 @@ public class EnemyBehaviourTree : Tree
             _blackBoard = blackBoard;
             _playerSystem = ServiceLocator.Resolve<PlayerSystem>();
             _enemySettings = ServiceLocator.Resolve<EnemySettings>();
-            
         }
     }
 
@@ -82,13 +82,13 @@ public class EnemyBehaviourTree : Tree
         public Enemy Enemy;
         public NavMeshAgent Agent;
         public EnemyAnimatorController Animator;
-        
     }
 
     public class BlackBoard
     {
         public bool IsAttackCooldownEnd = true;
         public Vector3 PlayerDirection;
+        public bool IsPlayerAlive;
         public Vector3 CurrentPlayerDistance;
         public float AttackRangeSqr;
     }

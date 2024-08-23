@@ -36,7 +36,7 @@ PrefabInstance:
     - target: {fileID: 2318567319146083661, guid: e254685970717a742af1a084a89cf5de,
         type: 3}
       propertyPath: m_text
-      value: CONTINUE GAME
+      value: CONTINUE LEVEL
       objectReference: {fileID: 0}
     - target: {fileID: 2318567319146083661, guid: e254685970717a742af1a084a89cf5de,
         type: 3}

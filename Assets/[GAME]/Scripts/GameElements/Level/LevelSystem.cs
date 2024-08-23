@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
+using TMPro;
 using UnityEngine;
 
 public class LevelSystem : SerializedMonoBehaviour
@@ -12,6 +13,7 @@ public class LevelSystem : SerializedMonoBehaviour
     private SaveSystem _saveSystem;
     private EnemySpawner _enemySpawner;
     private LevelSettings _levelSettings;
+    private PlayerSystem _playerSystem;
     private int _countdownDuration;
 
     private CancellationTokenSource _cts;
@@ -21,16 +23,19 @@ public class LevelSystem : SerializedMonoBehaviour
         _saveSystem = ServiceLocator.Resolve<SaveSystem>();
         _enemySpawner = ServiceLocator.Resolve<EnemySpawner>();
         _levelSettings = ServiceLocator.Resolve<LevelSettings>();
+        _playerSystem = ServiceLocator.Resolve<PlayerSystem>();
 
         _countdownDuration = _levelSettings.LevelCountdownDurationInSeconds;
         _enemySpawner.Initialize(_spawnPoints);
     }
 
-    public async void StartLevel(bool continueLevel)
+    public async UniTask StartLevel(bool continueLevel)
     {
         _cts = new CancellationTokenSource();
 
         var levelData = await GetLevelData(_saveSystem.Data.CurrentLevelProgress.LevelNumber);
+
+        _playerSystem.SetPlayerProperties(levelData.PlayerProperties);
 
         _enemySpawner.Reinitialize(progressData: _saveSystem.Data.CurrentLevelProgress, levelData, continueLevel);
 
@@ -51,6 +56,8 @@ public class LevelSystem : SerializedMonoBehaviour
 
     private async UniTaskVoid StartCountdown()
     {
+        Events.Level.OnLevelCountdownTick(_countdownDuration);
+
         for (var i = _countdownDuration - 1; i >= 0; i--)
         {
             await UniTask.WaitForSeconds(1, cancellationToken: _cts.Token);
@@ -58,19 +65,21 @@ public class LevelSystem : SerializedMonoBehaviour
             if (_cts.IsCancellationRequested)
                 return;
 
-            Events.Level.OnLevelCountdownTick?.Invoke(i + 1);
+            Events.Level.OnLevelCountdownTick(i + 1);
         }
 
-        Events.Level.OnLevelCountdownEnd?.Invoke();
+        Events.Level.OnLevelCountdownEnd();
     }
 
-    private void OnDrawGizmos()
-    {
-        if (_spawnPoints.Length == 0)
-            return;
 
-        Gizmos.color = Color.yellow;
-        foreach (var spawnPoint in _spawnPoints)
-            Gizmos.DrawWireSphere(spawnPoint.position, 0.5f);
-    }
+    //
+    // private void OnDrawGizmos()
+    // {
+    //     if (_spawnPoints.Length == 0)
+    //         return;
+    //
+    //     Gizmos.color = Color.yellow;
+    //     foreach (var spawnPoint in _spawnPoints)
+    //         Gizmos.DrawWireSphere(spawnPoint.position, 0.5f);
+    // }
 }

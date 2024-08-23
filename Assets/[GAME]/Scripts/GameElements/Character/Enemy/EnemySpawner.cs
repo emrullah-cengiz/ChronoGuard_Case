@@ -55,9 +55,15 @@ public class EnemySpawner
 
             elapsedSeconds = waveData.SpawnTimeAfterLevelStart;
 
-            EnemiesSpawnLoop(waveData, _spawnPoints[Random.Range(0, _spawnPoints.Length)].position).Forget();
+            Vector3 pos = default;
+            if (_playerSystem.Velocity.magnitude > 0.3f)// && Random.value > 0.5f)
+                pos = _playerSystem.Position + _playerSystem.Velocity * 4;
+            else
+                pos = _spawnPoints[Random.Range(0, _spawnPoints.Length)].position;
+            
+            EnemiesSpawnLoop(waveData, pos).Forget();
 
-            Events.Enemies.OnWaveSpawned?.Invoke();
+            Events.Enemies.OnWaveSpawned();
         }
     }
 

@@ -12,20 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c163d099ea3541d19b0eea22dc0f258c, type: 3}
   m_Name: Level_2
   m_EditorClassIdentifier: 
+  PlayerProperties: {fileID: 11400000, guid: e9e7e676670591542afdd3608b48befd, type: 2}
   Waves:
-  - EnemiesType: 0
-    SpawnTimeAfterLevelStart: 1
-    EnemyNumber: 7
-    SpawnDistanceFromPlayer: 10
-  - EnemiesType: 0
-    SpawnTimeAfterLevelStart: 5
-    EnemyNumber: 7
-    SpawnDistanceFromPlayer: 7
   - EnemiesType: 1
-    SpawnTimeAfterLevelStart: 12
-    EnemyNumber: 4
-    SpawnDistanceFromPlayer: 7
-  - EnemiesType: 2
-    SpawnTimeAfterLevelStart: 20
+    SpawnTimeAfterLevelStart: 0
     EnemyNumber: 3
-    SpawnDistanceFromPlayer: 6

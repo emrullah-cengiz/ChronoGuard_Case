@@ -11,25 +11,23 @@ public class PlayerAttackHandler : MonoBehaviour
 {
     #region References
 
-    // [SerializeField] private SphereCollider _collider;
     [SerializeField] private Weapon _weapon;
     [SerializeField] private CharacterAnimatorController _animator;
     [SerializeField] private NavMeshAgent _agent;
 
     private PlayerSystem _playerSystem;
-    private PlayerProperties _playerProperties;
     private PlayerSettings _playerSettings;
 
     #endregion
 
-    private CancellationTokenSource _shootCancellationTokenSource;
-    private CancellationTokenSource _targetSelectionCancellationTokenSource;
+    private CancellationTokenSource _CancellationTokenSource;
+    // private CancellationTokenSource _targetSelectionCancellationTokenSource;
 
     #region Target Selection
 
-    private Collider _currentTarget;
+    private Enemy _currentTarget;
     private float _closestDistanceSqr = 100;
-    private float _overlapCheckRate = 0.3f;
+    private float _overlapCheckRate = 0.5f;
 
     #endregion
 
@@ -41,31 +39,26 @@ public class PlayerAttackHandler : MonoBehaviour
 
     public void Initialize()
     {
-        _playerProperties = ServiceLocator.Resolve<PlayerProperties>();
         _playerSystem = ServiceLocator.Resolve<PlayerSystem>();
         _playerSettings = ServiceLocator.Resolve<PlayerSettings>();
 
-        // _collider.radius = _playerProperties.AttackRange;
-
-        // _nearEnemies = new();
         _currentTarget = null;
     }
 
     public void Reinitialize()
     {
-        _shootCancellationTokenSource = new CancellationTokenSource();
-        //_nearEnemies.Clear();
+        _CancellationTokenSource = new CancellationTokenSource();
         _currentTarget = null;
         _isActive = true;
-        _attackRange = _playerProperties.AttackRange;
+        _attackRange = _playerSystem.Properties.AttackRange;
 
-        // SelectTarget().Forget();
+        TargetSelectionWithOverlapTimer().Forget();
         ShootTarget().Forget();
     }
 
     public void StopActions()
     {
-        _shootCancellationTokenSource.Cancel();
+        _CancellationTokenSource.Cancel();
         _isActive = false;
     }
 
@@ -101,7 +94,7 @@ public class PlayerAttackHandler : MonoBehaviour
     {
         while (_isActive)
         {
-            if (_currentTarget != null)
+            if (_currentTarget && _currentTarget.IsAlive)
             {
                 if (_aimingProgressRatio <= _playerSettings.AimingProgressShootingThreshold)
                 {
@@ -109,10 +102,10 @@ public class PlayerAttackHandler : MonoBehaviour
                     continue;
                 }
 
-                _weapon.Shoot(_playerProperties.Damage, _playerProperties.BulletSpeed);
+                _weapon.Shoot(_playerSystem.Properties.Damage, _playerSystem.Properties.BulletSpeed);
                 // Debug.Log("SHOOT!");
 
-                await UniTask.WaitForSeconds(_playerProperties.AttackRateInSeconds, cancellationToken: _shootCancellationTokenSource.Token);
+                await UniTask.WaitForSeconds(_playerSystem.Properties.AttackRateInSeconds, cancellationToken: _CancellationTokenSource.Token);
             }
             else
                 await UniTask.Yield();
@@ -121,16 +114,25 @@ public class PlayerAttackHandler : MonoBehaviour
 
     #region Closest enmey calculations
 
-    private void OnTriggerEnter(Collider other)
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     if (!other.CompareTag(GlobalVariables.Tags.ENEMY)) return;
+    //     
+    //     CheckAndUpdateClosestEnemy(other);
+    //     
+    //     _targetSelectionCancellationTokenSource?.Cancel();
+    //     _targetSelectionCancellationTokenSource = new CancellationTokenSource();
+    //
+    //     TargetSelectionWithOverlapTimer().Forget();
+    // }
+    
+    private async UniTask TargetSelectionWithOverlapTimer()
     {
-        if (!other.CompareTag(GlobalVariables.Tags.ENEMY)) return;
-        
-        CheckAndUpdateClosestEnemy(other);
-        
-        _targetSelectionCancellationTokenSource?.Cancel();
-        _targetSelectionCancellationTokenSource = new CancellationTokenSource();
-
-        TargetSelectionWithOverlapTimer().Forget();
+        while (_isActive)
+        {
+            await UniTask.WaitForSeconds(_overlapCheckRate, cancellationToken: _CancellationTokenSource.Token);
+            RecalculateClosestEnemy();
+        }
     }
 
     private void RecalculateClosestEnemy()
@@ -168,25 +170,17 @@ public class PlayerAttackHandler : MonoBehaviour
 
         if (target != _currentTarget)
         {
-            Events.Player.OnLockedTarget?.Invoke(target is not null);
+            Events.Player.OnLockedTarget(target is not null);
             _animator.SetAim(target is not null);
 
             Debug.Log("Target selected");
         }
 
-        _currentTarget = target;
+        _currentTarget = target?.GetComponent<Enemy>();
     }
 
-    private async UniTask TargetSelectionWithOverlapTimer()
-    {
-        while (_isActive)
-        {
-            await UniTask.WaitForSeconds(_overlapCheckRate, cancellationToken: _targetSelectionCancellationTokenSource.Token);
-            RecalculateClosestEnemy();
-        }
-    }
 
     #endregion
 
-    private void OnDestroy() => _shootCancellationTokenSource?.Cancel();
+    private void OnDestroy() => _CancellationTokenSource?.Cancel();
 }

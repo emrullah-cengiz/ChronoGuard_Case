@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 
 public class PlayerSystem : TransformObject, IDamagable
 {
-    private PlayerProperties Properties;
+    public PlayerProperties Properties;
 
     [SerializeField] private NavMeshAgent _agent;
 
@@ -29,7 +29,10 @@ public class PlayerSystem : TransformObject, IDamagable
 
     private int Health => _health.CurrentHealth;
     public Vector3 Velocity => _agent.velocity;
+    public float MaxAgentSpeed => _agent.speed;
 
+    public bool IsAlive { get; private set; }
+    
     private void Awake()
     {
         _playerSettings = ServiceLocator.Resolve<PlayerSettings>();
@@ -52,7 +55,7 @@ public class PlayerSystem : TransformObject, IDamagable
     private void Initialize()
     {
         Debug.Log("Initializing Player..");
-        Properties = ServiceLocator.Resolve<PlayerProperties>();
+        
         _particlePool = ServiceLocator.Resolve<Pool<ParticleType>>();
 
         // _playerStateController.Initialize();
@@ -66,9 +69,12 @@ public class PlayerSystem : TransformObject, IDamagable
         // _playerStateController.Initialize();
         Debug.Log("Reinitializing Player..");
 
-        _movementController.Activate(true);
-
+        IsAlive = true;
+        
+        _animator.Initialize(Properties.Speed);
         _animator.SetDead(false);
+
+        _movementController.Activate(true);
 
         _health.Activate(true);
 
@@ -95,7 +101,7 @@ public class PlayerSystem : TransformObject, IDamagable
 
         //HitImpulse(hitDirection).Forget();
 
-        Events.Player.OnDamageTake?.Invoke(damage, Health);
+        Events.Player.OnDamageTake(damage, Health);
     }
 
     private async UniTaskVoid HitImpulse(Vector3 hitDirection)
@@ -114,12 +120,16 @@ public class PlayerSystem : TransformObject, IDamagable
 
     public void OnDead()
     {
+        IsAlive = false;
+        
         _animator.SetDead(true);
 
         _health.Activate(false);
 
         _agent.enabled = false;
 
-        Events.Player.OnPlayerDead?.Invoke();
+        Events.Player.OnPlayerDead();
     }
+
+    public void SetPlayerProperties(PlayerProperties properties) => Properties = properties;
 }

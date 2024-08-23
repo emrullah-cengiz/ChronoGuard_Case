@@ -8,7 +8,7 @@ public class LevelEndState : GameStateBase
         
         _levelSystem.ClearLevel();
         
-        Events.GameStates.OnLevelEnd?.Invoke(success);
+        Events.GameStates.OnLevelEnd(success);
     }
 
     public override void OnExit()

@@ -43,9 +43,12 @@ public class UIManager : SerializedMonoBehaviour
             OpenPanel(UIPanelType.Continue);
     }
 
-    private void OnLevelEnd(bool success)
+    private async void OnLevelEnd(bool success)
     {
         var data = _saveSystem.Data;
+
+        if (!success)
+            await UniTask.WaitForSeconds(_levelSettings.PopupDelayAfterDie);
 
         OpenPanel(success ? (data.CurrentLevelProgress.LevelNumber == 1 ? UIPanelType.RestartGame : UIPanelType.Won) : UIPanelType.Dead);
     }
@@ -56,7 +59,7 @@ public class UIManager : SerializedMonoBehaviour
         _currentPanel = await LoadPanel(type);
 
         _gameHud.SetActive(false);
-        
+
         //object
         _currentPanel = Instantiate(_currentPanel, transform);
 

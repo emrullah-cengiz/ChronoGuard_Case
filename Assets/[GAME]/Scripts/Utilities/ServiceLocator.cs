@@ -20,4 +20,5 @@ public class ServiceLocator
 
         throw new Exception($"No singleton service of type {typeof(T).Name} is registered.");
     }
+
 }

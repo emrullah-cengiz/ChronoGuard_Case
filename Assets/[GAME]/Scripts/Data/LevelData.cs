@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = nameof(LevelData), menuName = nameof(LevelData), order = 0)]
 public class LevelData : ScriptableObject
 {
+    public PlayerProperties PlayerProperties;
     public List<WaveData> Waves = new();
 }
 

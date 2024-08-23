@@ -50,6 +50,7 @@ public class EnemySettings
 {
     public float BaseSpeed = 3.3f;
     public float RotationSpeed = 10f;
+    public float HitToPlayerAngleThreshold = 10f;
     
     public Dictionary<EnemySpeedMode, float> SpeedMultipliers;
     public Dictionary<EnemyAttackType, float> HitTimePerAnimation;
@@ -82,6 +83,7 @@ public class SaveSettings
 public class LevelSettings
 {
     public int LevelCountdownDurationInSeconds = 180;
+    public int PopupDelayAfterDie = 1;
     public int MaxLevel = 3;
 }
 

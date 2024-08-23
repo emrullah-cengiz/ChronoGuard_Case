@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 472bd5ac986b458dac5bbc39de4121f5, type: 3}
-  m_Name: Enemy_Normal
+  m_Script: {fileID: 11500000, guid: 0bbd7f2723c1d6b4e9fe8f722e3366b8, type: 3}
+  m_Name: PlayerProperties_Lv3
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,10 +21,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  MaxHealth: 19
+  MaxHealth: 30
   Damage: 2
-  AttackRange: 1
-  AttackRateInSeconds: 0.4
-  Type: 0
-  AttackType: 1
-  SpeedMode: 0
+  AttackRange: 4
+  AttackRateInSeconds: 0.19
+  BulletSpeed: 14
+  Speed: 3.14

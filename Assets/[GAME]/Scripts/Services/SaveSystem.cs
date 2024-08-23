@@ -7,7 +7,7 @@ public class SaveSystem
 {
     private readonly DataSaveService<SaveData> _saveService;
     private readonly LevelSettings _levelSettings;
-    private readonly PlayerProperties _playerProperties;
+    private readonly PlayerSystem _playerSystem;
 
     public SaveData Data => _saveService.Data;
 
@@ -15,7 +15,7 @@ public class SaveSystem
     {
         var settings = ServiceLocator.Resolve<SaveSettings>();
         _levelSettings = ServiceLocator.Resolve<LevelSettings>();
-        _playerProperties = ServiceLocator.Resolve<PlayerProperties>();
+        _playerSystem = ServiceLocator.Resolve<PlayerSystem>();
 
         _saveService = new DataSaveService<SaveData>(
             autoSave: false, settings.SaveIntervalInSeconds,
@@ -28,7 +28,7 @@ public class SaveSystem
     {
         Events.OnApplicationPause += _saveService.Save;
         Events.OnApplicationQuit += _saveService.Save;
-        
+
         Events.GameStates.OnGameStarted += OnGameStarted;
         Events.GameStates.OnLevelStarted += OnLevelStarted;
         Events.GameStates.OnLevelEnd += OnLevelEnd;
@@ -44,8 +44,8 @@ public class SaveSystem
     private void OnGameStarted()
     {
         _saveService.Initialize(out var isDataFound);
-        
-        if(!isDataFound)
+
+        if (!isDataFound)
             ResetLevelProgress();
     }
 
@@ -66,7 +66,7 @@ public class SaveSystem
             Data.CurrentLevelProgress.LevelNumber++;
             Data.CurrentLevelProgress.LevelNumber = Data.CurrentLevelProgress.LevelNumber > _levelSettings.MaxLevel ? 1 : Data.CurrentLevelProgress.LevelNumber;
         }
-        
+
         Data.PreviousLevelProgress = (LevelProgressData)Data.CurrentLevelProgress.Clone();
 
         ResetLevelProgress();
@@ -89,7 +89,7 @@ public class SaveSystem
     {
         Data.CurrentLevelProgress.IsCurrentLevelStarted = false;
         Data.CurrentLevelProgress.DefeatedEnemiesNumber = 0;
-        Data.CurrentLevelProgress.CurrentHealth = _playerProperties.MaxHealth;
+        Data.CurrentLevelProgress.CurrentHealth = _playerSystem.Properties.MaxHealth;
         // Data.CurrentLevelProgress.SpawnedWavesNumber = 0;
         // Data.CurrentLevelProgress.TimeRemaining = _levelSettings.LevelCountdownDurationInSeconds;
     }
@@ -109,11 +109,13 @@ public class LevelProgressData : ICloneable
 {
     public int LevelNumber = 1;
     public bool IsCurrentLevelStarted;
+
     public int DefeatedEnemiesNumber;
     // public int TimeRemaining;
     // public int SpawnedWavesNumber;
 
     public int CurrentHealth;
+
     public object Clone()
     {
         return this.MemberwiseClone();

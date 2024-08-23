@@ -20,14 +20,16 @@ public class EnemyAnimatorController : CharacterAnimatorController
 
     public void SetAttackSpeedByAttackRate(EnemyAttackType attackType, float rate)
     {
-        var clipDuration = GetAttackClipDuration(attackType);
-        float speed = 1;
-
-        if (rate > 1 / clipDuration)
+        if (rate > 1)
         {
-            var newSpeed = clipDuration / (1 / rate);
-            speed = newSpeed;
+            _animator.SetFloat(string.Format(ATTACK_SPEED_PARAM_FORMAT, (int)attackType), 1);
+            _attackClipSpeeds[attackType] = 1;
+            return;
         }
+
+        var clipDuration = GetAttackClipDuration(attackType);
+
+        var speed = clipDuration / rate;
 
         _animator.SetFloat(string.Format(ATTACK_SPEED_PARAM_FORMAT, (int)attackType), speed);
         _attackClipSpeeds[attackType] = speed;

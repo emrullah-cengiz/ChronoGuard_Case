@@ -9,7 +9,7 @@ public class GameStartState : GameStateBase
     {
         Events.UI.OnPanelActionButtonClick += OnPanelActionButtonClick;
 
-        Events.GameStates.OnGameStarted?.Invoke();
+        Events.GameStates.OnGameStarted();
         
         _continueLevel = _saveSystem.Data.CurrentLevelProgress.IsCurrentLevelStarted;
     }

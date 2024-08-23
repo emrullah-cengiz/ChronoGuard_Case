@@ -250,7 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
+    SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -346,8 +346,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.4789331, y: -0.0000007159842, z: 0.00000039062255, w: 0.8778514}
-  m_LocalPosition: {x: 0, y: 8.7, z: -5.6}
+  m_LocalRotation: {x: 0.4650567, y: -0.000000008385636, z: 0.0000000044051514, w: 0.8852809}
+  m_LocalPosition: {x: 0, y: 13.35, z: -9.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -674,7 +674,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameSettings: {fileID: 11400000, guid: d9ec791f0cf0db3458a9feba522e594e, type: 2}
-  _playerProperties: {fileID: 11400000, guid: 2810c9e348812c94dab6e85702c964c4, type: 2}
   _gameStateManager: {fileID: 1655053271}
   _levelSystem: {fileID: 1019865554}
   _playerSystem: {fileID: 3378196171719698999}
@@ -738,7 +737,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 8.7, z: -5.6}
+  m_FollowOffset: {x: 0, y: 13.35, z: -9.2}
   m_XDamping: 0.5
   m_YDamping: 0.5
   m_ZDamping: 0.5
@@ -989,7 +988,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 21.249601, y: 21.249601, z: 21.249601}
+  m_LocalScale: {x: 10.731474, y: 10.731474, z: 10.731474}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1019865553}
@@ -1021,7 +1020,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.17
+  m_VoxelSize: 0.046666667
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: d8ca04f9f3dddc84dad5d55ddf0892ed, type: 2}
   m_BuildHeightMesh: 0
@@ -1161,7 +1160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
+    SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -1330,8 +1329,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1452843506}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.47893313, y: -0.000000735586, z: 0.0000004265513, w: 0.8778514}
-  m_LocalPosition: {x: 0, y: 8.7, z: -5.6}
+  m_LocalRotation: {x: 0.46505666, y: -0.000000008385635, z: 0.00000000440515, w: 0.88528097}
+  m_LocalPosition: {x: 0, y: 13.35, z: -9.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1608,14 +1607,88 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
-    SerializedBytes: 0101110000005f00630061006d004e006f00690073006500530065007400740069006e00670073002f00000000018e000000530079007300740065006d002e0043006f006c006c0065006300740069006f006e0073002e00470065006e0065007200690063002e00440069006300740069006f006e00610072007900600032005b005b00430061006d006500720061004d0061006e0061006700650072002b004e006f0069007300650054007900700065002c00200041007300730065006d0062006c0079002d004300530068006100720070005d002c005b00430061006d006500720061004d0061006e0061006700650072002b00430061006d004e006f00690073006500530065007400740069006e0067002c00200041007300730065006d0062006c0079002d004300530068006100720070005d005d002c0020006d00730063006f0072006c00690062000000000001010800000063006f006d00700061007200650072002f010000000167000000530079007300740065006d002e0043006f006c006c0065006300740069006f006e0073002e00470065006e0065007200690063002e0045006e0075006d0045007100750061006c0069007400790043006f006d0070006100720065007200600031005b005b00430061006d006500720061004d0061006e0061006700650072002b004e006f0069007300650054007900700065002c00200041007300730065006d0062006c0079002d004300530068006100720070005d005d002c0020006d00730063006f0072006c0069006200010000000600000000000000000705060200000000000000042e1d010200000024006b000000000000000000010102000000240076002f02000000012e000000430061006d006500720061004d0061006e0061006700650072002b00430061006d004e006f00690073006500530065007400740069006e0067002c00200041007300730065006d0062006c0079002d00430053006800610072007000020000001f01080000004400750072006100740069006f006e00000000001f010900000041006d0070006c0069007400750064006500000000001f01090000004600720065007100750065006e0063007900000000000505042e1d010200000024006b000100000000000000010102000000240076003002000000030000001f01080000004400750072006100740069006f006e00cdcc4c3e1f010900000041006d0070006c0069007400750064006500c3f5a83e1f01090000004600720065007100750065006e006300790014ae473f05050705
+    SerializedFormat: 2
+    SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: _camNoiseSettings
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[CameraManager+NoiseType, Assembly-CSharp],[CameraManager+CamNoiseSetting,
+        Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[CameraManager+NoiseType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 7
+      Data: 2|CameraManager+CamNoiseSetting, Assembly-CSharp
+    - Name: Duration
+      Entry: 4
+      Data: 0
+    - Name: Amplitude
+      Entry: 4
+      Data: 0
+    - Name: Frequency
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 7
+      Data: 3|CameraManager+CamNoiseSetting, Assembly-CSharp
+    - Name: Duration
+      Entry: 4
+      Data: 0.2
+    - Name: Amplitude
+      Entry: 4
+      Data: 0.33
+    - Name: Frequency
+      Entry: 4
+      Data: 0.78
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   _vcam: {fileID: 1452843508}
 --- !u!1 &2132060985
 GameObject:
@@ -1808,6 +1881,12 @@ PrefabInstance:
       propertyPath: _rb
       value: 
       objectReference: {fileID: 3378196171719699005}
+    - target: {fileID: 5833896743432936932, guid: d37e17527a4d2a64bb2b3327c62245d4,
+        type: 3}
+      propertyPath: Properties
+      value: 
+      objectReference: {fileID: 11400000, guid: 2810c9e348812c94dab6e85702c964c4,
+        type: 2}
     - target: {fileID: 8541953441604217946, guid: d37e17527a4d2a64bb2b3327c62245d4,
         type: 3}
       propertyPath: m_Name
