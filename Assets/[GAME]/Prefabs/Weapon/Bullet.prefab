@@ -28,8 +28,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 97125241815339221}
   m_Father: {fileID: 0}
@@ -162,7 +162,7 @@ PrefabInstance:
     - target: {fileID: 96619521908154710, guid: 1062b3d20cabe3043afba4fdef6b849b,
         type: 3}
       propertyPath: m_Time
-      value: 0.1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 96619521908154710, guid: 1062b3d20cabe3043afba4fdef6b849b,
         type: 3}
@@ -187,32 +187,32 @@ PrefabInstance:
     - target: {fileID: 96619521908154710, guid: 1062b3d20cabe3043afba4fdef6b849b,
         type: 3}
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].time
-      value: 0.0102062225
+      value: 0.012670517
       objectReference: {fileID: 0}
     - target: {fileID: 96619521908154710, guid: 1062b3d20cabe3043afba4fdef6b849b,
         type: 3}
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].time
-      value: 0.9753645
+      value: 0.99260694
       objectReference: {fileID: 0}
     - target: {fileID: 96619521908154710, guid: 1062b3d20cabe3043afba4fdef6b849b,
         type: 3}
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
-      value: 0.10383415
+      value: 0.19126701
       objectReference: {fileID: 0}
     - target: {fileID: 96619521908154710, guid: 1062b3d20cabe3043afba4fdef6b849b,
         type: 3}
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].value
-      value: 0.03279528
+      value: 0.114765495
       objectReference: {fileID: 0}
     - target: {fileID: 96619521908154710, guid: 1062b3d20cabe3043afba4fdef6b849b,
         type: 3}
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].inSlope
-      value: -0.07360334
+      value: -0.07806784
       objectReference: {fileID: 0}
     - target: {fileID: 96619521908154710, guid: 1062b3d20cabe3043afba4fdef6b849b,
         type: 3}
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].outSlope
-      value: -0.07360334
+      value: -0.07806784
       objectReference: {fileID: 0}
     - target: {fileID: 198623375980875486, guid: 1062b3d20cabe3043afba4fdef6b849b,
         type: 3}

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.AI;
  
 public class CharacterAnimatorController : MonoBehaviour
@@ -15,6 +16,12 @@ public class CharacterAnimatorController : MonoBehaviour
 
     [SerializeField] protected NavMeshAgent _agent;
     [SerializeField] protected Animator _animator;
+
+    private void Awake() => _Awake();
+
+    protected virtual void _Awake()
+    {
+    }
 
     public void Initialize(float maxMoveSpeed)
     {

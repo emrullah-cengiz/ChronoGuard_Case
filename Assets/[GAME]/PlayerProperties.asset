@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerProperties
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 2
+    SerializedFormat: 0
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -26,4 +26,4 @@ MonoBehaviour:
   AttackRange: 4
   AttackRateInSeconds: 0.1
   BulletSpeed: 14
-  Speed: 3.55
+  Speed: 3.14

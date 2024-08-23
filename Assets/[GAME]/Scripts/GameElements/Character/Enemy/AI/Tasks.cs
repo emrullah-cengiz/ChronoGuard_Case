@@ -17,7 +17,7 @@ public class MoveToPlayerTask : EnemyBehaviourTree.NodeBase
     private Vector3 _lastPlayerPosition;
     private float _lastDistanceSqr;
 
-    public MoveToPlayerTask(EnemyBehaviourTree.TreeParams @params, EnemyBehaviourTree.BlackBoard blackBoard, CancellationTokenSource cts) 
+    public MoveToPlayerTask(EnemyBehaviourTree.TreeParams @params, EnemyBehaviourTree.BlackBoard blackBoard, CancellationTokenSource cts)
         : base(@params, blackBoard, cts)
     {
         _minUpdateRate = _enemySettings.AgentSetDestinationMinRate;
@@ -102,14 +102,15 @@ public class AttackToPlayerTask : EnemyBehaviourTree.NodeBase
     {
         Params.Animator.TriggerAttack(Params.Enemy.Data.AttackType);
 
-        await UniTask.WaitForSeconds(_enemySettings.HitTimePerAnimation[Params.Enemy.Data.AttackType], cancellationToken: _cancellationTokenSource.Token);
+        await UniTask.WaitForSeconds(_enemySettings.HitTimePerAnimation[Params.Enemy.Data.AttackType] /
+                                     Params.Enemy.Animator.GetAttackClipSpeed(Params.Enemy.Data.AttackType), cancellationToken: _cancellationTokenSource.Token);
 
         var res = new RaycastHit[1];
         if (Physics.RaycastNonAlloc(Params.Enemy.Position, Params.Enemy.Forward, res, Params.Enemy.Data.AttackRange
                 // ,LayerMask.GetMask(GlobalVariables.Layers.PLAYER)
             ) > 0 && res.Any(x => x.collider.CompareTag("Player")))
         {
-            _playerSystem.TakeDamage(Params.Enemy.Data.Damage);
+            _playerSystem.TakeDamage(Params.Enemy.Data.Damage, Params.Enemy.Forward);
         }
     }
 }
@@ -123,9 +124,9 @@ public class LookToPlayerTask : EnemyBehaviourTree.NodeBase
 
     public override NodeState Evaluate()
     {
-        var targetRotation = Quaternion.LookRotation(Params.Agent.steeringTarget);
+        var targetRotation = Quaternion.LookRotation(_playerSystem.Position - Params.Enemy.Position);
 
-        Params.Enemy.Rotation = Quaternion.Lerp(Params.Enemy.Rotation, targetRotation, Time.deltaTime * 5f);
+        Params.Enemy.Rotation = Quaternion.Lerp(Params.Enemy.Rotation, targetRotation, Time.deltaTime * _enemySettings.RotationSpeed);
 
         return NodeState.SUCCESS;
     }

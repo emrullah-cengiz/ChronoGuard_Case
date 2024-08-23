@@ -68,7 +68,7 @@ public class Bullet : MonoBehaviour, IInitializablePoolable<ShootData>
 
             OnHit();
 
-            var obj = _particlePool.Spawn(ParticleType.Blood, despawnDelay: .4f);
+            var obj = _particlePool.Spawn(ParticleType.Blood_Enemy, despawnDelay: .4f);
             obj.transform.position = transform.position;
             obj.transform.rotation = transform.rotation;
             obj.transform.localScale = Vector3.one * Random.Range(0.6f, 1);

@@ -21,6 +21,7 @@ MonoBehaviour:
     - {fileID: 6437650825332736263, guid: 449b2f4f00a2ee348b0c3b4b9e2c6c02, type: 3}
     - {fileID: 6437650825332736263, guid: 58c2f7f7ef2ab254d806a41975481e53, type: 3}
     - {fileID: 470266, guid: 5a88f5652466b50449fc927a4d10f584, type: 3}
+    - {fileID: 470266, guid: 4a3e1abcb606e3d4db804d7b2e37e028, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -34,10 +35,16 @@ MonoBehaviour:
       Data: -8.36
     - Name: LookNewTargetSpeed
       Entry: 4
-      Data: 2.02
+      Data: 5
     - Name: AimingProgressShootingThreshold
       Entry: 4
-      Data: 0.92
+      Data: 0.8
+    - Name: HitImpulseForce
+      Entry: 4
+      Data: 2.05
+    - Name: HitImpulseDuration
+      Entry: 4
+      Data: 0.2
     - Name: 
       Entry: 8
       Data: 
@@ -120,12 +127,12 @@ MonoBehaviour:
     - Name: EnemySettings
       Entry: 7
       Data: 7|EnemySettings, Assembly-CSharp
-    - Name: HitImpulseForce
-      Entry: 4
-      Data: 100
     - Name: BaseSpeed
       Entry: 4
       Data: 3.54
+    - Name: RotationSpeed
+      Entry: 4
+      Data: 50
     - Name: SpeedMultipliers
       Entry: 7
       Data: 8|System.Collections.Generic.Dictionary`2[[EnemySpeedMode, Assembly-CSharp],[System.Single,
@@ -204,7 +211,7 @@ MonoBehaviour:
       Data: 2
     - Name: $v
       Entry: 4
-      Data: 0.3
+      Data: 1.05
     - Name: 
       Entry: 8
       Data: 
@@ -216,7 +223,7 @@ MonoBehaviour:
       Data: 1
     - Name: $v
       Entry: 4
-      Data: 0.38
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
@@ -226,9 +233,15 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+    - Name: HitImpulseForce
+      Entry: 4
+      Data: 60
+    - Name: HitImpulseDuration
+      Entry: 4
+      Data: 0.2
     - Name: InWaveSpawnDelayInSeconds
       Entry: 4
-      Data: 0.03
+      Data: 0.1
     - Name: DespawnDelayAfterDead
       Entry: 4
       Data: 2
@@ -240,7 +253,7 @@ MonoBehaviour:
       Data: 0.2
     - Name: AgentSetDestinationMaxRate
       Entry: 4
-      Data: 1
+      Data: 0.4
     - Name: AgentMaxDistanceForMaxUpdateRate
       Entry: 4
       Data: 4
@@ -391,7 +404,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 1
+      Data: 2
     - Name: 
       Entry: 7
       Data: 
@@ -405,6 +418,31 @@ MonoBehaviour:
     - Name: Prefab
       Entry: 10
       Data: 4
+    - Name: FillOnInit
+      Entry: 5
+      Data: true
+    - Name: ExpansionSize
+      Entry: 3
+      Data: 5
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 7
+      Data: 24|Pool`2+PoolProperties[[UnityEngine.Transform, UnityEngine.CoreModule],[ParticleType,
+        Assembly-CSharp]], Assembly-CSharp
+    - Name: Prefab
+      Entry: 10
+      Data: 5
     - Name: FillOnInit
       Entry: 5
       Data: true

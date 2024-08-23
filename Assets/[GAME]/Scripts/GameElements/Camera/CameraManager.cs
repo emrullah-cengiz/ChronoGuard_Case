@@ -41,7 +41,7 @@ public class CameraManager : SerializedMonoBehaviour
         _vcNoise.m_AmplitudeGain = setting.Amplitude;
         _vcNoise.m_FrequencyGain = setting.Frequency;
         
-        await UniTask.Delay((int)(setting.Duration * 1000));
+        await UniTask.WaitForSeconds(setting.Duration);
         
         _vcNoise.m_AmplitudeGain = 0;
         _vcNoise.m_FrequencyGain = 0;

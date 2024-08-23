@@ -109,6 +109,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4029033547637184780}
     m_Modifications:
+    - target: {fileID: 1759189056197006848, guid: 796090aa4a48bfc4697028a7d6d4e6ba,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.050980393
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759189056197006848, guid: 796090aa4a48bfc4697028a7d6d4e6ba,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.60784316
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759189056197006848, guid: 796090aa4a48bfc4697028a7d6d4e6ba,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2722426419952537333, guid: 796090aa4a48bfc4697028a7d6d4e6ba,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -163,6 +178,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2971822737823853743, guid: 796090aa4a48bfc4697028a7d6d4e6ba,
+        type: 3}
+      propertyPath: _maxHealthColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2971822737823853743, guid: 796090aa4a48bfc4697028a7d6d4e6ba,
+        type: 3}
+      propertyPath: _maxHealthColor.b
+      value: 0.050980397
+      objectReference: {fileID: 0}
+    - target: {fileID: 2971822737823853743, guid: 796090aa4a48bfc4697028a7d6d4e6ba,
+        type: 3}
+      propertyPath: _maxHealthColor.g
+      value: 0.60784316
+      objectReference: {fileID: 0}
+    - target: {fileID: 2971822737823853743, guid: 796090aa4a48bfc4697028a7d6d4e6ba,
+        type: 3}
+      propertyPath: _minHealthColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2971822737823853743, guid: 796090aa4a48bfc4697028a7d6d4e6ba,
+        type: 3}
+      propertyPath: _minHealthColor.g
+      value: 0.050980397
+      objectReference: {fileID: 0}
+    - target: {fileID: 2971822737823853743, guid: 796090aa4a48bfc4697028a7d6d4e6ba,
+        type: 3}
+      propertyPath: _minHealthColor.r
+      value: 0.8235295
       objectReference: {fileID: 0}
     - target: {fileID: 2971822737823853743, guid: 796090aa4a48bfc4697028a7d6d4e6ba,
         type: 3}
@@ -918,7 +963,7 @@ PrefabInstance:
     - target: {fileID: 912226217940836950, guid: e95a467e12fe94f45af871fbee678287,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 129.2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 912226217940836950, guid: e95a467e12fe94f45af871fbee678287,
         type: 3}
@@ -1089,6 +1134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _agent: {fileID: 2300794881634587431}
   _animator: {fileID: 3818967280601764792}
+  _movementController: {fileID: 725227951016945346}
   _attackHandler: {fileID: 1751902967194166036}
   _weapon: {fileID: 8133841877841496114}
   _health: {fileID: 2662113091540720456}

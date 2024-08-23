@@ -24,7 +24,7 @@ public class LevelPlayingState : GameStateBase
 
     private async void OnEnemyDead(Enemy enemy)
     {
-        await UniTask.Delay((int)(_enemySettings.DespawnDelayAfterDead * 1000));
+        await UniTask.WaitForSeconds(_enemySettings.DespawnDelayAfterDead);
         _enemyPool.Despawn(enemy, enemy.Data.Type);        
     }
 }

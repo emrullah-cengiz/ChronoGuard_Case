@@ -22,20 +22,17 @@ public class PlayerAttackHandler : MonoBehaviour
 
     #endregion
 
-    private CancellationTokenSource _cancellationTokenSource;
+    private CancellationTokenSource _shootCancellationTokenSource;
+    private CancellationTokenSource _targetSelectionCancellationTokenSource;
 
     #region Target Selection
-
-    // private Enemy _currentTarget;
 
     private Collider _currentTarget;
     private float _closestDistanceSqr = 100;
     private float _overlapCheckRate = 0.3f;
-    private float _lastOverlapCheckTime;
 
     #endregion
 
-    // private HashSet<Enemy> _nearEnemies;
     private Quaternion _targetRotation;
 
     private bool _isActive;
@@ -56,7 +53,7 @@ public class PlayerAttackHandler : MonoBehaviour
 
     public void Reinitialize()
     {
-        _cancellationTokenSource = new CancellationTokenSource();
+        _shootCancellationTokenSource = new CancellationTokenSource();
         //_nearEnemies.Clear();
         _currentTarget = null;
         _isActive = true;
@@ -68,7 +65,7 @@ public class PlayerAttackHandler : MonoBehaviour
 
     public void StopActions()
     {
-        _cancellationTokenSource.Cancel();
+        _shootCancellationTokenSource.Cancel();
         _isActive = false;
     }
 
@@ -76,24 +73,7 @@ public class PlayerAttackHandler : MonoBehaviour
     {
         if (!_isActive) return;
 
-        //SelectTarget();
-
         LookTarget();
-    }
-
-    private void SelectTarget(Collider target)
-    {
-        //var target = GetClosestEnemy();
-
-        if (target != _currentTarget)
-        {
-            Events.Player.OnLockedTarget?.Invoke(target is not null);
-            _animator.SetAim(_currentTarget is not null);
-            
-            Debug.Log("Target selected");
-        }
-        
-        _currentTarget = target;
     }
 
     private void LookTarget()
@@ -132,95 +112,25 @@ public class PlayerAttackHandler : MonoBehaviour
                 _weapon.Shoot(_playerProperties.Damage, _playerProperties.BulletSpeed);
                 // Debug.Log("SHOOT!");
 
-                await UniTask.WaitForSeconds(_playerProperties.AttackRateInSeconds, cancellationToken: _cancellationTokenSource.Token);
+                await UniTask.WaitForSeconds(_playerProperties.AttackRateInSeconds, cancellationToken: _shootCancellationTokenSource.Token);
             }
             else
                 await UniTask.Yield();
         }
     }
 
-    private Enemy GetClosestEnemy()
-    {
-        var playerPos = transform.position;
-        var radius = _playerProperties.AttackRange;
-        var results = new Collider[7];
-
-        if (Physics.OverlapSphereNonAlloc(playerPos, radius, results, 1 << GlobalVariables.Layers.ENEMY) > 0)
-        {
-            var _closestDistanceSqr = radius * radius;
-            Collider _closestEnemy = default;
-
-            for (var i = 0; i < results.Length; i++)
-            {
-                var c = results[i];
-                if (c is null)
-                    break;
-
-                var distanceSqr = (c.transform.position - playerPos).sqrMagnitude;
-                if (distanceSqr < _closestDistanceSqr)
-                {
-                    _closestDistanceSqr = distanceSqr;
-                    _closestEnemy = c;
-                }
-            }
-
-            return _closestEnemy?.GetComponent<Enemy>();
-        }
-
-        return null;
-
-        // Enemy nearestEnemy = null;
-        // float nearestDistanceSqr = _playerProperties.AttackRange * _playerProperties.AttackRange;
-        // var currentPosition = transform.position;
-        //
-        // foreach (var enemy in _nearEnemies)
-        // {
-        //     if (!enemy.IsAlive) continue;
-        //
-        //     var distanceSqr = (enemy.transform.position - currentPosition).sqrMagnitude;
-        //     if (distanceSqr < nearestDistanceSqr)
-        //     {
-        //         nearestDistanceSqr = distanceSqr;
-        //         nearestEnemy = enemy;
-        //     }
-        // }
-        //
-        // return nearestEnemy;
-    }
-    
-    // private void OnTriggerEnter(Collider other)
-    // {
-    //     if (other.CompareTag(GlobalVariables.Tags.ENEMY) &&
-    //         other.TryGetComponent(out Enemy enemy))
-    //         _nearEnemies.Add(enemy);
-    // }
-    //
-    // private void OnTriggerExit(Collider other)
-    // {
-    //     if (other.CompareTag(GlobalVariables.Tags.ENEMY) &&
-    //         other.TryGetComponent(out Enemy enemy))
-    //     {
-    //         _nearEnemies.Remove(enemy);
-    //         if (enemy == _currentTarget)
-    //             _currentTarget = null;
-    //     }
-    // }
-
     #region Closest enmey calculations
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(GlobalVariables.Tags.ENEMY))
-            CheckAndUpdateClosestEnemy(other);
-    }
+        if (!other.CompareTag(GlobalVariables.Tags.ENEMY)) return;
+        
+        CheckAndUpdateClosestEnemy(other);
+        
+        _targetSelectionCancellationTokenSource?.Cancel();
+        _targetSelectionCancellationTokenSource = new CancellationTokenSource();
 
-    private void OnTriggerExit(Collider other)
-    {
-        if ((Time.time - _lastOverlapCheckTime < _overlapCheckRate) ||
-            !other.CompareTag(GlobalVariables.Tags.ENEMY)) return;
-
-        RecalculateClosestEnemy();
-        _lastOverlapCheckTime = Time.time;
+        TargetSelectionWithOverlapTimer().Forget();
     }
 
     private void RecalculateClosestEnemy()
@@ -235,8 +145,8 @@ public class PlayerAttackHandler : MonoBehaviour
 
         for (var i = 0; i < results.Length; i++)
         {
-            if(results[i] is null) break;
-            
+            if (results[i] is null) break;
+
             var enemy = results[i];
             CheckAndUpdateClosestEnemy(enemy);
         }
@@ -252,7 +162,31 @@ public class PlayerAttackHandler : MonoBehaviour
         SelectTarget(enemy);
     }
 
+    private void SelectTarget(Collider target)
+    {
+        //var target = GetClosestEnemy();
+
+        if (target != _currentTarget)
+        {
+            Events.Player.OnLockedTarget?.Invoke(target is not null);
+            _animator.SetAim(target is not null);
+
+            Debug.Log("Target selected");
+        }
+
+        _currentTarget = target;
+    }
+
+    private async UniTask TargetSelectionWithOverlapTimer()
+    {
+        while (_isActive)
+        {
+            await UniTask.WaitForSeconds(_overlapCheckRate, cancellationToken: _targetSelectionCancellationTokenSource.Token);
+            RecalculateClosestEnemy();
+        }
+    }
+
     #endregion
 
-    private void OnDestroy() => _cancellationTokenSource?.Cancel();
+    private void OnDestroy() => _shootCancellationTokenSource?.Cancel();
 }

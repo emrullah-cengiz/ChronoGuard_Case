@@ -8,7 +8,7 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
 {
     public EnemyData Data;
 
-    [SerializeField] private EnemyAnimatorController _animator;
+    [SerializeField] public EnemyAnimatorController Animator;
     [SerializeField] private Health _health;
     [SerializeField] private RagdollController _ragdoll;
 
@@ -36,7 +36,7 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
         {
             Enemy = this,
             Agent = _agent,
-            Animator = _animator
+            Animator = Animator
         });
 
         _initialized = true;
@@ -49,8 +49,8 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
         _agent.enabled = true;
         _agent.speed = _enemySettings.BaseSpeed * _enemySettings.SpeedMultipliers[Data.SpeedMode];
         
-        _animator.Initialize(_enemySettings.SpeedMultipliers.Max(x=>x.Value) * _enemySettings.BaseSpeed);
-        _animator.SetAttackSpeedByAttackRate(Data.AttackType, Data.AttackRateInSeconds);
+        Animator.Initialize(_enemySettings.SpeedMultipliers.Max(x=>x.Value) * _enemySettings.BaseSpeed);
+        Animator.SetAttackSpeedByAttackRate(Data.AttackType, Data.AttackRateInSeconds);
 
         transform.position = spawnData.Position;
         transform.LookAt(spawnData.LookAtPosition);
@@ -102,7 +102,7 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
         _rb.AddExplosionForce(_enemySettings.HitImpulseForce, transform.position - hitDirection * .3f,
             .3f, 1, mode: ForceMode.Impulse);
         
-        await UniTask.WaitForSeconds(.1f);
+        await UniTask.WaitForSeconds(_enemySettings.HitImpulseDuration);
         
         _agent.enabled = true;
     }

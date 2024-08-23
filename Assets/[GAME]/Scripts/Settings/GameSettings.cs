@@ -32,6 +32,10 @@ public class PlayerSettings
     public float AimOffset = -8.36f;
     public float LookNewTargetSpeed = 6f;
     public float AimingProgressShootingThreshold = .8f;
+    
+    [Title("Hit")]
+    public float HitImpulseForce = 3f;
+    public float HitImpulseDuration = .2f;
 }
 
 [Serializable]
@@ -44,10 +48,15 @@ public class WeaponSettings
 [Serializable]
 public class EnemySettings
 {
-    public float HitImpulseForce = 10f;
     public float BaseSpeed = 3.3f;
+    public float RotationSpeed = 10f;
+    
     public Dictionary<EnemySpeedMode, float> SpeedMultipliers;
     public Dictionary<EnemyAttackType, float> HitTimePerAnimation;
+    
+    [Title("Hit")]
+    public float HitImpulseForce = 10f;
+    public float HitImpulseDuration = .2f;
 
     [Title("Spawner")]
     public float InWaveSpawnDelayInSeconds = .3f;
@@ -84,5 +93,6 @@ public class VFXSettings
 
 public enum ParticleType
 {
-    Blood
+    Blood_Enemy,
+    Blood_Player
 }

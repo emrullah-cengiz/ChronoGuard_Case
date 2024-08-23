@@ -6,28 +6,32 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
+    [SerializeField] private bool _alwaysShow = true;
+    [SerializeField] private Color _maxHealthColor;
+    [SerializeField] private Color _minHealthColor;
+    
+    [SerializeField] private GameObject _barObj;
     [SerializeField] private Transform _fillBox;
     [SerializeField] private SpriteRenderer _fillSprite;
-
-    [SerializeField] private int _currentHealth;
-    [SerializeField] private int _maxHealth;
-
     [SerializeField] private UnityEvent _onDeath;
 
-    [SerializeField] public int CurrentHealth => _currentHealth;
+    private int _currentHealth;
+    private int _maxHealth;
+
+    public int CurrentHealth => _currentHealth;
 
     public void Initialize(int health)
     {
         _currentHealth = _maxHealth = health;
 
         Activate(true);
-
+        Show(false);
         UpdateView();
     }
 
     public void TakeDamage(int damage)
     {
-        Debug.Log($"{gameObject.name} takes {damage} damage!");
+        Show(true);
 
         _currentHealth -= damage;
         _currentHealth = Mathf.Clamp(_currentHealth, 0, _maxHealth);
@@ -45,10 +49,11 @@ public class Health : MonoBehaviour
         _fillBox.transform.DOKill();
         _fillBox.transform.DOScaleX(healthPercentage, 0.2f);
 
-        _fillSprite.color = Color.Lerp(Color.red, Color.green, healthPercentage);
+        _fillSprite.color = Color.Lerp(_minHealthColor, _maxHealthColor, healthPercentage);
     }
 
     public void Activate(bool s) => gameObject.SetActive(s);
+    private void Show(bool s) => _barObj.SetActive(_alwaysShow || s);
 
     private void Update()
     {
