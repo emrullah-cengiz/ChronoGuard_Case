@@ -1938,13 +1938,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7900811054733210611, guid: e95a467e12fe94f45af871fbee678287,
         type: 3}
-      propertyPath: m_Acceleration
-      value: 4.8
+      propertyPath: m_AutoBraking
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7900811054733210611, guid: e95a467e12fe94f45af871fbee678287,
         type: 3}
-      propertyPath: m_StoppingDistance
-      value: 0.2
+      propertyPath: m_Acceleration
+      value: 8.64
       objectReference: {fileID: 0}
     - target: {fileID: 7900811054733210611, guid: e95a467e12fe94f45af871fbee678287,
         type: 3}
@@ -2057,6 +2057,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedSmoothingPower: 10
+  _walkDirectionSmoothingPower: 7
   _agent: {fileID: 2300794881634587431}
   _animator: {fileID: 213556138408112510}
 --- !u!136 &2875988495046347945

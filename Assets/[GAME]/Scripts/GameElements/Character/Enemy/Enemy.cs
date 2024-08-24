@@ -25,6 +25,7 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
 
     private bool _initialized;
     public bool IsAlive { get; private set; }
+    public int Health => _health.CurrentHealth;
 
     private void Awake()
     {

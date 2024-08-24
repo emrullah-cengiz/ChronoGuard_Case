@@ -48,6 +48,8 @@ public class EnemyBehaviourTree : Tree
 
     public void ReInitialize(float difficultyMultiplier)
     {
+        _difficultyMultiplier = difficultyMultiplier;
+        
         InitializeBlackBoard();
     }
 

@@ -133,7 +133,7 @@ MonoBehaviour:
       Data: 7|EnemySettings, Assembly-CSharp
     - Name: BaseSpeed
       Entry: 4
-      Data: 3.5
+      Data: 3
     - Name: RotationSpeed
       Entry: 4
       Data: 50
@@ -168,7 +168,7 @@ MonoBehaviour:
       Data: 0
     - Name: $v
       Entry: 4
-      Data: 1.1
+      Data: 0.9
     - Name: 
       Entry: 8
       Data: 
@@ -180,7 +180,7 @@ MonoBehaviour:
       Data: 1
     - Name: $v
       Entry: 4
-      Data: 1.13
+      Data: 1
     - Name: 
       Entry: 8
       Data: 

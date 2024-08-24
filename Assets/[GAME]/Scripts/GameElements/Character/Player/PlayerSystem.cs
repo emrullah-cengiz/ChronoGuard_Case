@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
@@ -28,7 +29,7 @@ public class PlayerSystem : TransformObject, IDamagable
     public float MaxAgentSpeed => _agent.speed;
 
     public bool IsAlive { get; private set; }
-    
+
     private void Awake()
     {
         _playerSettings = ServiceLocator.Resolve<PlayerSettings>();
@@ -51,7 +52,7 @@ public class PlayerSystem : TransformObject, IDamagable
     private void Initialize()
     {
         Debug.Log("Initializing Player..");
-        
+
         _particlePool = ServiceLocator.Resolve<Pool<ParticleType>>();
 
         // _playerStateController.Initialize();
@@ -66,7 +67,7 @@ public class PlayerSystem : TransformObject, IDamagable
         Debug.Log("Reinitializing Player..");
 
         IsAlive = true;
-        
+
         _animator.Initialize(Properties.Speed);
         _animator.SetDead(false);
 
@@ -117,7 +118,7 @@ public class PlayerSystem : TransformObject, IDamagable
     public void OnDead()
     {
         IsAlive = false;
-        
+
         _animator.SetDead(true);
 
         _health.Activate(false);
@@ -128,4 +129,10 @@ public class PlayerSystem : TransformObject, IDamagable
     }
 
     public void SetPlayerProperties(PlayerProperties properties) => Properties = properties;
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawSphere(Position+Velocity * 2, .1f);
+    }
 }
