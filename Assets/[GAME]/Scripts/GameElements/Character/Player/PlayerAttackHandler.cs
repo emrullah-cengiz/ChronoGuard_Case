@@ -1,11 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem;
 
 public class PlayerAttackHandler : MonoBehaviour
 {
@@ -149,8 +145,7 @@ public class PlayerAttackHandler : MonoBehaviour
         {
             if (results[i] is null) break;
 
-            var enemy = results[i];
-            CheckAndUpdateClosestEnemy(enemy);
+            CheckAndUpdateClosestEnemy(results[i]);
         }
     }
 
@@ -168,7 +163,7 @@ public class PlayerAttackHandler : MonoBehaviour
     {
         //var target = GetClosestEnemy();
 
-        if (target != _currentTarget)
+        if (target?.gameObject != _currentTarget?.gameObject)
         {
             Events.Player.OnLockedTarget(target is not null);
             _animator.SetAim(target is not null);

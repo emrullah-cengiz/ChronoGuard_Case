@@ -1,6 +1,3 @@
-using Cysharp.Threading.Tasks;
-using UnityEngine;
-
 public class GameStartState : GameStateBase
 {
     private bool _continueLevel;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using Sirenix.OdinInspector;
-using Sirenix.Serialization;
-using UnityEngine;
+﻿using Sirenix.OdinInspector;
 
 public abstract class CharacterData : SerializedScriptableObject
 {

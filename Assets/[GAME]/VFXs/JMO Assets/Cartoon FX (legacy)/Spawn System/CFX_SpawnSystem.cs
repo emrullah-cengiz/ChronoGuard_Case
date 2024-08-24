@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 // Cartoon FX  - (c) 2012-2016 Jean Moreno

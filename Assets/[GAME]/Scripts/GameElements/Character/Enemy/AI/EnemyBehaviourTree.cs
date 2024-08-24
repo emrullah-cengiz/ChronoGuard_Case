@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using BehaviourTree;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 using Tree = BehaviourTree.Tree;
@@ -11,7 +9,9 @@ public class EnemyBehaviourTree : Tree
 {
     private readonly TreeParams _params;
     private readonly PlayerSystem _playerSystem;
-    protected readonly EnemySettings _enemySettings;
+    private readonly EnemySettings _enemySettings;
+
+    private float _difficultyMultiplier;
 
     private BlackBoard _blackBoard;
 
@@ -46,7 +46,7 @@ public class EnemyBehaviourTree : Tree
         });
     }
 
-    public void ReInitialize()
+    public void ReInitialize(float difficultyMultiplier)
     {
         InitializeBlackBoard();
     }
@@ -62,6 +62,8 @@ public class EnemyBehaviourTree : Tree
 
     private void InitializeBlackBoard()
     {
+        _blackBoard._DifficultyMultiplier = _difficultyMultiplier;
+        
         _blackBoard.IsAttackCooldownEnd = true;
         _blackBoard._AttackRangeSqr = _params.Enemy.Data.AttackRange * _params.Enemy.Data.AttackRange;
         _taskCancellationTokenSource = new CancellationTokenSource();
@@ -95,6 +97,8 @@ public class EnemyBehaviourTree : Tree
     {
         #region Constants per respawn
 
+        public float _DifficultyMultiplier;
+        
         public float _AttackRangeSqr;
         public float _MinDestinationUpdateRate;
         public float _MaxDestinationUpdateRate;
@@ -115,11 +119,11 @@ public class EnemyBehaviourTree : Tree
     public abstract class NodeBase : Node
     {
         protected readonly TreeParams Params;
-        protected readonly PlayerSystem _playerSystem;
-
-        protected readonly EnemySettings _enemySettings;
         protected readonly BlackBoard _blackBoard;
 
+        protected readonly PlayerSystem _playerSystem;
+        protected readonly EnemySettings _enemySettings;
+        
         protected NodeBase(TreeParams @params, BlackBoard blackBoard, CancellationTokenSource cts) : base(cts)
         {
             Params = @params;

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using Cysharp.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Weapon : TransformObject
 {

@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-    public class ETFXProjectileScript : MonoBehaviour
+public class ETFXProjectileScript : MonoBehaviour
     {
         public GameObject impactParticle; // Effect spawned when projectile hits a collider
         public GameObject projectileParticle; // Effect attached to the gameobject as child

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Level_1
   m_EditorClassIdentifier: 
   PlayerProperties: {fileID: 11400000, guid: 2810c9e348812c94dab6e85702c964c4, type: 2}
+  DifficultyMultiplier: 1
   Waves:
   - EnemiesType: 0
     SpawnTimeAfterLevelStart: 0

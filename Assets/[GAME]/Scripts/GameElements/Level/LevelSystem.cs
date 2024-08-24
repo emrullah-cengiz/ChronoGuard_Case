@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
-using TMPro;
 using UnityEngine;
 
 public class LevelSystem : SerializedMonoBehaviour
@@ -48,12 +45,6 @@ public class LevelSystem : SerializedMonoBehaviour
         _enemySpawner.Reset();
     }
 
-    private async UniTask<LevelData> GetLevelData(int levelNumber)
-    {
-        return await Extensions.LoadResource<LevelData>(
-            $"{GlobalVariables.LEVEL_DATA_RESOURCE_PATH}/{GlobalVariables.LEVEL_DATA_PREFIX}{levelNumber}");
-    }
-
     private async UniTaskVoid StartCountdown()
     {
         Events.Level.OnLevelCountdownTick(_countdownDuration);
@@ -70,7 +61,12 @@ public class LevelSystem : SerializedMonoBehaviour
 
         Events.Level.OnLevelCountdownEnd();
     }
-
+    
+    private static async UniTask<LevelData> GetLevelData(int levelNumber)
+    {
+        return await Extensions.LoadResource<LevelData>(
+            $"{GlobalVariables.LEVEL_DATA_RESOURCE_PATH}/{GlobalVariables.LEVEL_DATA_PREFIX}{levelNumber}");
+    }
 
     //
     // private void OnDrawGizmos()

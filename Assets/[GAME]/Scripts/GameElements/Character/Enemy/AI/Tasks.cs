@@ -26,7 +26,7 @@ public class MoveToPlayerTask : EnemyBehaviourTree.NodeBase
 {
     private const float GUN_LENGTH = 1;
 
-    private Vector3 _lastPlayerPosition;
+    private Vector3 _lastDestination;
     private float _lastDistanceSqr;
 
     public MoveToPlayerTask(EnemyBehaviourTree.TreeParams @params, EnemyBehaviourTree.BlackBoard blackBoard, CancellationTokenSource cts)
@@ -36,25 +36,25 @@ public class MoveToPlayerTask : EnemyBehaviourTree.NodeBase
 
     public override NodeState Evaluate()
     {
-        var currentPlayerPosition = _playerSystem.Position;
+        var dest = _playerSystem.Position;
 
-        if (Random.value > .5f && _blackBoard.CurrentPlayerDistance.magnitude < 3)
-            currentPlayerPosition += _playerSystem.Velocity * 2;
+        if (Random.value < _blackBoard._DifficultyMultiplier && _blackBoard.CurrentPlayerDistance.magnitude < 3)
+            dest += _playerSystem.Velocity * 2;
         //Is on front of the player?
         else if(Vector3.Dot(_playerSystem.Forward, _blackBoard.CurrentPlayerDistance) < 0)
-            currentPlayerPosition -= _blackBoard.PlayerDirection * GUN_LENGTH;
+            dest -= _blackBoard.PlayerDirection * GUN_LENGTH;
 
         //destination is not changed enough
-        if (currentPlayerPosition == _lastPlayerPosition && !(Mathf.Abs(_blackBoard.CurrentPlayerDistanceSqr - _lastDistanceSqr) > 0.1f))
+        if (dest == _lastDestination && !(Mathf.Abs(_blackBoard.CurrentPlayerDistanceSqr - _lastDistanceSqr) > 0.1f))
             return NodeState.SUCCESS;
 
         //hold last position
-        _lastPlayerPosition = currentPlayerPosition;
+        _lastDestination = dest;
         _lastDistanceSqr = _blackBoard.CurrentPlayerDistanceSqr;
 
         RecalculateDestinationUpdateRate();
 
-        Params.Agent.SetDestination(currentPlayerPosition);
+        Params.Agent.SetDestination(dest);
 
         _blackBoard.LastDestinationUpdateTime = Time.time;
 

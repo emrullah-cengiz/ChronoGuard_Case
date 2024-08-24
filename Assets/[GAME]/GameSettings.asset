@@ -22,6 +22,7 @@ MonoBehaviour:
     - {fileID: 6437650825332736263, guid: 58c2f7f7ef2ab254d806a41975481e53, type: 3}
     - {fileID: 470266, guid: 5a88f5652466b50449fc927a4d10f584, type: 3}
     - {fileID: 470266, guid: 4a3e1abcb606e3d4db804d7b2e37e028, type: 3}
+    - {fileID: 6737009276743442750, guid: e1d5c6c4c1f7a9749bf8c22959c4a56a, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -410,7 +411,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 2
+      Data: 3
     - Name: 
       Entry: 7
       Data: 
@@ -455,6 +456,31 @@ MonoBehaviour:
     - Name: ExpansionSize
       Entry: 3
       Data: 5
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 7
+      Data: 25|Pool`2+PoolProperties[[UnityEngine.Transform, UnityEngine.CoreModule],[ParticleType,
+        Assembly-CSharp]], Assembly-CSharp
+    - Name: Prefab
+      Entry: 10
+      Data: 6
+    - Name: FillOnInit
+      Entry: 5
+      Data: true
+    - Name: ExpansionSize
+      Entry: 3
+      Data: 3
     - Name: 
       Entry: 8
       Data: 

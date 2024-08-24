@@ -1,10 +1,8 @@
-using System;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
-using Object = UnityEngine.Object;
 
 public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, IDamagable
 {
@@ -19,6 +17,7 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
     [SerializeField] private Collider _collider;
 
     private EnemySettings _enemySettings;
+    private Pool<ParticleType> _particlePool;
 
     private EnemyBehaviourTree _behaviourTree;
 
@@ -30,6 +29,7 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
     private void Awake()
     {
         _enemySettings = ServiceLocator.Resolve<EnemySettings>();
+        _particlePool = ServiceLocator.Resolve<Pool<ParticleType>>();
         
         _agent.updateUpAxis = false;
         _agent.updateRotation = false;
@@ -64,7 +64,7 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
         transform.LookAt(spawnData.LookAtPosition);
 
         _health.Initialize(Data.MaxHealth);
-        _behaviourTree.ReInitialize();
+        _behaviourTree.ReInitialize(spawnData.DifficultyMultiplier);
         _ragdoll.SetRagdollState(false);
 
         IsAlive = true;
@@ -102,6 +102,11 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
 
         _agent.enabled = false;
 
+        var particle = _particlePool.Spawn(ParticleType.Blood_Explosion, 1);
+        particle.position = transform.position + Vector3.up * 1.4f;
+        
+        _hitCancellationTokenSource.Cancel();
+
         Events.Enemies.OnEnemyDead(this);
     }
 
@@ -126,11 +131,13 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
 
     public struct SpawnData : IPoolableInitializationData
     {
+        public float DifficultyMultiplier;
         public Vector3 Position;
         public Vector3 LookAtPosition;
 
-        public SpawnData(Vector3 position, Vector3 lookAtPosition)
+        public SpawnData(Vector3 position, Vector3 lookAtPosition, float difficultyMultiplier)
         {
+            DifficultyMultiplier = difficultyMultiplier;
             Position = position;
             LookAtPosition = lookAtPosition;
         }

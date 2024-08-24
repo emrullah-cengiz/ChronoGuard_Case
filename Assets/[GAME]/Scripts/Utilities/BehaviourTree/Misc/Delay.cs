@@ -1,5 +1,3 @@
-using BehaviourTree;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace BehaviourTree

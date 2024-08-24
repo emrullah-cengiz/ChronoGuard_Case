@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -50,13 +48,10 @@ public class EnemySpawner
         {
             await UniTask.WaitForSeconds(waveData.SpawnTimeAfterLevelStart - elapsedSeconds, cancellationToken: _cts.Token);
 
-            if (_cts.IsCancellationRequested)
-                return;
-
             elapsedSeconds = waveData.SpawnTimeAfterLevelStart;
 
-            Vector3 pos = default;
-            if (Random.value > .4f && _playerSystem.Velocity.magnitude > 0.3f)// && Random.value > 0.5f)
+            Vector3 pos;
+            if (Random.value < _levelData.DifficultyMultiplier && _playerSystem.Velocity.magnitude > 0.3f)// && Random.value > 0.5f)
                 pos = _playerSystem.Position + _playerSystem.Velocity * 4;
             else
                 pos = _spawnPoints[Random.Range(0, _spawnPoints.Length)].position;
@@ -72,12 +67,12 @@ public class EnemySpawner
         for (var i = 0; i < waveData.EnemyNumber; i++)
         {
             _enemyPool.Spawn(waveData.EnemiesType,
-                new Enemy.SpawnData(wavePosition + Random.insideUnitSphere * _enemySettings.SpawnWaveRadius, _playerSystem.Position));
+                new Enemy.SpawnData(wavePosition + Random.insideUnitSphere * _enemySettings.SpawnWaveRadius, _playerSystem.Position, _levelData.DifficultyMultiplier));
 
             await UniTask.WaitForSeconds(_enemySettings.InWaveSpawnDelayInSeconds, cancellationToken: _cts.Token);
 
-            if (_cts.IsCancellationRequested)
-                return;
+            // if (_cts.IsCancellationRequested)
+            //     return;
         }
     }
 }

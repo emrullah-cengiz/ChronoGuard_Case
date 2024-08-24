@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 /**
  *	Demo Scene Script for WAR FX

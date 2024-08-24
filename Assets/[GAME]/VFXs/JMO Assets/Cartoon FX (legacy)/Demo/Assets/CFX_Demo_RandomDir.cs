@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class CFX_Demo_RandomDir : MonoBehaviour
 {

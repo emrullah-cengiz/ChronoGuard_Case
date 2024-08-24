@@ -1,5 +1,3 @@
-using Cysharp.Threading.Tasks;
-
 public class LevelLoadingState : GameStateBase
 {
     public override async void OnEnter(params object[] @params)

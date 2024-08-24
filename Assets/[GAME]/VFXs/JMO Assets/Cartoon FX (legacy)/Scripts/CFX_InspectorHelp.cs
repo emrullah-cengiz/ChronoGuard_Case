@@ -5,7 +5,6 @@
 // its usage
 
 using UnityEngine;
-using System.Collections;
 
 public class CFX_InspectorHelp : MonoBehaviour
 {

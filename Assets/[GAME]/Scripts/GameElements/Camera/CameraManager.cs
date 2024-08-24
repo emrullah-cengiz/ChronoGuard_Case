@@ -4,7 +4,6 @@ using Cinemachine;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraManager : SerializedMonoBehaviour

@@ -96,5 +96,6 @@ public class VFXSettings
 public enum ParticleType
 {
     Blood_Enemy,
-    Blood_Player
+    Blood_Player,
+    Blood_Explosion,
 }

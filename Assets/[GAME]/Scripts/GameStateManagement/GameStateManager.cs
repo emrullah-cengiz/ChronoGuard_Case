@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using GAME.Utilities.StateMachine;
+﻿using GAME.Utilities.StateMachine;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 public class GameStateManager : MonoBehaviour
 {
