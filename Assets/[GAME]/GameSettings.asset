@@ -53,13 +53,13 @@ MonoBehaviour:
       Data: 1|LevelSettings, Assembly-CSharp
     - Name: LevelCountdownDurationInSeconds
       Entry: 3
-      Data: 180
+      Data: 90
     - Name: PopupDelayAfterDie
       Entry: 3
-      Data: 1
+      Data: 3
     - Name: MaxLevel
       Entry: 3
-      Data: 3
+      Data: 2
     - Name: 
       Entry: 8
       Data: 

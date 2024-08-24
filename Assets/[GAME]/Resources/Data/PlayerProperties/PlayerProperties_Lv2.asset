@@ -21,8 +21,8 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  MaxHealth: 5000
-  Damage: 0
+  MaxHealth: 100
+  Damage: 5
   AttackRange: 4.5
   AttackRateInSeconds: 0.2
   BulletSpeed: 20

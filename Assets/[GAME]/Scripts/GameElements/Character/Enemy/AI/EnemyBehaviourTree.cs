@@ -11,6 +11,7 @@ public class EnemyBehaviourTree : Tree
 {
     private readonly TreeParams _params;
     private readonly PlayerSystem _playerSystem;
+    protected readonly EnemySettings _enemySettings;
 
     private BlackBoard _blackBoard;
 
@@ -19,6 +20,7 @@ public class EnemyBehaviourTree : Tree
         _params = @params;
 
         _playerSystem = ServiceLocator.Resolve<PlayerSystem>();
+        _enemySettings = ServiceLocator.Resolve<EnemySettings>();
 
         Initialize();
     }
@@ -30,8 +32,13 @@ public class EnemyBehaviourTree : Tree
         return new Parallel(new()
         {
             new LookToPlayerTask(_params, _blackBoard, _taskCancellationTokenSource),
-            new MoveToPlayerTask(_params, _blackBoard, _taskCancellationTokenSource),
-            new Sequence(new()
+            new Sequence(new List<Node>()//Movement
+            {
+                new CheckForDestinationUpdateRate(_params, _blackBoard, _taskCancellationTokenSource),
+                new MoveToPlayerTask(_params, _blackBoard, _taskCancellationTokenSource),
+                //updateUpdateRate
+            }),
+            new Sequence(new()//Attack
             {
                 new CheckForAttack(_params, _blackBoard, _taskCancellationTokenSource),
                 new AttackToPlayerTask(_params, _blackBoard, _taskCancellationTokenSource),
@@ -41,23 +48,68 @@ public class EnemyBehaviourTree : Tree
 
     public void ReInitialize()
     {
-        _blackBoard.IsAttackCooldownEnd = true;
-        _blackBoard.AttackRangeSqr = _params.Enemy.Data.AttackRange * _params.Enemy.Data.AttackRange;
-        _taskCancellationTokenSource = new CancellationTokenSource();
+        InitializeBlackBoard();
     }
 
     public override void Update()
     {
-        PrepareBlackboard();
+        UpdateBlackboard();
 
         base.Update();
     }
 
-    private void PrepareBlackboard()
+    #region BlackBoard
+
+    private void InitializeBlackBoard()
+    {
+        _blackBoard.IsAttackCooldownEnd = true;
+        _blackBoard._AttackRangeSqr = _params.Enemy.Data.AttackRange * _params.Enemy.Data.AttackRange;
+        _taskCancellationTokenSource = new CancellationTokenSource();
+        
+        _blackBoard._MinDestinationUpdateRate = _enemySettings.AgentSetDestinationMinRate;
+        _blackBoard._MaxDestinationUpdateRate = _enemySettings.AgentSetDestinationMaxRate;
+        _blackBoard._MaxDistanceForMaxUpdateRateSqr = _enemySettings.AgentMaxDistanceForMaxUpdateRate * _enemySettings.AgentMaxDistanceForMaxUpdateRate;
+    }
+
+    private void UpdateBlackboard()
     {
         _blackBoard.CurrentPlayerDistance = _playerSystem.Position - _params.Enemy.Position;
+        _blackBoard.CurrentPlayerDistanceSqr = _blackBoard.CurrentPlayerDistance.sqrMagnitude;
+        
         _blackBoard.PlayerDirection = _blackBoard.CurrentPlayerDistance.normalized;
         _blackBoard.IsPlayerAlive = _playerSystem.IsAlive;
+
+        _blackBoard.DestinationUpdateRate = _blackBoard._MinDestinationUpdateRate;
+    }
+
+    #endregion
+
+    public class TreeParams
+    {
+        public Enemy Enemy;
+        public NavMeshAgent Agent;
+        public EnemyAnimatorController Animator;
+    }
+
+    public class BlackBoard
+    {
+        #region Constants per respawn
+
+        public float _AttackRangeSqr;
+        public float _MinDestinationUpdateRate;
+        public float _MaxDestinationUpdateRate;
+        public float _MaxDistanceForMaxUpdateRateSqr;
+
+        #endregion
+
+        public float DestinationUpdateRate;
+        public float LastDestinationUpdateTime;
+
+        public bool IsAttackCooldownEnd = true;
+        public Vector3 PlayerDirection;
+        public bool IsPlayerAlive;
+        public Vector3 CurrentPlayerDistance;
+        public float CurrentPlayerDistanceSqr;
     }
 
     public abstract class NodeBase : Node
@@ -75,21 +127,5 @@ public class EnemyBehaviourTree : Tree
             _playerSystem = ServiceLocator.Resolve<PlayerSystem>();
             _enemySettings = ServiceLocator.Resolve<EnemySettings>();
         }
-    }
-
-    public class TreeParams
-    {
-        public Enemy Enemy;
-        public NavMeshAgent Agent;
-        public EnemyAnimatorController Animator;
-    }
-
-    public class BlackBoard
-    {
-        public bool IsAttackCooldownEnd = true;
-        public Vector3 PlayerDirection;
-        public bool IsPlayerAlive;
-        public Vector3 CurrentPlayerDistance;
-        public float AttackRangeSqr;
     }
 }
