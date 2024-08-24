@@ -132,7 +132,7 @@ MonoBehaviour:
       Data: 7|EnemySettings, Assembly-CSharp
     - Name: BaseSpeed
       Entry: 4
-      Data: 3.54
+      Data: 3.5
     - Name: RotationSpeed
       Entry: 4
       Data: 50
@@ -167,7 +167,7 @@ MonoBehaviour:
       Data: 0
     - Name: $v
       Entry: 4
-      Data: 1
+      Data: 1.1
     - Name: 
       Entry: 8
       Data: 
@@ -179,7 +179,7 @@ MonoBehaviour:
       Data: 1
     - Name: $v
       Entry: 4
-      Data: 1.3
+      Data: 1.13
     - Name: 
       Entry: 8
       Data: 
@@ -256,13 +256,13 @@ MonoBehaviour:
       Data: 1.5
     - Name: AgentSetDestinationMinRate
       Entry: 4
-      Data: 0.2
+      Data: 0.1
     - Name: AgentSetDestinationMaxRate
       Entry: 4
-      Data: 0.4
+      Data: 0.35
     - Name: AgentMaxDistanceForMaxUpdateRate
       Entry: 4
-      Data: 4
+      Data: 6
     - Name: PoolSettings
       Entry: 7
       Data: 12|Pool`2+PoolSettings[[Enemy, Assembly-CSharp],[EnemyType, Assembly-CSharp]],

@@ -7,15 +7,18 @@ using Unity.Mathematics;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Random = UnityEngine.Random;
 
 public class MoveToPlayerTask : EnemyBehaviourTree.NodeBase
 {
     private const float GUN_LENGTH = 1;
+    
     private readonly float _minUpdateRate;
     private readonly float _maxUpdateRate;
     private readonly float _maxDistanceForMaxUpdateRateSqr;
     private float _executeRate;
     private float _startTime;
+    
     private Vector3 _lastPlayerPosition;
     private float _lastDistanceSqr;
 
@@ -36,29 +39,28 @@ public class MoveToPlayerTask : EnemyBehaviourTree.NodeBase
         _startTime = Time.time;
 
         var currentPlayerPosition = _playerSystem.Position;
+
         var distanceSqr = (Params.Agent.transform.position - currentPlayerPosition).sqrMagnitude;
 
-        if (currentPlayerPosition != _lastPlayerPosition || Mathf.Abs(distanceSqr - _lastDistanceSqr) > 0.1f)
-        {
-            _lastPlayerPosition = currentPlayerPosition;
-            _lastDistanceSqr = distanceSqr;
-
-            _executeRate = _minUpdateRate + (_maxUpdateRate - _minUpdateRate) * (distanceSqr / _maxDistanceForMaxUpdateRateSqr);
-            _executeRate = Mathf.Clamp(_executeRate, _minUpdateRate, _maxUpdateRate);
-        }
+        if (Random.value > .5f && _blackBoard.CurrentPlayerDistance.magnitude < 3)
+            currentPlayerPosition += _playerSystem.Velocity * 2;
         else
+            currentPlayerPosition -= _blackBoard.PlayerDirection * GUN_LENGTH;
+
+        //
+
+        if (currentPlayerPosition == _lastPlayerPosition && !(Mathf.Abs(distanceSqr - _lastDistanceSqr) > 0.1f))
             return NodeState.SUCCESS;
 
-        //distance calculation by player velocity
-        var velocityFactor = Mathf.Clamp(_playerSystem.Velocity.magnitude / _playerSystem.MaxAgentSpeed, 0, 1);
-        // var distanceFactor = Mathf.Clamp(_blackBoard.CurrentPlayerDistance.magnitude / Params.Enemy.Data.AttackRange, 0, 1);
+        //hold last position
+        _lastPlayerPosition = currentPlayerPosition;
+        _lastDistanceSqr = distanceSqr;
 
-        // var extraDistance = distanceFactor * GUN_LENGTH;
+        //update _executeRate
+        _executeRate = _minUpdateRate + (_maxUpdateRate - _minUpdateRate) * (distanceSqr / _maxDistanceForMaxUpdateRateSqr);
+        _executeRate = Mathf.Clamp(_executeRate, _minUpdateRate, _maxUpdateRate);
 
-        var dest = currentPlayerPosition - _blackBoard.PlayerDirection * (Params.Enemy.Data.AttackRange * (1 - velocityFactor) 
-                                                                          + velocityFactor * GUN_LENGTH);
-
-        Params.Agent.SetDestination(dest);
+        Params.Agent.SetDestination(currentPlayerPosition);
 
         return NodeState.SUCCESS;
     }
@@ -77,7 +79,7 @@ public class CheckForAttack : EnemyBehaviourTree.NodeBase
     public override NodeState Evaluate()
     {
         if (_blackBoard.IsPlayerAlive && _blackBoard.IsAttackCooldownEnd &&
-            _blackBoard.CurrentPlayerDistance.sqrMagnitude - DISTANCE_BUFFER < _blackBoard.AttackRangeSqr)
+            _blackBoard.CurrentPlayerDistance.sqrMagnitude <= _blackBoard.AttackRangeSqr)
             return NodeState.SUCCESS;
 
         return NodeState.FAILURE;
@@ -109,7 +111,7 @@ public class AttackToPlayerTask : EnemyBehaviourTree.NodeBase
 
         var angle = Quaternion.Angle(Params.Enemy.Rotation, quaternion.LookRotation(_blackBoard.PlayerDirection, Vector3.up));
 
-        if (Mathf.Abs(angle) < _enemySettings.HitToPlayerAngleThreshold)
+        if (Mathf.Abs(angle) <= _enemySettings.HitToPlayerAngleThreshold)
             _playerSystem.TakeDamage(Params.Enemy.Data.Damage, Params.Enemy.Forward);
 
         // var res = new RaycastHit[1];

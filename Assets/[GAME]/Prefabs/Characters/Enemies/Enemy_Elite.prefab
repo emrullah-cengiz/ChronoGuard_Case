@@ -39,6 +39,11 @@ PrefabInstance:
       propertyPath: m_Radius
       value: 0.42
       objectReference: {fileID: 0}
+    - target: {fileID: 2300794881634587431, guid: 62dced92c3c111e4c833b18690756f17,
+        type: 3}
+      propertyPath: avoidancePriority
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 2929443400328462515, guid: 62dced92c3c111e4c833b18690756f17,
         type: 3}
       propertyPath: m_LocalPosition.y

@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weapon: {fileID: 8133841877841496114}
-  _animator: {fileID: 3818967280601764792}
+  _animator: {fileID: 3624957370513585480}
   _agent: {fileID: 2300794881634587431}
 --- !u!135 &2992071543623720879
 SphereCollider:
@@ -1030,6 +1030,11 @@ PrefabInstance:
       propertyPath: m_AngularSpeed
       value: 600
       objectReference: {fileID: 0}
+    - target: {fileID: 7900811054733210611, guid: e95a467e12fe94f45af871fbee678287,
+        type: 3}
+      propertyPath: avoidancePriority
+      value: 40
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -1061,11 +1066,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 342375206321998990, guid: e95a467e12fe94f45af871fbee678287,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3818967280601764792}
+      addedObject: {fileID: 100220451864725165}
     - targetCorrespondingSourceObject: {fileID: 342375206321998990, guid: e95a467e12fe94f45af871fbee678287,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 100220451864725165}
+      addedObject: {fileID: 3624957370513585480}
   m_SourcePrefab: {fileID: 100100000, guid: e95a467e12fe94f45af871fbee678287, type: 3}
 --- !u!195 &2300794881634587431 stripped
 NavMeshAgent:
@@ -1132,12 +1137,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771c3c6b87ed34d4a9ed6949147369bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Properties: {fileID: 0}
   _agent: {fileID: 2300794881634587431}
-  _animator: {fileID: 3818967280601764792}
+  _animator: {fileID: 3624957370513585480}
   _movementController: {fileID: 725227951016945346}
   _attackHandler: {fileID: 1751902967194166036}
   _weapon: {fileID: 8133841877841496114}
   _health: {fileID: 2662113091540720456}
+  _rb: {fileID: 0}
 --- !u!114 &725227951016945346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1153,23 +1160,6 @@ MonoBehaviour:
   _movementInputActionRef: {fileID: 2990186206529762269, guid: 130a55a065e0f1942a457a9552b2149d,
     type: 3}
   _agent: {fileID: 2300794881634587431}
-  _playerProperties: {fileID: 11400000, guid: 2810c9e348812c94dab6e85702c964c4, type: 2}
---- !u!114 &3818967280601764792
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8541953441604217946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1f08d2a064f47cb8834d1d4b3d31a91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speedSmoothingPower: 7
-  _agent: {fileID: 2300794881634587431}
-  _animator: {fileID: 2042048461131738225}
-  _walkDirectionSmoothingPower: 7
 --- !u!136 &100220451864725165
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1193,6 +1183,22 @@ CapsuleCollider:
   m_Height: 2.5179553
   m_Direction: 1
   m_Center: {x: 0, y: 0.75897765, z: 0}
+--- !u!114 &3624957370513585480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8541953441604217946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 777792fa1b0b70944a50b1e155d96a9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speedSmoothingPower: 7
+  _walkDirectionSmoothingPower: 7
+  _agent: {fileID: 2300794881634587431}
+  _animator: {fileID: 2042048461131738225}
 --- !u!4 &9143329665043038850 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 912226217940836950, guid: e95a467e12fe94f45af871fbee678287,

@@ -25,5 +25,5 @@ MonoBehaviour:
   Damage: 2
   AttackRange: 4
   AttackRateInSeconds: 0.19
-  BulletSpeed: 14
+  BulletSpeed: 20
   Speed: 3.14
