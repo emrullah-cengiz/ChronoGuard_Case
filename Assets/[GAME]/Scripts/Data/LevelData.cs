@@ -7,8 +7,8 @@ using UnityEngine;
 public class LevelData : ScriptableObject
 {
     public PlayerProperties PlayerProperties;
-    [Range(0.3f, 1)]
-    public float DifficultyMultiplier = .3f;
+    [Range(0.5f, 1)]
+    public float DifficultyMultiplier = .5f;
     public List<WaveData> Waves = new();
 }
 
@@ -16,7 +16,7 @@ public class LevelData : ScriptableObject
 public class WaveData
 {
    public EnemyType EnemiesType;
-   public int SpawnTimeAfterLevelStart;
+   public float SpawnTimeAfterLevelStart;
    public int EnemyNumber;
    // public float SpawnDistanceFromPlayer;
 }

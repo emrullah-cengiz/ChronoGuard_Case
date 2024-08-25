@@ -12,6 +12,8 @@ public class PlayerAttackHandler : MonoBehaviour
     [SerializeField] private CharacterAnimatorController _animator;
     [SerializeField] private NavMeshAgent _agent;
 
+    [SerializeField] private Transform _targetIndicator;
+
     private PlayerSystem _playerSystem;
     private PlayerSettings _playerSettings;
 
@@ -23,8 +25,7 @@ public class PlayerAttackHandler : MonoBehaviour
     #region Target Selection
 
     private Enemy _currentTarget;
-    private float _closestDistanceSqr = 100;
-    private float _overlapCheckRate = 0.5f;
+    private readonly float _overlapCheckRate = 0.5f;
 
     #endregion
 
@@ -38,8 +39,6 @@ public class PlayerAttackHandler : MonoBehaviour
     {
         _playerSystem = ServiceLocator.Resolve<PlayerSystem>();
         _playerSettings = ServiceLocator.Resolve<PlayerSettings>();
-
-        _currentTarget = null;
     }
 
     public void Reinitialize()
@@ -63,7 +62,15 @@ public class PlayerAttackHandler : MonoBehaviour
     {
         if (!_isActive) return;
 
+        AdjustTargetIndicator();
+
         LookTarget();
+    }
+
+    private void AdjustTargetIndicator()
+    {
+        if (_currentTarget is not null)
+            _targetIndicator.transform.position = _currentTarget.transform.position;
     }
 
     private void LookTarget()
@@ -99,7 +106,7 @@ public class PlayerAttackHandler : MonoBehaviour
                     continue;
                 }
 
-                _weapon.Shoot(_playerSystem.Properties.Damage, _playerSystem.Properties.BulletSpeed);
+                _weapon.Shoot(_playerSystem.Properties.Damage, _playerSystem.Properties.BulletSpeed, _playerSystem.Properties.BulletNumberPerShot);
                 // Debug.Log("SHOOT!");
 
                 await UniTask.WaitForSeconds(_playerSystem.Properties.AttackRateInSeconds, cancellationToken: _CancellationTokenSource.Token);
@@ -109,19 +116,7 @@ public class PlayerAttackHandler : MonoBehaviour
         }
     }
 
-    #region Closest enmey calculations
-
-    // private void OnTriggerEnter(Collider other)
-    // {
-    //     if (!other.CompareTag(GlobalVariables.Tags.ENEMY)) return;
-    //     
-    //     CheckAndUpdateClosestEnemy(other);
-    //     
-    //     _targetSelectionCancellationTokenSource?.Cancel();
-    //     _targetSelectionCancellationTokenSource = new CancellationTokenSource();
-    //
-    //     TargetSelectionWithOverlapTimer().Forget();
-    // }
+    #region Target selection calculations
 
     private async UniTask TargetSelectionWithOverlapTimer()
     {
@@ -136,8 +131,6 @@ public class PlayerAttackHandler : MonoBehaviour
     {
         var results = new Collider[7];
 
-        _closestDistanceSqr = float.MaxValue;
-
         if (Physics.OverlapSphereNonAlloc(transform.position, _attackRange, results, 1 << GlobalVariables.Layers.ENEMY) <= 0)
         {
             SelectTarget(null);
@@ -145,19 +138,23 @@ public class PlayerAttackHandler : MonoBehaviour
         }
 
         var playerPos = transform.position;
+        var attackRangeSqr = _attackRange * _attackRange;
 
         Enemy closestEnemy = null;
         Enemy lowestHealthEnemy = null;
-        float closestDistSqr = float.MaxValue;
-        float lowestHealth = float.MaxValue;
+        var closestDistSqr = float.MaxValue;
+        var lowestHealth = float.MaxValue;
 
         foreach (var coll in results)
         {
             if (coll == null) continue;
 
-            var enemy = coll.GetComponent<Enemy>();
+            var distSqr = (playerPos - coll.transform.position).sqrMagnitude;
 
-            var distSqr = (playerPos - enemy.transform.position).sqrMagnitude;
+            //patch for the Overlap bug :(
+            if (attackRangeSqr < distSqr) continue;
+
+            var enemy = coll.GetComponent<Enemy>();
 
             if (distSqr < closestDistSqr)
             {
@@ -176,29 +173,20 @@ public class PlayerAttackHandler : MonoBehaviour
             SelectTarget(closestEnemy);
         else
             //Select target by current health or distance
-            SelectTarget(closestDistSqr / (playerPos - lowestHealthEnemy!.transform.position).sqrMagnitude <= .4f
+            SelectTarget(closestDistSqr / (playerPos - lowestHealthEnemy!.transform.position).sqrMagnitude <= .6f
                 ? closestEnemy
                 : lowestHealthEnemy);
-    }
-
-    private void CheckAndUpdateClosestEnemy(Collider enemy)
-    {
-        // var distanceSqr = (transform.position - enemy.transform.position).sqrMagnitude;
-        //
-        // if (distanceSqr > _closestDistanceSqr) return;
-        //
-        // _closestDistanceSqr = distanceSqr;
-        // SelectTarget(enemy);
     }
 
     private void SelectTarget(Enemy target)
     {
         if (target != _currentTarget)
         {
-            Events.Player.OnLockedTarget(target is not null);
-            _animator.SetAim(target is not null);
-
-            Debug.Log("Target selected");
+            var isNull = target is null;
+            
+            Events.Player.OnLockedTarget(!isNull);
+            _animator.SetAim(!isNull);
+            _targetIndicator.gameObject.SetActive(!isNull);
         }
 
         _currentTarget = target?.GetComponent<Enemy>();

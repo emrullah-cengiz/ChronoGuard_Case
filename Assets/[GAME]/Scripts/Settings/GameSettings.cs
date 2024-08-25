@@ -32,15 +32,13 @@ public class PlayerSettings
     public float AimOffset = -8.36f;
     public float LookNewTargetSpeed = 6f;
     public float AimingProgressShootingThreshold = .8f;
-    
-    [Title("Hit")]
-    public float HitImpulseForce = 3f;
-    public float HitImpulseDuration = .2f;
 }
 
 [Serializable]
 public class WeaponSettings
 {
+    public float ShotgunAngleOffsetPerBullet = 15;
+
     [OdinSerialize] [NonSerialized] [Space(10)]
     public Bullet.Pool.PoolSettings PoolSettings;
 }
@@ -50,14 +48,12 @@ public class EnemySettings
 {
     public float BaseSpeed = 3.3f;
     public float RotationSpeed = 10f;
-    public float HitToPlayerAngleThreshold = 10f;
+    public float PlayerAttackAngleThreshold = 10f;
     
-    public Dictionary<EnemySpeedMode, float> SpeedMultipliers;
     public Dictionary<EnemyAttackType, float> HitTimePerAnimation;
     
     [Title("Hit")]
-    public float HitImpulseForce = 10f;
-    public float HitImpulseDuration = .2f;
+    public float BaseImpulseDistance = 1f; 
 
     [Title("Spawner")]
     public float InWaveSpawnDelayInSeconds = .3f;

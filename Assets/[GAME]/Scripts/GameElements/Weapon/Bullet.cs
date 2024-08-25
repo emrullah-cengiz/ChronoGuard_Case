@@ -1,10 +1,12 @@
 ﻿using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public enum BulletType
 {
-    Default
+    Default,
+    Shotgun
 }
 
 public class Bullet : MonoBehaviour, IInitializablePoolable<ShootData>
@@ -16,87 +18,99 @@ public class Bullet : MonoBehaviour, IInitializablePoolable<ShootData>
     private Bullet.Pool _bulletPool;
     private Pool<ParticleType> _particlePool;
 
-    public CancellationTokenSource CancellationTokenSource { get; private set; }
+    private CancellationTokenSource _autoDespawnCancellationTokenSource;
 
     public BulletType Type;
 
     private ShootData _data;
 
-    private void Start()
+    private RaycastHit[] _hitResults;
+    private Enemy _enemyToHit;
+    private float _hitTime = 0;
+
+    public void OnCreated()
     {
         _trails = GetComponentsInChildren<TrailRenderer>();
         _particles = GetComponentsInChildren<ParticleSystem>();
 
         _bulletPool = ServiceLocator.Resolve<Bullet.Pool>();
         _particlePool = ServiceLocator.Resolve<Pool<ParticleType>>();
-    }
 
-    public void OnCreated()
-    {
+        _hitResults = new RaycastHit[1];
+        
         ClearEffects();
     }
 
     public void OnSpawned(ShootData data)
     {
         _data = data;
+        
+        _enemyToHit = null;
+        _hitResults[0] = default;
+        _hitTime = 0;
 
         transform.position = _data.StartPosition;
-        transform.LookAt(transform.position + _data.Direction);
+        transform.forward = _data.Direction; //.LookAt(transform.position + _data.Direction);
+
+        CheckForHit(data);
 
         PlayEffects();
     }
+    
+    public void OnDespawned() => ClearEffects();
 
-    public void OnDespawned()
+    private void CheckForHit(ShootData data)
     {
-        ClearEffects();
+        Physics.RaycastNonAlloc(transform.position, data.Direction, _hitResults, data.Speed, 1 << GlobalVariables.Layers.ENEMY);
+
+        var hitResult = _hitResults[0];
+        if (hitResult.transform != null)
+        {
+            _enemyToHit = hitResult.transform.GetComponent<Enemy>();
+            _hitTime = Time.time + hitResult.distance / data.Speed;
+        }
     }
 
     private void Update()
     {
-        transform.Translate(_data.Direction * (_data.Speed * Time.deltaTime), Space.World);
-    }
+        transform.position += _data.Direction * (_data.Speed * Time.deltaTime);
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag(GlobalVariables.Tags.ENEMY) && other.TryGetComponent(out Enemy enemy))
+        if (_enemyToHit is not null && Time.time >= _hitTime)
         {
-            enemy.TakeDamage(_data.Damage, transform.forward);
+            _enemyToHit.TakeDamage(_data.Damage, transform.forward, _data.Speed);
 
-            OnHit();
+            SpawnParticle();
 
-            var obj = _particlePool.Spawn(ParticleType.Blood_Enemy, despawnDelay: .4f);
-            obj.transform.position = transform.position;
-            obj.transform.rotation = transform.rotation;
-            obj.transform.localScale = Vector3.one * Random.Range(0.6f, 1);
-
-            CancellationTokenSource.Cancel();
+            _autoDespawnCancellationTokenSource.Cancel();
             _bulletPool.Despawn(this, Type);
         }
     }
 
-    private void OnHit()
+    #region Particles
+
+    private void SpawnParticle()
     {
-        // _hitParticle.gameObject.SetActive(true);
-        // _hitParticle.Play();
+        var obj = _particlePool.Spawn(ParticleType.Blood_Enemy, despawnDelay: .4f);
+        obj.transform.position = transform.position;
+        obj.transform.rotation = transform.rotation;
+        obj.transform.localScale = Vector3.one * Random.Range(0.6f, 1);
     }
 
     private void PlayEffects()
     {
         foreach (var particle in _particles)
-            // if (particle != _hitParticle)
             particle.Play();
     }
 
     private void ClearEffects()
     {
-        // _hitParticle.gameObject.SetActive(false);
         foreach (var trail in _trails)
             trail.Clear();
-        // foreach (var particle in _particles)
-        //     particle.Stop();
     }
 
-    public void SetCancellationTokenSource(CancellationTokenSource cts) => CancellationTokenSource = cts;
+    #endregion
+
+    public void SetCancellationTokenSource(CancellationTokenSource cts) => _autoDespawnCancellationTokenSource = cts;
 
     public class Pool : Pool<Bullet, BulletType>
     {

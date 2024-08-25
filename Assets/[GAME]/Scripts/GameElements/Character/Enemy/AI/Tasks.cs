@@ -24,7 +24,7 @@ public class CheckForDestinationUpdateRate : EnemyBehaviourTree.NodeBase
 
 public class MoveToPlayerTask : EnemyBehaviourTree.NodeBase
 {
-    private const float GUN_LENGTH = 1;
+    private const float GUN_LENGTH = 1.1f;
 
     private Vector3 _lastDestination;
     private float _lastDistanceSqr;
@@ -38,11 +38,11 @@ public class MoveToPlayerTask : EnemyBehaviourTree.NodeBase
     {
         var dest = _playerSystem.Position;
 
-        if (Random.value < _blackBoard._DifficultyMultiplier && _blackBoard.CurrentPlayerDistance.magnitude < 3)
-            dest += _playerSystem.Velocity * 2;
         //Is on front of the player?
-        else if(Vector3.Dot(_playerSystem.Forward, _blackBoard.CurrentPlayerDistance) < 0)
+        if (Vector3.Dot(_playerSystem.Forward, _blackBoard.CurrentPlayerDistance.normalized) < 0)
             dest -= _blackBoard.PlayerDirection * GUN_LENGTH;
+        else if (_blackBoard._FollowPlayersVelocity && _blackBoard.CurrentPlayerDistance.magnitude < 3)
+            dest += _playerSystem.Velocity * 2;
 
         //destination is not changed enough
         if (dest == _lastDestination && !(Mathf.Abs(_blackBoard.CurrentPlayerDistanceSqr - _lastDistanceSqr) > 0.1f))
@@ -60,7 +60,7 @@ public class MoveToPlayerTask : EnemyBehaviourTree.NodeBase
 
         return NodeState.SUCCESS;
     }
-    
+
     private void RecalculateDestinationUpdateRate()
     {
         _blackBoard.DestinationUpdateRate = Mathf.Clamp(_blackBoard._MinDestinationUpdateRate +
@@ -112,7 +112,7 @@ public class AttackToPlayerTask : EnemyBehaviourTree.NodeBase
 
         var angle = Quaternion.Angle(Params.Enemy.Rotation, quaternion.LookRotation(_blackBoard.PlayerDirection, Vector3.up));
 
-        if (Mathf.Abs(angle) <= _enemySettings.HitToPlayerAngleThreshold)
+        if (Mathf.Abs(angle) <= _enemySettings.PlayerAttackAngleThreshold)
             _playerSystem.TakeDamage(Params.Enemy.Data.Damage, Params.Enemy.Forward);
 
         // var res = new RaycastHit[1];

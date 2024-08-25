@@ -49,7 +49,7 @@ public class LevelSystem : SerializedMonoBehaviour
     {
         Events.Level.OnLevelCountdownTick(_countdownDuration);
 
-        for (var i = _countdownDuration - 1; i >= 0; i--)
+        for (var i = 0; i < _countdownDuration; i++)
         {
             await UniTask.WaitForSeconds(1, cancellationToken: _cts.Token);
 

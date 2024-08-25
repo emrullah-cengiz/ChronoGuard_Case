@@ -9,6 +9,7 @@ public class MovementController : MonoBehaviour
 
     private PlayerSystem _playerSystem;
 
+    private InputAction _inputAction;
     private bool _isActive;
     private Vector2 _input;
     private float _angularSpeed;
@@ -16,6 +17,7 @@ public class MovementController : MonoBehaviour
 
     private void Awake()
     {
+        _inputAction = _movementInputActionRef.action;
         _angularSpeed = _agent.angularSpeed;
         _playerSystem = ServiceLocator.Resolve<PlayerSystem>();
     }
@@ -24,16 +26,12 @@ public class MovementController : MonoBehaviour
     {
         Events.Player.OnLockedTarget += ActivateAgentRotation;
         Events.GameStates.OnLevelStarted += SetNewSpeed;
-        _movementInputActionRef.action.performed += SetInput;
-        _movementInputActionRef.action.canceled += ClearInput;
     }
 
     private void OnDisable()
     {
         Events.Player.OnLockedTarget -= ActivateAgentRotation;
         Events.GameStates.OnLevelStarted -= SetNewSpeed;
-        _movementInputActionRef.action.performed -= SetInput;
-        _movementInputActionRef.action.canceled -= ClearInput;
     }
 
     public void Activate(bool s) => _isActive = s;
@@ -41,29 +39,25 @@ public class MovementController : MonoBehaviour
     private void Update()
     {
         if(!_isActive) return;
-        
-        if (_inputPhase is InputActionPhase.Performed or InputActionPhase.Canceled)
-            Move();
+
+        switch (_inputAction.phase)
+        {
+            case InputActionPhase.Performed or InputActionPhase.Started:
+                Move(_inputAction.ReadValue<Vector2>());
+                break;
+            case InputActionPhase.Canceled:
+                Move(Vector2.zero);
+                break;
+        }
     }
 
-    private void Move()
+    private void Move(Vector2 input)
     {
-        Vector3 movementVector = new(_input.x, 0, _input.y);
+        Vector3 movementVector = new(input.x, 0, input.y);
         _agent.velocity = _agent.speed * movementVector;
     }
     
     private void ActivateAgentRotation(bool s) => _agent.angularSpeed = s ? 0 : _angularSpeed;
-
-    private void SetInput(InputAction.CallbackContext context)
-    {
-        _input = context.ReadValue<Vector2>();
-        _inputPhase = context.phase;
-    }
-    private void ClearInput(InputAction.CallbackContext context)
-    {
-        _input = Vector3.zero;
-        _inputPhase = context.phase;
-    }
     
     private void SetNewSpeed() => _agent.speed = _playerSystem.Properties.Speed;
 }

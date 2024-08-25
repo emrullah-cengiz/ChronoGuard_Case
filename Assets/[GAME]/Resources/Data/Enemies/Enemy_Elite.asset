@@ -24,7 +24,8 @@ MonoBehaviour:
   MaxHealth: 29
   Damage: 5
   AttackRange: 1.2
-  AttackRateInSeconds: 0.5
+  AttackRateInSeconds: 0.4
   Type: 1
+  SpeedMultiplier: 1.2
+  Mass: 1.4
   AttackType: 1
-  SpeedMode: 1

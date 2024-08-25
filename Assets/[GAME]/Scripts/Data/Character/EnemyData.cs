@@ -8,14 +8,12 @@ public class EnemyData : CharacterData
     
     [PropertyOrder(-1)]
     public EnemyType Type;
+    public float SpeedMultiplier;
+    public float Mass = 1;
     
     [EnumToggleButtons]
     public EnemyAttackType AttackType;
-    [EnumToggleButtons]
-    public EnemySpeedMode SpeedMode;
-
 }
-
 
 public enum EnemyType
 {

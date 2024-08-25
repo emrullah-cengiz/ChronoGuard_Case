@@ -17,6 +17,7 @@ MonoBehaviour:
     SerializedBytes: 
     ReferencedUnityObjects:
     - {fileID: 4902589457775515812, guid: 80bba8b634fbb7744b1f055a115b8861, type: 3}
+    - {fileID: 7931868571429389443, guid: 28eb2dd0cf54cc441abf28beacaa3640, type: 3}
     - {fileID: 6437650825332736263, guid: 25fb90d243d6237489445a8612fdf8dd, type: 3}
     - {fileID: 6437650825332736263, guid: 449b2f4f00a2ee348b0c3b4b9e2c6c02, type: 3}
     - {fileID: 6437650825332736263, guid: 58c2f7f7ef2ab254d806a41975481e53, type: 3}
@@ -40,12 +41,6 @@ MonoBehaviour:
     - Name: AimingProgressShootingThreshold
       Entry: 4
       Data: 0.8
-    - Name: HitImpulseForce
-      Entry: 4
-      Data: 2.05
-    - Name: HitImpulseDuration
-      Entry: 4
-      Data: 0.2
     - Name: 
       Entry: 8
       Data: 
@@ -54,19 +49,22 @@ MonoBehaviour:
       Data: 1|LevelSettings, Assembly-CSharp
     - Name: LevelCountdownDurationInSeconds
       Entry: 3
-      Data: 90
+      Data: 180
     - Name: PopupDelayAfterDie
       Entry: 3
       Data: 3
     - Name: MaxLevel
       Entry: 3
-      Data: 2
+      Data: 3
     - Name: 
       Entry: 8
       Data: 
     - Name: WeaponSettings
       Entry: 7
       Data: 2|WeaponSettings, Assembly-CSharp
+    - Name: ShotgunAngleOffsetPerBullet
+      Entry: 4
+      Data: 10
     - Name: PoolSettings
       Entry: 7
       Data: 3|Pool`2+PoolSettings[[Bullet, Assembly-CSharp],[BulletType, Assembly-CSharp]],
@@ -90,7 +88,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 1
+      Data: 2
     - Name: 
       Entry: 7
       Data: 
@@ -117,6 +115,31 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 7
+      Data: 7|Pool`2+PoolProperties[[Bullet, Assembly-CSharp],[BulletType, Assembly-CSharp]],
+        Assembly-CSharp
+    - Name: Prefab
+      Entry: 10
+      Data: 1
+    - Name: FillOnInit
+      Entry: 5
+      Data: true
+    - Name: ExpansionSize
+      Entry: 3
+      Data: 5
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
       Entry: 13
       Data: 
     - Name: 
@@ -130,73 +153,23 @@ MonoBehaviour:
       Data: 
     - Name: EnemySettings
       Entry: 7
-      Data: 7|EnemySettings, Assembly-CSharp
+      Data: 8|EnemySettings, Assembly-CSharp
     - Name: BaseSpeed
       Entry: 4
       Data: 3
     - Name: RotationSpeed
       Entry: 4
       Data: 50
-    - Name: HitToPlayerAngleThreshold
+    - Name: PlayerAttackAngleThreshold
       Entry: 4
       Data: 10
-    - Name: SpeedMultipliers
-      Entry: 7
-      Data: 8|System.Collections.Generic.Dictionary`2[[EnemySpeedMode, Assembly-CSharp],[System.Single,
-        mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 9|System.Collections.Generic.EnumEqualityComparer`1[[EnemySpeedMode,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 2
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 0
-    - Name: $v
-      Entry: 4
-      Data: 0.9
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 1
-    - Name: $v
-      Entry: 4
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: HitTimePerAnimation
       Entry: 7
-      Data: 10|System.Collections.Generic.Dictionary`2[[EnemyAttackType, Assembly-CSharp],[System.Single,
+      Data: 9|System.Collections.Generic.Dictionary`2[[EnemyAttackType, Assembly-CSharp],[System.Single,
         mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 11|System.Collections.Generic.EnumEqualityComparer`1[[EnemyAttackType,
+      Data: 10|System.Collections.Generic.EnumEqualityComparer`1[[EnemyAttackType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -240,15 +213,12 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: HitImpulseForce
+    - Name: BaseImpulseDistance
       Entry: 4
-      Data: 5
-    - Name: HitImpulseDuration
-      Entry: 4
-      Data: 0.18
+      Data: 0.7
     - Name: InWaveSpawnDelayInSeconds
       Entry: 4
-      Data: 0.1
+      Data: 0.15
     - Name: DespawnDelayAfterDead
       Entry: 4
       Data: 2
@@ -257,24 +227,24 @@ MonoBehaviour:
       Data: 1.5
     - Name: AgentSetDestinationMinRate
       Entry: 4
-      Data: 0.1
+      Data: 0.2
     - Name: AgentSetDestinationMaxRate
       Entry: 4
-      Data: 0.35
+      Data: 0.4
     - Name: AgentMaxDistanceForMaxUpdateRate
       Entry: 4
-      Data: 6
+      Data: 8
     - Name: PoolSettings
       Entry: 7
-      Data: 12|Pool`2+PoolSettings[[Enemy, Assembly-CSharp],[EnemyType, Assembly-CSharp]],
+      Data: 11|Pool`2+PoolSettings[[Enemy, Assembly-CSharp],[EnemyType, Assembly-CSharp]],
         Assembly-CSharp
     - Name: Properties
       Entry: 7
-      Data: 13|System.Collections.Generic.Dictionary`2[[EnemyType, Assembly-CSharp],[Pool`2+PoolProperties[[Enemy,
+      Data: 12|System.Collections.Generic.Dictionary`2[[EnemyType, Assembly-CSharp],[Pool`2+PoolProperties[[Enemy,
         Assembly-CSharp],[EnemyType, Assembly-CSharp]], Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 14|System.Collections.Generic.EnumEqualityComparer`1[[EnemyType, Assembly-CSharp]],
+      Data: 13|System.Collections.Generic.EnumEqualityComparer`1[[EnemyType, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
@@ -296,11 +266,11 @@ MonoBehaviour:
       Data: 0
     - Name: $v
       Entry: 7
-      Data: 15|Pool`2+PoolProperties[[Enemy, Assembly-CSharp],[EnemyType, Assembly-CSharp]],
+      Data: 14|Pool`2+PoolProperties[[Enemy, Assembly-CSharp],[EnemyType, Assembly-CSharp]],
         Assembly-CSharp
     - Name: Prefab
       Entry: 10
-      Data: 1
+      Data: 2
     - Name: FillOnInit
       Entry: 5
       Data: true
@@ -321,11 +291,11 @@ MonoBehaviour:
       Data: 1
     - Name: $v
       Entry: 7
-      Data: 16|Pool`2+PoolProperties[[Enemy, Assembly-CSharp],[EnemyType, Assembly-CSharp]],
+      Data: 15|Pool`2+PoolProperties[[Enemy, Assembly-CSharp],[EnemyType, Assembly-CSharp]],
         Assembly-CSharp
     - Name: Prefab
       Entry: 10
-      Data: 2
+      Data: 3
     - Name: FillOnInit
       Entry: 5
       Data: true
@@ -346,11 +316,11 @@ MonoBehaviour:
       Data: 2
     - Name: $v
       Entry: 7
-      Data: 17|Pool`2+PoolProperties[[Enemy, Assembly-CSharp],[EnemyType, Assembly-CSharp]],
+      Data: 16|Pool`2+PoolProperties[[Enemy, Assembly-CSharp],[EnemyType, Assembly-CSharp]],
         Assembly-CSharp
     - Name: Prefab
       Entry: 10
-      Data: 3
+      Data: 4
     - Name: FillOnInit
       Entry: 5
       Data: false
@@ -377,7 +347,7 @@ MonoBehaviour:
       Data: 
     - Name: SaveSettings
       Entry: 7
-      Data: 18|SaveSettings, Assembly-CSharp
+      Data: 17|SaveSettings, Assembly-CSharp
     - Name: SaveIntervalInSeconds
       Entry: 3
       Data: 5
@@ -386,19 +356,19 @@ MonoBehaviour:
       Data: 
     - Name: VFXSettings
       Entry: 7
-      Data: 19|VFXSettings, Assembly-CSharp
+      Data: 18|VFXSettings, Assembly-CSharp
     - Name: PoolSettings
       Entry: 7
-      Data: 20|Pool`2+PoolSettings[[UnityEngine.Transform, UnityEngine.CoreModule],[ParticleType,
+      Data: 19|Pool`2+PoolSettings[[UnityEngine.Transform, UnityEngine.CoreModule],[ParticleType,
         Assembly-CSharp]], Assembly-CSharp
     - Name: Properties
       Entry: 7
-      Data: 21|System.Collections.Generic.Dictionary`2[[ParticleType, Assembly-CSharp],[Pool`2+PoolProperties[[UnityEngine.Transform,
+      Data: 20|System.Collections.Generic.Dictionary`2[[ParticleType, Assembly-CSharp],[Pool`2+PoolProperties[[UnityEngine.Transform,
         UnityEngine.CoreModule],[ParticleType, Assembly-CSharp]], Assembly-CSharp]],
         mscorlib
     - Name: comparer
       Entry: 7
-      Data: 22|System.Collections.Generic.EnumEqualityComparer`1[[ParticleType, Assembly-CSharp]],
+      Data: 21|System.Collections.Generic.EnumEqualityComparer`1[[ParticleType, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
@@ -420,11 +390,11 @@ MonoBehaviour:
       Data: 0
     - Name: $v
       Entry: 7
-      Data: 23|Pool`2+PoolProperties[[UnityEngine.Transform, UnityEngine.CoreModule],[ParticleType,
+      Data: 22|Pool`2+PoolProperties[[UnityEngine.Transform, UnityEngine.CoreModule],[ParticleType,
         Assembly-CSharp]], Assembly-CSharp
     - Name: Prefab
       Entry: 10
-      Data: 4
+      Data: 5
     - Name: FillOnInit
       Entry: 5
       Data: true
@@ -445,11 +415,11 @@ MonoBehaviour:
       Data: 1
     - Name: $v
       Entry: 7
-      Data: 24|Pool`2+PoolProperties[[UnityEngine.Transform, UnityEngine.CoreModule],[ParticleType,
+      Data: 23|Pool`2+PoolProperties[[UnityEngine.Transform, UnityEngine.CoreModule],[ParticleType,
         Assembly-CSharp]], Assembly-CSharp
     - Name: Prefab
       Entry: 10
-      Data: 5
+      Data: 6
     - Name: FillOnInit
       Entry: 5
       Data: true
@@ -470,11 +440,11 @@ MonoBehaviour:
       Data: 2
     - Name: $v
       Entry: 7
-      Data: 25|Pool`2+PoolProperties[[UnityEngine.Transform, UnityEngine.CoreModule],[ParticleType,
+      Data: 24|Pool`2+PoolProperties[[UnityEngine.Transform, UnityEngine.CoreModule],[ParticleType,
         Assembly-CSharp]], Assembly-CSharp
     - Name: Prefab
       Entry: 10
-      Data: 6
+      Data: 7
     - Name: FillOnInit
       Entry: 5
       Data: true

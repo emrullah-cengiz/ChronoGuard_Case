@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 444429455481048196}
   - component: {fileID: 1751902967194166036}
-  - component: {fileID: 2992071543623720879}
   m_Layer: 8
   m_Name: AttackHandler
   m_TagString: Untagged
@@ -48,27 +47,6 @@ MonoBehaviour:
   _weapon: {fileID: 8133841877841496114}
   _animator: {fileID: 3624957370513585480}
   _agent: {fileID: 2300794881634587431}
---- !u!135 &2992071543623720879
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 551230273565535716}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 3
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6026981077808925823
 GameObject:
   m_ObjectHideFlags: 0
@@ -894,6 +872,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6245027561504467337, guid: 7515355a18680854a866a4bcca9c6146,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7918155407980176846, guid: 7515355a18680854a866a4bcca9c6146,
         type: 3}
       propertyPath: m_Name
@@ -1023,17 +1006,17 @@ PrefabInstance:
     - target: {fileID: 7900811054733210611, guid: e95a467e12fe94f45af871fbee678287,
         type: 3}
       propertyPath: m_Acceleration
-      value: 12
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7900811054733210611, guid: e95a467e12fe94f45af871fbee678287,
         type: 3}
       propertyPath: m_AngularSpeed
-      value: 600
+      value: 629.19
       objectReference: {fileID: 0}
     - target: {fileID: 7900811054733210611, guid: e95a467e12fe94f45af871fbee678287,
         type: 3}
       propertyPath: avoidancePriority
-      value: 40
+      value: 80
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1066,11 +1049,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 342375206321998990, guid: e95a467e12fe94f45af871fbee678287,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 100220451864725165}
+      addedObject: {fileID: 3624957370513585480}
     - targetCorrespondingSourceObject: {fileID: 342375206321998990, guid: e95a467e12fe94f45af871fbee678287,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3624957370513585480}
+      addedObject: {fileID: 4025734551811275492}
+    - targetCorrespondingSourceObject: {fileID: 342375206321998990, guid: e95a467e12fe94f45af871fbee678287,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 100220451864725165}
   m_SourcePrefab: {fileID: 100100000, guid: e95a467e12fe94f45af871fbee678287, type: 3}
 --- !u!195 &2300794881634587431 stripped
 NavMeshAgent:
@@ -1137,14 +1124,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771c3c6b87ed34d4a9ed6949147369bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Properties: {fileID: 0}
+  Properties: {fileID: 11400000, guid: 2810c9e348812c94dab6e85702c964c4, type: 2}
   _agent: {fileID: 2300794881634587431}
   _animator: {fileID: 3624957370513585480}
   _movementController: {fileID: 725227951016945346}
   _attackHandler: {fileID: 1751902967194166036}
   _weapon: {fileID: 8133841877841496114}
   _health: {fileID: 2662113091540720456}
-  _rb: {fileID: 0}
+  _rb: {fileID: 4025734551811275492}
 --- !u!114 &725227951016945346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1160,6 +1147,49 @@ MonoBehaviour:
   _movementInputActionRef: {fileID: 2990186206529762269, guid: 130a55a065e0f1942a457a9552b2149d,
     type: 3}
   _agent: {fileID: 2300794881634587431}
+--- !u!114 &3624957370513585480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8541953441604217946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 777792fa1b0b70944a50b1e155d96a9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speedSmoothingPower: 7
+  _walkDirectionSmoothingPower: 7
+  _agent: {fileID: 2300794881634587431}
+  _animator: {fileID: 2042048461131738225}
+--- !u!54 &4025734551811275492
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8541953441604217946}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 0
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0
 --- !u!136 &100220451864725165
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1183,22 +1213,6 @@ CapsuleCollider:
   m_Height: 2.5179553
   m_Direction: 1
   m_Center: {x: 0, y: 0.75897765, z: 0}
---- !u!114 &3624957370513585480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8541953441604217946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 777792fa1b0b70944a50b1e155d96a9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speedSmoothingPower: 7
-  _walkDirectionSmoothingPower: 7
-  _agent: {fileID: 2300794881634587431}
-  _animator: {fileID: 2042048461131738225}
 --- !u!4 &9143329665043038850 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 912226217940836950, guid: e95a467e12fe94f45af871fbee678287,

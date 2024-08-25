@@ -14,4 +14,5 @@ public class GameHud : MonoBehaviour
     }
 
     public void SetActive(bool s)=> gameObject.SetActive(s);
+    public void CompleteLevelCheatBtn() => Events.Level.OnLevelCountdownEnd();
 }

@@ -22,9 +22,9 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   MaxHealth: 19
-  Damage: 4
+  Damage: 2
   AttackRange: 1
-  AttackRateInSeconds: 0.5
+  AttackRateInSeconds: 0.25
   Type: 0
+  SpeedMultiplier: 1.1
   AttackType: 1
-  SpeedMode: 0

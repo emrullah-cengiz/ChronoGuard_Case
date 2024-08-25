@@ -13,101 +13,107 @@ MonoBehaviour:
   m_Name: Level_1
   m_EditorClassIdentifier: 
   PlayerProperties: {fileID: 11400000, guid: 2810c9e348812c94dab6e85702c964c4, type: 2}
-  DifficultyMultiplier: 0.687
+  DifficultyMultiplier: 0.607
   Waves:
   - EnemiesType: 0
-    SpawnTimeAfterLevelStart: 0
-    EnemyNumber: 10
+    SpawnTimeAfterLevelStart: 0.5
+    EnemyNumber: 3
   - EnemiesType: 0
-    SpawnTimeAfterLevelStart: 2
-    EnemyNumber: 4
+    SpawnTimeAfterLevelStart: 1
+    EnemyNumber: 3
   - EnemiesType: 0
-    SpawnTimeAfterLevelStart: 4
+    SpawnTimeAfterLevelStart: 1.5
     EnemyNumber: 6
   - EnemiesType: 0
-    SpawnTimeAfterLevelStart: 6
-    EnemyNumber: 12
+    SpawnTimeAfterLevelStart: 5
+    EnemyNumber: 6
   - EnemiesType: 0
     SpawnTimeAfterLevelStart: 8
-    EnemyNumber: 8
-  - EnemiesType: 0
-    SpawnTimeAfterLevelStart: 10
-    EnemyNumber: 6
-  - EnemiesType: 0
-    SpawnTimeAfterLevelStart: 12
     EnemyNumber: 6
   - EnemiesType: 1
     SpawnTimeAfterLevelStart: 15
-    EnemyNumber: 8
+    EnemyNumber: 3
   - EnemiesType: 1
-    SpawnTimeAfterLevelStart: 18
-    EnemyNumber: 8
-  - EnemiesType: 1
-    SpawnTimeAfterLevelStart: 21
-    EnemyNumber: 10
-  - EnemiesType: 1
-    SpawnTimeAfterLevelStart: 24
-    EnemyNumber: 12
+    SpawnTimeAfterLevelStart: 20
+    EnemyNumber: 3
   - EnemiesType: 0
-    SpawnTimeAfterLevelStart: 27
-    EnemyNumber: 10
+    SpawnTimeAfterLevelStart: 25
+    EnemyNumber: 2
   - EnemiesType: 0
     SpawnTimeAfterLevelStart: 30
-    EnemyNumber: 10
-  - EnemiesType: 1
-    SpawnTimeAfterLevelStart: 33
-    EnemyNumber: 10
-  - EnemiesType: 1
-    SpawnTimeAfterLevelStart: 36
-    EnemyNumber: 8
+    EnemyNumber: 2
   - EnemiesType: 0
-    SpawnTimeAfterLevelStart: 39
-    EnemyNumber: 10
+    SpawnTimeAfterLevelStart: 30.5
+    EnemyNumber: 2
   - EnemiesType: 1
-    SpawnTimeAfterLevelStart: 42
-    EnemyNumber: 8
+    SpawnTimeAfterLevelStart: 33.1
+    EnemyNumber: 2
   - EnemiesType: 1
-    SpawnTimeAfterLevelStart: 45
-    EnemyNumber: 8
-  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 33.2
+    EnemyNumber: 3
+  - EnemiesType: 1
+    SpawnTimeAfterLevelStart: 33.3
+    EnemyNumber: 2
+  - EnemiesType: 1
     SpawnTimeAfterLevelStart: 48
-    EnemyNumber: 6
+    EnemyNumber: 3
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 52
+    EnemyNumber: 2
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 52
+    EnemyNumber: 3
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 53
+    EnemyNumber: 3
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 70
+    EnemyNumber: 4
   - EnemiesType: 1
-    SpawnTimeAfterLevelStart: 51
-    EnemyNumber: 5
+    SpawnTimeAfterLevelStart: 73
+    EnemyNumber: 4
   - EnemiesType: 1
-    SpawnTimeAfterLevelStart: 54
+    SpawnTimeAfterLevelStart: 80
     EnemyNumber: 4
   - EnemiesType: 0
-    SpawnTimeAfterLevelStart: 57
+    SpawnTimeAfterLevelStart: 85
+    EnemyNumber: 4
+  - EnemiesType: 1
+    SpawnTimeAfterLevelStart: 90
+    EnemyNumber: 4
+  - EnemiesType: 1
+    SpawnTimeAfterLevelStart: 95
     EnemyNumber: 6
   - EnemiesType: 0
-    SpawnTimeAfterLevelStart: 60
-    EnemyNumber: 5
+    SpawnTimeAfterLevelStart: 105
+    EnemyNumber: 4
   - EnemiesType: 1
-    SpawnTimeAfterLevelStart: 63
+    SpawnTimeAfterLevelStart: 110
     EnemyNumber: 5
+  - EnemiesType: 0
+    SpawnTimeAfterLevelStart: 120
+    EnemyNumber: 6
   - EnemiesType: 1
-    SpawnTimeAfterLevelStart: 66
+    SpawnTimeAfterLevelStart: 130
+    EnemyNumber: 6
+  - EnemiesType: 1
+    SpawnTimeAfterLevelStart: 140
+    EnemyNumber: 7
+  - EnemiesType: 1
+    SpawnTimeAfterLevelStart: 145
+    EnemyNumber: 7
+  - EnemiesType: 1
+    SpawnTimeAfterLevelStart: 150
     EnemyNumber: 4
   - EnemiesType: 0
-    SpawnTimeAfterLevelStart: 69
-    EnemyNumber: 6
-  - EnemiesType: 1
-    SpawnTimeAfterLevelStart: 72
+    SpawnTimeAfterLevelStart: 155
     EnemyNumber: 5
   - EnemiesType: 0
-    SpawnTimeAfterLevelStart: 75
-    EnemyNumber: 6
-  - EnemiesType: 1
-    SpawnTimeAfterLevelStart: 78
-    EnemyNumber: 4
+    SpawnTimeAfterLevelStart: 156
+    EnemyNumber: 5
   - EnemiesType: 0
-    SpawnTimeAfterLevelStart: 81
+    SpawnTimeAfterLevelStart: 157
     EnemyNumber: 5
   - EnemiesType: 1
-    SpawnTimeAfterLevelStart: 84
-    EnemyNumber: 4
-  - EnemiesType: 0
-    SpawnTimeAfterLevelStart: 87
-    EnemyNumber: 6
+    SpawnTimeAfterLevelStart: 160
+    EnemyNumber: 5

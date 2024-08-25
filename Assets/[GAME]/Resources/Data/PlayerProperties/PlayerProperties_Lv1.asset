@@ -23,7 +23,8 @@ MonoBehaviour:
     SerializationNodes: []
   MaxHealth: 100
   Damage: 8
-  AttackRange: 4
-  AttackRateInSeconds: 0.2
-  BulletSpeed: 20
-  Speed: 3.2
+  AttackRange: 3.2
+  AttackRateInSeconds: 0.32
+  Speed: 3.3
+  BulletNumberPerShot: 1
+  BulletSpeed: 40

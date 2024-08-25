@@ -36,7 +36,6 @@ public class EnemyBehaviourTree : Tree
             {
                 new CheckForDestinationUpdateRate(_params, _blackBoard, _taskCancellationTokenSource),
                 new MoveToPlayerTask(_params, _blackBoard, _taskCancellationTokenSource),
-                //updateUpdateRate
             }),
             new Sequence(new()//Attack
             {
@@ -65,6 +64,7 @@ public class EnemyBehaviourTree : Tree
     private void InitializeBlackBoard()
     {
         _blackBoard._DifficultyMultiplier = _difficultyMultiplier;
+        _blackBoard._FollowPlayersVelocity = Random.value < _blackBoard._DifficultyMultiplier;
         
         _blackBoard.IsAttackCooldownEnd = true;
         _blackBoard._AttackRangeSqr = _params.Enemy.Data.AttackRange * _params.Enemy.Data.AttackRange;
@@ -100,6 +100,7 @@ public class EnemyBehaviourTree : Tree
         #region Constants per respawn
 
         public float _DifficultyMultiplier;
+        public bool _FollowPlayersVelocity;
         
         public float _AttackRangeSqr;
         public float _MinDestinationUpdateRate;

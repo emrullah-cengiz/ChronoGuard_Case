@@ -1,6 +1,8 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 public class EnemySpawner
@@ -42,7 +44,7 @@ public class EnemySpawner
     {
         // var firstWaveIndex = _continueLevel ? Mathf.Clamp(_progressData.SpawnedWavesNumber - 1, 0, int.MaxValue) : 0;
 
-        var elapsedSeconds = 0;
+        var elapsedSeconds = 0f;
 
         foreach (var waveData in _levelData.Waves)
         {
@@ -59,6 +61,9 @@ public class EnemySpawner
             EnemiesSpawnLoop(waveData, pos).Forget();
 
             Events.Enemies.OnWaveSpawned();
+
+            // NavMeshSurface asd;
+            // NavMesh.SamplePosition()
         }
     }
 

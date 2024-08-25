@@ -51,4 +51,9 @@ public class EnemyAnimatorController : CharacterAnimatorController
     }
 
     public float GetAttackClipSpeed(EnemyAttackType type) => _attackClipSpeeds[type];
+
+    public void TriggerDie()
+    {
+        _animator.SetTrigger("Die");
+    }
 }

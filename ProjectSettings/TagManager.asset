@@ -19,8 +19,8 @@ TagManager:
   - PlayerAttackHandler
   - EnemyRagdoll
   - Ground
-  - Coin
-  - 
+  - Obstacles
+  - Walls
   - 
   - 
   - 

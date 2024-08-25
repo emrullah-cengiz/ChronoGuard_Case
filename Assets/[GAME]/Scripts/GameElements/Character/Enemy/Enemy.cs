@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -27,17 +28,16 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
     public bool IsAlive { get; private set; }
     public int Health => _health.CurrentHealth;
 
-    private void Awake()
-    {
-        _enemySettings = ServiceLocator.Resolve<EnemySettings>();
-        _particlePool = ServiceLocator.Resolve<Pool<ParticleType>>();
-        
-        _agent.updateUpAxis = false;
-        _agent.updateRotation = false;
-    }
+    private const int IMPULSE_TIME_FACTOR = 30;
 
     public void OnCreated()
     {
+        _enemySettings = ServiceLocator.Resolve<EnemySettings>();
+        _particlePool = ServiceLocator.Resolve<Pool<ParticleType>>();
+
+        _agent.updateUpAxis = false;
+        _agent.updateRotation = false;
+        
         _behaviourTree = new(new EnemyBehaviourTree.TreeParams()
         {
             Enemy = this,
@@ -47,26 +47,25 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
 
         _initialized = true;
         _health.Initialize(Data.MaxHealth);
-        
+
         _hitCancellationTokenSource = new();
     }
 
     //Reinitialize
     public void OnSpawned(SpawnData spawnData)
     {
-        _collider.enabled = true;
-        _agent.enabled = true;
-        _agent.speed = _enemySettings.BaseSpeed * _enemySettings.SpeedMultipliers[Data.SpeedMode];
-        
-        Animator.Initialize(_enemySettings.SpeedMultipliers.Max(x=>x.Value) * _enemySettings.BaseSpeed);
-        Animator.SetAttackSpeedByAttackRate(Data.AttackType, Data.AttackRateInSeconds);
-
         transform.position = spawnData.Position;
         transform.LookAt(spawnData.LookAtPosition);
 
+        _collider.enabled = true;
+        _agent.enabled = true;
+        _agent.speed = _enemySettings.BaseSpeed * Data.SpeedMultiplier;
+
+        Animator.Initialize(_enemySettings.BaseSpeed);
+        Animator.SetAttackSpeedByAttackRate(Data.AttackType, Data.AttackRateInSeconds);
+
         _health.Initialize(Data.MaxHealth);
         _behaviourTree.ReInitialize(spawnData.DifficultyMultiplier);
-        _ragdoll.SetRagdollState(false);
 
         IsAlive = true;
     }
@@ -74,6 +73,8 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
     public void OnDespawned()
     {
         _behaviourTree.Stop();
+
+        _ragdoll.SetRagdollState(false);
     }
 
     private void Update()
@@ -82,13 +83,14 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
             _behaviourTree.Update();
     }
 
-    public void TakeDamage(int damage, Vector3 hitDirection)
+    public void TakeDamage(int damage, Vector3 hitDirection, float? hitSpeed = null)
     {
-        _health.TakeDamage(damage);
-
         _hitCancellationTokenSource.Cancel();
         _hitCancellationTokenSource = new CancellationTokenSource();
-        HitImpulse(hitDirection).Forget();
+        
+        _health.TakeDamage(damage);
+
+        HitImpulse(hitDirection, hitSpeed!.Value).Forget();
     }
 
     //Calling from _health's UnityEvent
@@ -97,7 +99,9 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
         IsAlive = false;
         _collider.enabled = false;
 
-        _ragdoll.SetRagdollState(true);
+        // _ragdoll.SetRagdollState(true);
+
+        Animator.TriggerDie();
 
         _health.Activate(false);
 
@@ -105,20 +109,26 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
 
         var particle = _particlePool.Spawn(ParticleType.Blood_Explosion, 1);
         particle.position = transform.position + Vector3.up * 1.4f;
-        
+
         _hitCancellationTokenSource.Cancel();
 
         Events.Enemies.OnEnemyDead(this);
     }
 
-    private async UniTaskVoid HitImpulse(Vector3 hitDirection)
+    private async UniTaskVoid HitImpulse(Vector3 hitDirection, float hitSpeed)
     {
         _agent.enabled = false;
-        _rb.AddExplosionForce(_enemySettings.HitImpulseForce, transform.position - hitDirection * .3f,
-            .3f, 1, mode: ForceMode.Impulse);
-        
-        await UniTask.WaitForSeconds(_enemySettings.HitImpulseDuration, cancellationToken: _hitCancellationTokenSource.Token);
-        
+        // _rb.AddExplosionForce(_enemySettings.HitImpulseForce, transform.position - hitDirection * .3f,
+        //     .3f, 1, mode: ForceMode.Impulse);
+
+        // if (_hitCancellationTokenSource.IsCancellationRequested)
+        //     return;
+
+        var impulseDistance = _enemySettings.BaseImpulseDistance / Data.Mass;
+        await transform.DOMove(Position + hitDirection * impulseDistance, impulseDistance / (hitSpeed / IMPULSE_TIME_FACTOR))
+                       .SetEase(Ease.OutQuart)
+                       .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, _hitCancellationTokenSource.Token);
+
         _agent.enabled = true;
     }
 

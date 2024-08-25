@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
 using Quaternion = Unity.Mathematics.quaternion;
@@ -20,13 +21,13 @@ public class PlayerSystem : TransformObject, IDamagable
     [SerializeField] private Health _health;
 
     [SerializeField] private Rigidbody _rb;
+    [SerializeField] private NavMeshSurface _surface;
 
     private Pool<ParticleType> _particlePool;
     private PlayerSettings _playerSettings;
 
     private int Health => _health.CurrentHealth;
     public Vector3 Velocity => _agent.velocity;
-    public float MaxAgentSpeed => _agent.speed;
 
     public bool IsAlive { get; private set; }
 
@@ -49,6 +50,13 @@ public class PlayerSystem : TransformObject, IDamagable
         Events.GameStates.OnLevelEnd -= Deactivate;
     }
 
+    private void Start()
+    {
+        _surface.center = transform.position;
+        _surface.size = new Vector3(10, 1, 10);
+        _surface.BuildNavMesh();
+    }
+
     private void Initialize()
     {
         Debug.Log("Initializing Player..");
@@ -67,6 +75,9 @@ public class PlayerSystem : TransformObject, IDamagable
         Debug.Log("Reinitializing Player..");
 
         IsAlive = true;
+
+        var rndPos = Random.insideUnitCircle * 45f;
+        transform.position = new Vector3(rndPos.x, 0, rndPos.y);
 
         _animator.Initialize(Properties.Speed);
         _animator.SetDead(false);
@@ -87,7 +98,7 @@ public class PlayerSystem : TransformObject, IDamagable
         _attackHandler.StopActions();
     }
 
-    public void TakeDamage(int damage, Vector3 hitDirection = default)
+    public void TakeDamage(int damage, Vector3 hitDirection = default, float? hitSpeed = null)
     {
         _health.TakeDamage(damage);
 
@@ -101,19 +112,19 @@ public class PlayerSystem : TransformObject, IDamagable
         Events.Player.OnDamageTake(damage, Health);
     }
 
-    private async UniTaskVoid HitImpulse(Vector3 hitDirection)
-    {
-        _agent.enabled = false;
-        _rb.isKinematic = false;
-
-        _rb.AddExplosionForce(_playerSettings.HitImpulseForce, transform.position - hitDirection * .3f,
-            .1f, 1, mode: ForceMode.Impulse);
-
-        await UniTask.WaitForSeconds(_playerSettings.HitImpulseDuration);
-
-        _agent.enabled = true;
-        _rb.isKinematic = true;
-    }
+        // private async UniTaskVoid HitImpulse(Vector3 hitDirection)
+        // {
+        //     _agent.enabled = false;
+        //     _rb.isKinematic = false;
+        //
+        //     _rb.AddExplosionForce(_playerSettings.HitImpulseForce, transform.position - hitDirection * .3f,
+        //         .1f, 1, mode: ForceMode.Impulse);
+        //
+        //     await UniTask.WaitForSeconds(_playerSettings.HitImpulseDuration);
+        //
+        //     _agent.enabled = true;
+        //     _rb.isKinematic = true;
+        // }
 
     public void OnDead()
     {

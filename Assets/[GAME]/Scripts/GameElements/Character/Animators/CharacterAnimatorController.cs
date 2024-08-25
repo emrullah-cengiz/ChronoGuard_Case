@@ -28,6 +28,7 @@ public class CharacterAnimatorController : MonoBehaviour
 
     public void Initialize(float maxMoveSpeed)
     {
+        _animator.Rebind();
         _maxMoveSpeed = maxMoveSpeed;   
     }
     
@@ -37,6 +38,7 @@ public class CharacterAnimatorController : MonoBehaviour
 
         SetDirection();
     }
+
 
     private void SetDirection()
     {
@@ -58,4 +60,6 @@ public class CharacterAnimatorController : MonoBehaviour
 
     public void SetDead(bool s) => _animator.SetBool(DEAD_PARAM, s);
     public void SetAim(bool s) => _animator.SetFloat(IS_AIMING_PARAM, s ? 1 : 0);
+
+    // public void Rebind() => _animator.Rebind();
 }
