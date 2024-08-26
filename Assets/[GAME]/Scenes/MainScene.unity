@@ -3167,7 +3167,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.4650567, y: -0.000000008385636, z: 0.0000000044051514, w: 0.8852809}
-  m_LocalPosition: {x: 0, y: 13.35, z: -9.2}
+  m_LocalPosition: {x: 0, y: 13.35, z: -61.77}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6421,8 +6421,8 @@ Transform:
   m_GameObject: {fileID: 752481322}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.36, z: -55.21}
-  m_LocalScale: {x: 107.99, y: 5.1013885, z: 1}
+  m_LocalPosition: {x: 0, y: -0.06, z: -55.21}
+  m_LocalScale: {x: 107.99, y: 2.6120129, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1945264942}
@@ -6447,7 +6447,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7831927639d7d7d4fa1ed8710b51d1bf, type: 2}
+  - {fileID: 2100000, guid: 3be178d0649b60c4e853d07205ac6624, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9835,7 +9835,7 @@ Transform:
   m_GameObject: {fileID: 1337452528}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -52.57}
   m_LocalScale: {x: 19.073269, y: 0.24516723, z: 26.976843}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10638,7 +10638,7 @@ Transform:
   m_GameObject: {fileID: 1452843506}
   serializedVersion: 2
   m_LocalRotation: {x: 0.46505666, y: -0.000000008385635, z: 0.00000000440515, w: 0.88528097}
-  m_LocalPosition: {x: 0, y: 13.35, z: -9.2}
+  m_LocalPosition: {x: 0, y: 13.35, z: -61.77}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14822,7 +14822,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9143329665043038850, guid: d37e17527a4d2a64bb2b3327c62245d4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -52.57
       objectReference: {fileID: 0}
     - target: {fileID: 9143329665043038850, guid: d37e17527a4d2a64bb2b3327c62245d4, type: 3}
       propertyPath: m_LocalRotation.w
