@@ -635,7 +635,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 90fb98bc406dfaf44b7a0a30f4af574c, type: 2}
   m_Controller: {fileID: 9100000, guid: 229314cb6d958ba46a281700fd2e1a8e, type: 2}
-  m_CullingMode: 2
+  m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -735,6 +735,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7900811054733210611, guid: e95a467e12fe94f45af871fbee678287,
         type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7900811054733210611, guid: e95a467e12fe94f45af871fbee678287,
+        type: 3}
       propertyPath: m_AutoRepath
       value: 0
       objectReference: {fileID: 0}
@@ -787,10 +792,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2875988495046347945}
-    - targetCorrespondingSourceObject: {fileID: 1212808578631511935, guid: e95a467e12fe94f45af871fbee678287,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3064313767903849613}
   m_SourcePrefab: {fileID: 100100000, guid: e95a467e12fe94f45af871fbee678287, type: 3}
 --- !u!195 &2300794881634587431 stripped
 NavMeshAgent:
@@ -804,24 +805,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 8235747856762790100}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &7106543819061415851 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1212808578631511935, guid: e95a467e12fe94f45af871fbee678287,
-    type: 3}
-  m_PrefabInstance: {fileID: 8235747856762790100}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &3064313767903849613
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7106543819061415851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca96af1313c54a59b3af79f0e09d2c1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8541953441604217946 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 342375206321998990, guid: e95a467e12fe94f45af871fbee678287,
@@ -843,7 +826,6 @@ MonoBehaviour:
   Data: {fileID: 0}
   Animator: {fileID: 990231943817127279}
   _health: {fileID: 2616996205731996393}
-  _ragdoll: {fileID: 3064313767903849613}
   _agent: {fileID: 2300794881634587431}
   _rb: {fileID: 0}
   _collider: {fileID: 2875988495046347945}

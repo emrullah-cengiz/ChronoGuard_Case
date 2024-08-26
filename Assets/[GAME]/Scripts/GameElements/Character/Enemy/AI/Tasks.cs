@@ -14,8 +14,11 @@ public class CheckForDestinationUpdateRate : EnemyBehaviourTree.NodeBase
 
     public override NodeState Evaluate()
     {
+        if (!_blackBoard.IsOnNavMesh)
+            return NodeState.SUCCESS;
+        
         if (Time.time - _blackBoard.LastDestinationUpdateTime < _blackBoard.DestinationUpdateRate
-            || !Params.Agent.enabled || !_blackBoard.IsPlayerAlive)
+                                     || !Params.Agent.enabled || !_blackBoard.IsPlayerAlive)
             return NodeState.FAILURE;
 
         return NodeState.SUCCESS;
@@ -36,6 +39,12 @@ public class MoveToPlayerTask : EnemyBehaviourTree.NodeBase
 
     public override NodeState Evaluate()
     {
+        if (!_blackBoard.IsOnNavMesh)
+        {
+            Params.Enemy.Position += Params.Enemy.Forward * (Params.Enemy.AgentSpeed * Time.deltaTime);
+            return NodeState.SUCCESS;
+        }
+
         var dest = _playerSystem.Position;
 
         //Is on front of the player?
@@ -53,7 +62,7 @@ public class MoveToPlayerTask : EnemyBehaviourTree.NodeBase
         _lastDistanceSqr = _blackBoard.CurrentPlayerDistanceSqr;
 
         RecalculateDestinationUpdateRate();
-
+        
         Params.Agent.SetDestination(dest);
 
         _blackBoard.LastDestinationUpdateTime = Time.time;
@@ -66,7 +75,7 @@ public class MoveToPlayerTask : EnemyBehaviourTree.NodeBase
         _blackBoard.DestinationUpdateRate = Mathf.Clamp(_blackBoard._MinDestinationUpdateRate +
                                                         (_blackBoard._MaxDestinationUpdateRate - _blackBoard._MinDestinationUpdateRate)
                                                         * (_blackBoard.CurrentPlayerDistanceSqr / _blackBoard._MaxDistanceForMaxUpdateRateSqr),
-            _blackBoard._MinDestinationUpdateRate, _blackBoard._MaxDestinationUpdateRate);
+                                                        _blackBoard._MinDestinationUpdateRate, _blackBoard._MaxDestinationUpdateRate);
     }
 }
 
@@ -144,6 +153,27 @@ public class LookToPlayerTask : EnemyBehaviourTree.NodeBase
 
         Params.Enemy.Rotation = Quaternion.Lerp(Params.Enemy.Rotation, targetRotation, Time.deltaTime * _enemySettings.RotationSpeed);
 
+        return NodeState.SUCCESS;
+    }
+}
+
+public class SetAgentActiveStatus : EnemyBehaviourTree.NodeBase
+{
+    public SetAgentActiveStatus(EnemyBehaviourTree.TreeParams @params, EnemyBehaviourTree.BlackBoard blackBoard, CancellationTokenSource cts) : base(@params,
+        blackBoard, cts)
+    {
+    }
+
+    public override NodeState Evaluate()
+    {
+        if (_blackBoard.IsOnNavMesh == Params.Agent.enabled)
+            return NodeState.SUCCESS;
+        //
+        // if(!_blackBoard.IsOnNavMesh)
+        //     Params.Agent.ResetPath();
+        //
+        Params.Agent.enabled = _blackBoard.IsOnNavMesh;
+        
         return NodeState.SUCCESS;
     }
 }

@@ -52,27 +52,44 @@ public class EnemySpawner
 
             elapsedSeconds = waveData.SpawnTimeAfterLevelStart;
 
-            Vector3 pos;
-            if (Random.value < _levelData.DifficultyMultiplier && _playerSystem.Velocity.magnitude > 0.3f)// && Random.value > 0.5f)
-                pos = _playerSystem.Position + _playerSystem.Velocity * 4;
+            Vector3 pos, playerPos = _playerSystem.Position;
+            if (Random.value < _levelData.DifficultyMultiplier && _playerSystem.Velocity.magnitude > 0.3f) // && Random.value > 0.5f)
+                pos = playerPos + _playerSystem.Velocity * 6;
             else
                 pos = _spawnPoints[Random.Range(0, _spawnPoints.Length)].position;
-            
-            EnemiesSpawnLoop(waveData, pos).Forget();
+
+            var distance = pos - playerPos;
+            EnemiesSpawnLoop(waveData, distance).Forget();
 
             Events.Enemies.OnWaveSpawned();
-
-            // NavMeshSurface asd;
-            // NavMesh.SamplePosition()
         }
     }
 
-    private async UniTaskVoid EnemiesSpawnLoop(WaveData waveData, Vector3 wavePosition)
+    private async UniTaskVoid EnemiesSpawnLoop(WaveData waveData, Vector3 distance)
     {
         for (var i = 0; i < waveData.EnemyNumber; i++)
         {
+            var playerPos = _playerSystem.Position;
+
+            // NavMesh.is
+
+            var pos = playerPos + distance + Random.insideUnitSphere * _enemySettings.SpawnWaveRadius;
+            NavMesh.SamplePosition(pos, out var hit, 32, NavMesh.AllAreas);
+
+            if (hit.hit)
+                pos = playerPos + distance + Random.insideUnitSphere * _enemySettings.SpawnWaveRadius;
+            else
+            {
+                var pos1 = pos;
+                GizmosManager.AddDrawAction(() =>
+                {
+                    Gizmos.DrawCube(pos1, Vector3.one * .05f);
+                });
+                pos = Vector3.zero;
+            }
             _enemyPool.Spawn(waveData.EnemiesType,
-                new Enemy.SpawnData(wavePosition + Random.insideUnitSphere * _enemySettings.SpawnWaveRadius, _playerSystem.Position, _levelData.DifficultyMultiplier));
+                             new Enemy.SpawnData(pos, playerPos,
+                                                 _levelData.DifficultyMultiplier));
 
             await UniTask.WaitForSeconds(_enemySettings.InWaveSpawnDelayInSeconds, cancellationToken: _cts.Token);
 

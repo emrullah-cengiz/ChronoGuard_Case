@@ -50,13 +50,6 @@ public class PlayerSystem : TransformObject, IDamagable
         Events.GameStates.OnLevelEnd -= Deactivate;
     }
 
-    private void Start()
-    {
-        _surface.center = transform.position;
-        _surface.size = new Vector3(10, 1, 10);
-        _surface.BuildNavMesh();
-    }
-
     private void Initialize()
     {
         Debug.Log("Initializing Player..");

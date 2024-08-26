@@ -11,7 +11,6 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
 
     [SerializeField] public EnemyAnimatorController Animator;
     [SerializeField] private Health _health;
-    [SerializeField] private RagdollController _ragdoll;
 
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private Rigidbody _rb;
@@ -25,8 +24,10 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
     private CancellationTokenSource _hitCancellationTokenSource;
 
     private bool _initialized;
+    
     public bool IsAlive { get; private set; }
     public int Health => _health.CurrentHealth;
+    public float AgentSpeed => _agent.speed;
 
     private const int IMPULSE_TIME_FACTOR = 30;
 
@@ -35,8 +36,11 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
         _enemySettings = ServiceLocator.Resolve<EnemySettings>();
         _particlePool = ServiceLocator.Resolve<Pool<ParticleType>>();
 
+        _initialized = true;
+        
         _agent.updateUpAxis = false;
         _agent.updateRotation = false;
+        _agent.speed = _enemySettings.BaseSpeed * Data.SpeedMultiplier;
         
         _behaviourTree = new(new EnemyBehaviourTree.TreeParams()
         {
@@ -45,8 +49,9 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
             Animator = Animator
         });
 
-        _initialized = true;
         _health.Initialize(Data.MaxHealth);
+        Animator.SetAttackSpeedByAttackRate(Data.AttackType, Data.AttackRateInSeconds);
+        Animator.Initialize(_enemySettings.BaseSpeed);
 
         _hitCancellationTokenSource = new();
     }
@@ -55,14 +60,10 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
     public void OnSpawned(SpawnData spawnData)
     {
         transform.position = spawnData.Position;
-        transform.LookAt(spawnData.LookAtPosition);
+        // transform.LookAt(spawnData.LookAtPosition);
 
         _collider.enabled = true;
-        _agent.enabled = true;
-        _agent.speed = _enemySettings.BaseSpeed * Data.SpeedMultiplier;
-
-        Animator.Initialize(_enemySettings.BaseSpeed);
-        Animator.SetAttackSpeedByAttackRate(Data.AttackType, Data.AttackRateInSeconds);
+        // _agent.enabled = true;
 
         _health.Initialize(Data.MaxHealth);
         _behaviourTree.ReInitialize(spawnData.DifficultyMultiplier);
@@ -73,8 +74,7 @@ public class Enemy : TransformObject, IInitializablePoolable<Enemy.SpawnData>, I
     public void OnDespawned()
     {
         _behaviourTree.Stop();
-
-        _ragdoll.SetRagdollState(false);
+        _agent.enabled = false;
     }
 
     private void Update()

@@ -127,26 +127,28 @@ public class PlayerAttackHandler : MonoBehaviour
         }
     }
 
+    private Collider[] _overlapResults;
+    private Enemy _tempClosestEnemy = null;
+    private Enemy _tempLowestHealthEnemy = null;
     private void RecalculateMostSuitableTarget()
     {
-        var results = new Collider[7];
+        _overlapResults = new Collider[5];
+        var playerPos = transform.position;
 
-        if (Physics.OverlapSphereNonAlloc(transform.position, _attackRange, results, 1 << GlobalVariables.Layers.ENEMY) <= 0)
+        if (Physics.OverlapSphereNonAlloc(playerPos, _attackRange, _overlapResults, 1 << GlobalVariables.Layers.ENEMY) <= 0)
         {
             SelectTarget(null);
             return;
         }
 
-        var playerPos = transform.position;
         var attackRangeSqr = _attackRange * _attackRange;
 
-        Enemy closestEnemy = null;
-        Enemy lowestHealthEnemy = null;
         var closestDistSqr = float.MaxValue;
         var lowestHealth = float.MaxValue;
 
-        foreach (var coll in results)
+        for (var i = 0; i < _overlapResults.Length; i++)
         {
+            var coll = _overlapResults[i];
             if (coll == null) continue;
 
             var distSqr = (playerPos - coll.transform.position).sqrMagnitude;
@@ -159,23 +161,23 @@ public class PlayerAttackHandler : MonoBehaviour
             if (distSqr < closestDistSqr)
             {
                 closestDistSqr = distSqr;
-                closestEnemy = enemy;
+                _tempClosestEnemy = enemy;
             }
 
             if (enemy.Health < lowestHealth)
             {
                 lowestHealth = enemy.Health;
-                lowestHealthEnemy = enemy;
+                _tempLowestHealthEnemy = enemy;
             }
         }
 
-        if (closestEnemy == lowestHealthEnemy)
-            SelectTarget(closestEnemy);
+        if (_tempClosestEnemy == _tempLowestHealthEnemy)
+            SelectTarget(_tempClosestEnemy);
         else
             //Select target by current health or distance
-            SelectTarget(closestDistSqr / (playerPos - lowestHealthEnemy!.transform.position).sqrMagnitude <= .6f
-                ? closestEnemy
-                : lowestHealthEnemy);
+            SelectTarget(closestDistSqr / (playerPos - _tempLowestHealthEnemy!.transform.position).sqrMagnitude <= .6f
+                ? _tempClosestEnemy
+                : _tempLowestHealthEnemy);
     }
 
     private void SelectTarget(Enemy target)
@@ -189,7 +191,7 @@ public class PlayerAttackHandler : MonoBehaviour
             _targetIndicator.gameObject.SetActive(!isNull);
         }
 
-        _currentTarget = target?.GetComponent<Enemy>();
+        _currentTarget = target;
     }
 
     #endregion

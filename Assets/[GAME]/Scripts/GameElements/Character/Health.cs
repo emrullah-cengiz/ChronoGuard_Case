@@ -44,8 +44,9 @@ public class Health : MonoBehaviour
     {
         var healthPercentage = (float)_currentHealth / _maxHealth;
 
-        _fillBox.transform.DOKill();
-        _fillBox.transform.DOScaleX(healthPercentage, 0.2f);
+        // _fillBox.transform.DOKill();
+        // _fillBox.transform.DOScaleX(healthPercentage, 0.2f);
+        _fillBox.transform.localScale = Vector3.one * healthPercentage; 
 
         _fillSprite.color = Color.Lerp(_minHealthColor, _maxHealthColor, healthPercentage);
     }
