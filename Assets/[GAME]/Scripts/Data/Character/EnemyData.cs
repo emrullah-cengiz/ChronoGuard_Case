@@ -22,12 +22,6 @@ public enum EnemyType
     Boss
 }
 
-public enum EnemySpeedMode
-{
-    Walk,
-    Run
-}
-
 public enum EnemyAttackType
 {
     Attack1 = 1,
