@@ -21,20 +21,13 @@ public class PlayerSystem : TransformObject, IDamagable
     [SerializeField] private Health _health;
 
     [SerializeField] private Rigidbody _rb;
-    [SerializeField] private NavMeshSurface _surface;
 
     private Pool<ParticleType> _particlePool;
-    private PlayerSettings _playerSettings;
 
     private int Health => _health.CurrentHealth;
     public Vector3 Velocity => _agent.velocity;
 
     public bool IsAlive { get; private set; }
-
-    private void Awake()
-    {
-        _playerSettings = ServiceLocator.Resolve<PlayerSettings>();
-    }
 
     private void OnEnable()
     {
